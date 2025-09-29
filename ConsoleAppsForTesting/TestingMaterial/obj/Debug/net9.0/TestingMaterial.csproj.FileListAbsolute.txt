@@ -1,0 +1,15 @@
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\bin\Debug\net9.0\TestingMaterial.exe
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\bin\Debug\net9.0\TestingMaterial.deps.json
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\bin\Debug\net9.0\TestingMaterial.runtimeconfig.json
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\bin\Debug\net9.0\TestingMaterial.dll
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\bin\Debug\net9.0\TestingMaterial.pdb
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.AssemblyInfoInputs.cache
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.AssemblyInfo.cs
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.csproj.CoreCompileInputs.cache
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.sourcelink.json
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.dll
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\refint\TestingMaterial.dll
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.pdb
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\TestingMaterial.genruntimeconfig.cache
+C:\GitHub\C-666\ConsoleAppsForTesting\TestingMaterial\obj\Debug\net9.0\ref\TestingMaterial.dll
