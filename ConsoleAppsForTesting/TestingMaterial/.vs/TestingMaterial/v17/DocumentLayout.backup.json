@@ -18,8 +18,16 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -28,7 +36,7 @@
               "RelativeDocumentMoniker": "Room.cs",
               "ToolTip": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\Room.cs",
               "RelativeToolTip": "Room.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAqwNYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T04:09:08.912Z",
               "EditorCaption": ""
@@ -41,7 +49,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAADwvx4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T03:07:07.522Z",
               "EditorCaption": ""
