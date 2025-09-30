@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DC2E77A6-AAE9-4FC8-A5EF-BACC9EEC3278}|TestingMaterial.csproj|c:\\github\\c-666\\consoleappsfortesting\\testingmaterial\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DC2E77A6-AAE9-4FC8-A5EF-BACC9EEC3278}|TestingMaterial.csproj|solutionrelative:room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DC2E77A6-AAE9-4FC8-A5EF-BACC9EEC3278}|TestingMaterial.csproj|c:\\github\\c-666\\consoleappsfortesting\\testingmaterial\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DC2E77A6-AAE9-4FC8-A5EF-BACC9EEC3278}|TestingMaterial.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC2E77A6-AAE9-4FC8-A5EF-BACC9EEC3278}|TestingMaterial.csproj|c:\\github\\c-666\\consoleappsfortesting\\testingmaterial\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC2E77A6-AAE9-4FC8-A5EF-BACC9EEC3278}|TestingMaterial.csproj|solutionrelative:room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,30 +18,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Room.cs",
               "DocumentMoniker": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\Room.cs",
               "RelativeDocumentMoniker": "Room.cs",
               "ToolTip": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\Room.cs",
               "RelativeToolTip": "Room.cs",
-              "ViewState": "AgIAAJ8AAAAAAAAAAAA0wNYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAqwNYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T04:09:08.912Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\GitHub\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T03:07:07.522Z",
               "EditorCaption": ""

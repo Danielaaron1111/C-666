@@ -23,7 +23,7 @@
                 Console.WriteLine(i); // if you set with " " in the console is going to appear in a colum otherwise is 
                 //gonna appear in a column 
             }
-
+            //https://learn.microsoft.com/en-us/dotnet/csharp/linq/
 
         }
     }
