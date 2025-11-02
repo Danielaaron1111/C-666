@@ -1,0 +1,305 @@
+﻿@page "/RenoReport"
+@rendermode InteractiveServer
+@using RenoSystem
+
+<!-- INJECTION SHOULD BE ON THE TOP ACCORDING TO MICROSOFT BUT THE DEMO ONLY SHOW THIS TYPE OF [INJECTION] so it wokrs too i guess file.add(1, ineedtosleep) -->
+
+<PageTitle>Reno Report</PageTitle>
+
+<h1>Reno Specification Details</h1>
+
+<!--
+    THIS PAGE CONTAINS SOME IN LINE STYLES 
+@if (errorList.Count > 0)
+{
+    <div style="background-color: #f8d7da; padding: 15px; margin: 20px 50px; border-radius: 5px; border: 1px solid #f5c6cb;">
+        <strong>Please fix the following issues:</strong>
+        <ul style="margin-top: 10px;">
+            @foreach (var error in errorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+<!--
+    feedback area for success messages
+    display only if there is a success message to show
+-->
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div style="background-color: #d4edda; padding: 15px; margin: 20px 50px; border: 1px solid #c3e6cb; border-radius: 5px;">
+        <p style="margin: 0; color: #155724;">@successMessage</p>
+    </div>
+}
+
+<!--
+    display area for the table of renovation details
+    display only if there is data to show
+-->
+@if (renoDetailsList != null && renoDetailsList.Count > 0)
+{
+    <div style="margin: 20px 0;">
+        @* // is more simple use margin than copy and paste the class notes stuff. *@
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>PlanId</th>
+                    <th>Description</th>
+                    <th>Wall Width</th>
+                    <th>Wall Height</th>
+                    <th>Opening</th>
+                    <th>Opening Width</th>
+                    <th>Opening Height</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in renoDetailsList)
+                {
+                    <tr>
+                        <td>@detail.PlanId</td>
+                        <td>@detail.Description</td>
+                        <td>@detail.WallWidth</td>
+                        <td>@detail.WallHeight</td>
+                        <td>@detail.WallOpening.ToString()</td>
+                        <td>@detail.OpeningWidth</td>
+                        <td>@detail.OpeningHeight</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <!-- display message when no data is available -->
+    @if (errorList.Count == 0)
+    {
+        <p style="margin: 20px 0;">No renovation details to display.</p>
+    }
+}
+
+<footer class="text-center">
+    <br />
+    &copy; copyright Reno Tracker by Daniel Arancibia
+</footer>
+
+@code {
+    //collection to hold the renovation details read from the file
+    private List<RenoDetail> renoDetailsList = new List<RenoDetail>();
+
+    //message to display on successful processing
+    private string successMessage = "";
+
+    //collection to hold error messages encountered during processing
+    private List<string> errorList = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        //the base class has a default method for OnInitialized()
+        //the default method does your base setup
+        //it is strongly suggested that you DO NOT remove this statement
+        base.OnInitialized();
+
+        //call the method to load renovation details from the CSV file
+        LoadRenoDetails();
+    }
+
+    private void LoadRenoDetails()
+    {
+        //clear any previous data from the collections
+        renoDetailsList.Clear();
+        errorList.Clear();
+        successMessage = "";
+
+        //set the path to the CSV file to be read
+        //i can change this to test different files:
+        
+
+
+        //1 badTest 2 goodtest 3 empty test
+        // string filePath = "./Components/Data/BadTest.csv";   
+        string filePath = "./Components/Data/GoodTestFile.csv";
+        // string filePath = "./Components/Data/emptydatafile.csv";
+
+
+        // string filePathBad = "./Components/Data/BadTestFile.csv";
+        // string filePathEmpty = "./Components/Data/EmptyTestFile.csv";
+        // string filePath = "./Components/Data/EmptyTestFile.csv";
+
+        //use a boolean flag to track if we should continue processing
+        bool fileExists = false;
+        bool fileHasData = false;
+
+        //check if the file exists before attempting to read
+        if (System.IO.File.Exists(filePath))
+        {
+            fileExists = true;
+        }
+
+        // ============================
+        // we can still use file.exits and file.readalllines without System.IO but i am following the class notes because its better.
+        // if (File.Exists(filePath))
+        // {
+        //     fileExists = true;
+        // }
+
+       
+
+        // string[] lines = File.ReadAllLines(filePath);
+
+        //============================
+
+        if (fileExists)
+        {
+            //read all lines from the CSV file into an array
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+
+            //check if the file contains any data
+            if (lines.Length > 0)
+            {
+                fileHasData = true;
+            }
+
+            if (fileHasData)
+            {
+                //process each line in the file
+                //use a counter to track which record number we are processing
+                int recordNumber = 0;
+                foreach (string line in lines)
+                {
+                    recordNumber++;
+
+                    //only process lines that have content
+                    //skip empty or whitespace-only lines
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        //attempt to parse the line into a RenoDetail object
+                        //use try-catch to handle any errors that occur during parsing
+                        try
+                        {
+                            //use the Parse method from RenoDetail class to convert csvv line to object
+                            RenoDetail detail = RenoDetail.Parse(line);
+                            //if successful, add the object to our collection
+                            renoDetailsList.Add(detail);
+                        }
+                        catch (FormatException ex)
+                        {
+                            //format errors occur when the line doesn't have the correct number of fields
+                            //or when the data types cannot be converted
+                            errorList.Add($"Record Format: Record {recordNumber} - {ex.Message}. Data: {line}");
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            //null errors occur when required fields are missing (PlanId or Description)
+                            errorList.Add($"Data Error: Record {recordNumber} {ex.Message} Data : {line}");
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            //argument errors occur when validation fails (wall too small, opening invalid, etc)
+                            errorList.Add($"Data Error: Record {recordNumber} {ex.Message} Data : {line}");
+                        }
+                        catch (Exception ex)
+                        {
+                            //catch any other unexpected errors
+                            errorList.Add($"Error: Record {recordNumber} {ex.Message} Data : {line}");
+                        }
+                    }
+                    //empty lines are simply ignored (no action taken)
+                }
+
+                //check if all records were processed successfully
+                //only show success message if we have data AND no errors
+                if (renoDetailsList.Count > 0 && errorList.Count == 0)
+                {
+                    successMessage = $"Successfully loaded {renoDetailsList.Count} record(s).";
+                }
+            }
+            else
+            {
+                //file exists but is empty
+                successMessage = "The file is empty. No records to display.";
+            }
+        }
+        else
+        {
+            //file does not exist at the specified path
+            errorList.Add($"The file {filePath} does not exist.");
+        }
+    }
+}
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+@* 
+
+ // this try doesnt really works  
+@code {
+    private List<RenoDetail> renoDetails = new List<RenoDetail>(); // list to hold reno details objects, initialized as emptylist
+    private string successMessage = ""; // string that will hold text.
+    private List<string> errorList = new List<string>();// list to hold error messages, initialized as empty list
+
+
+    protected override void OnInitialized() // method that runs when the component is initialized
+
+    {
+        base.OnInitialized();
+        LoadRenoDetails(); // call the method to load reno details when the components is initialized
+
+    }
+
+    private void LoadRenoDetails() // method to load reno details
+    {
+        renoDetails.Clear(); // remove all previous data 
+        errorList.Clear();  // remove previous mistakes
+        successMessage = ""; // clear any previous success message as the demo show
+
+        string filePath = "Data/GoodTestFile.csv";
+
+        //try catch big block to preven errors and throw exeptions (demo shows)
+
+        try
+        {
+            if (!File.Exists(filePath)) // check if the file exits or
+            {
+                errorList.Add($"The file {filePath} does not exists.");
+                return; // exit the method if the file does not exist
+
+            }
+            string[] lines = File.ReadAllLines(filePath); // read all lines from the file into an array // remember examples : lines[0]  lines[1] lines[2]
+
+            if (lines.Length == 0) // check if the file is empty
+            {
+                successMessage = "The file is empty. No renovation details to load.";
+                return; // exit the method if the file is empty
+            }
+
+            int recordNumber = 0; // create a counter for the record number 
+
+            foreach (string line in lines) // loop through each line in the file
+            {
+                if (string.IsNullOrWhiteSpace(line))
+
+                
+            }
+
+        }
+    }
+
+
+
+} *@

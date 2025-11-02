@@ -1,0 +1,19 @@
+﻿p102-Bad1,wall,304,232,Door,99,207
+p102-Bad2,wall,20,232,None,0,0
+p102-Bad3,wall,304,50,None,0,0
+p102-Bad4,,304,232,None,0,0
+p102-Bad5,wall,304,232,Window,300,207
+p102-Bad6,wall,304,232,Door,99,250
+p102-Bad7,wall,100,100,Window,95,95
+p102-Bad8,wall,300,200,Door,40,150
+p102-Bad9,wall,300,200,Window,150,30
+BadFormat1,only,four,fields
+BadFormat2,too,many,fields,here,are,more,than,seven,fields
+,empty planid,300,200,None,0,0
+p102-Bad13,wall,-100,200,None,0,0
+p102-Bad14,wall,300,-200,None,0,0
+p102-Bad15,wall,abc,200,None,0,0
+p102-Bad16,wall,300,xyz,Door,99,207
+p102-Bad17,wall,300,200,InvalidType,99,207
+p102-Bad18,wall,300,200,Window,abc,207
+p102-Bad19,wall,300,200,Door,99,xyz

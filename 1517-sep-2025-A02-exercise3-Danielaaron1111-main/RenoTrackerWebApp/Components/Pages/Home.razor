@@ -1,0 +1,88 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<!--
+    Simple styled home page with light purple background
+    using Bootstrap classes for layout and styling
+-->
+<div class="row">
+    <div class="offset-1 col-md-10">
+        @* // center the content with offset and column width, but flexbox is better i guess so  *@
+        <div class="welcome-box">
+            <h1 class="text-center">DAAO Renos</h1>
+            <p class="lead">
+                Welcome to DAAO Renos! Your comprehensive renovation tracking solution.
+                Keep track of all your renovation projects with detailed specifications for walls,
+                openings, and measurements.
+            </p>
+            <p>
+                Our system helps you maintain accurate records of your renovation details,
+                ensuring all measurements and specifications meet the required standards.
+            </p>
+            <p class="text-center text-muted">
+                <em>@WelcomeMsg</em>
+            </p>
+        </div>
+    </div>
+</div>
+
+ @* I would like to try this with flexobox so lets try :  *@
+
+ 
+
+
+        
+<style>
+    body {
+        background-color: #F8F0FF; 
+    }
+    
+
+    .em {
+        font-style: italic;
+        
+    }
+    .welcome-box {
+        background-color: #E6E6FA; /* lavender - light purple */
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+   
+    .welcome-box h1 {
+        color: #4B0082; /* indigo - darker purple for contrast */
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    
+    .welcome-box p {
+        color: #333;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    
+    .welcome-box .lead {
+        font-size: 1.2rem;
+    }
+</style>
+
+@code {
+    //variable to hold the welcome message with current date and time
+    private string WelcomeMsg = "";
+    
+    protected override void OnInitialized()
+    {
+        //the base class has a default method for OnInitialized()
+        //the default method does your base setup
+        //it is strongly suggested that you DO NOT remove this statement
+        base.OnInitialized();
+
+        //following the basic setup, you can customize your page and its variable values
+        WelcomeMsg = $"Let's get started on day {DateTime.Now.ToShortDateString()} at {DateTime.Now.ToShortTimeString()}";
+    }
+}
