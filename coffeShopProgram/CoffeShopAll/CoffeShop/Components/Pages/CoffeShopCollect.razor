@@ -1,11 +1,31 @@
-﻿@page "/coffeshopcollect"
+﻿@*
+========================================================================
+DATA COLLECTION PAGE - Coffee Shop Orders
+========================================================================
+PURPOSE: Form to collect coffee order data and save to CSV file
+EXAM TIP: This is your standard "CREATE" page pattern
+Key Components:
+1. Form inputs (text, dropdowns, numbers)
+2. Validation (check data before saving)
+3. File I/O (write to CSV)
+4. Navigation (redirect after save)
+========================================================================
+*@
+
+@page "/coffeshopcollect"
 <PageTitle>CoffeshopCollect</PageTitle>
 @rendermode InteractiveServer
 @using CoffeeShopSystem
-<h3>CoffeshopCollect</h3>
 
+<h3>Coffee Shop Order Collection</h3>
 
-
+@*
+========================================================================
+ERROR DISPLAY SECTION
+========================================================================
+Shows validation errors in red box with list of problems
+EXAM TIP: Dictionary<int, string> = unique key (int) + error message (string)
+*@
 @if (errorMsgs.Count > 0)
 {
     <div class="row alert alert-danger">
@@ -13,26 +33,33 @@
         <ul>
             @foreach (var error in errorMsgs)
             {
-                <!--
-                errors are stored in a dictionary so each one has a unique key
-                i only display the message part (the Value)
-                -->
+                @* Display only the message part (Value), not the key *@
                 <li>@error.Value</li>
             }
         </ul>
     </div>
 }
+
 <style>
-
-
     legend {
         text-align: center;
     }
 </style>
+
 <fieldset>
     <legend>Coffee Shop Order Form</legend>
     <h4>Order details</h4>
-    <!-- ORDER ID SECTION TEXT INPUT  -->
+    
+    @*
+    ====================================================================
+    ORDER ID INPUT - Text field
+    ====================================================================
+    @bind="orderId" creates TWO-WAY binding:
+    - Display: Shows current value of orderId variable
+    - Input: Updates orderId variable when user types
+    EXAM TIP: @bind is the key to Blazor forms!
+    ====================================================================
+    *@
     <div class="row">
         <div class="offset-3 col-md-2">
             <label for="orderid">Order ID: </label>
@@ -40,42 +67,54 @@
         <div class="col-md-3">
             <input type="text"
                    id="orderid"
-                   placeholder="123123"
+                   placeholder="ORD001"
                    @bind="orderId" />
         </div>
     </div>
     <br />
-    <!-- description input -->
+    
+    @*
+    ====================================================================
+    CUSTOMER NAME INPUT - Text field
+    ====================================================================
+    *@
     <div class="row">
         <div class="offset-3 col-md-2">
-            <label for="description">Customer ID:</label>
+            <label for="customerName">Customer Name:</label>
         </div>
         <div class="col-md-3">
             <input type="text"
                    id="customerName"
-                   placeholder="customer name"
+                   placeholder="John Smith"
                    @bind="customerName" />
         </div>
     </div>
+    <br />
 
-    <!-- Coffe Size section-->
+    @*
+    ====================================================================
+    COFFEE SIZE DROPDOWN - Enum selection
+    ====================================================================
+    EXAM TIP: Dropdown pattern for NULLABLE enum:
+    1. Add default "-- Select --" option with empty value
+    2. Loop through enum values with @foreach
+    3. Bind to NULLABLE variable (CoffeeSize?)
+    4. Validate with .HasValue check
+    ====================================================================
+    *@
     <div class="row">
         <div class="col-md-4">
-            <label for="openingtype">Coffe Size</label>
+            <label for="coffesize">Coffee Size</label>
         </div>
         <div class="col-md-4">
-            <!-- i use a dropdown so users can only pick from valid options
-            this keeps bad data from being entered
-            -->
             <select id="coffesize" @bind="coffesize">
-                <option> Select Size</option>
-                <!--
-                i loop through the OpeningType enum and display each option
-                the user picks one and i get that value back
-                -->
+                @* Default option - binds to null when selected *@
+                <option value="">-- Select Size --</option>
+                
+                @* Loop through all enum values to create dropdown options *@
+                @* Enum.GetValues gets all possible values from CoffeeSize enum *@
                 @foreach (var item in Enum.GetValues(typeof(CoffeeSize)))
                 {
-                    <!-- each enum becomes an option in the dropdown -->
                     <option value="@item">@item</option>
                 }
             </select>
@@ -83,24 +122,20 @@
     </div>
     <br />
 
-    <!-- Coffe type section-->
+    @*
+    ====================================================================
+    COFFEE TYPE DROPDOWN - Enum selection (same pattern as Size)
+    ====================================================================
+    *@
     <div class="row">
         <div class="col-md-4">
-            <label for="openingtype">Coffe Type</label>
+            <label for="coffetype">Coffee Type</label>
         </div>
         <div class="col-md-4">
-            <!-- i use a dropdown so users can only pick from valid options
-            this keeps bad data from being entered
-            -->
             <select id="coffetype" @bind="coffetype">
-                <option> Select Type</option>
-                <!--
-                i loop through the coffeType enum and display each option
-                the user picks one and i get that value back
-                -->
+                <option value="">-- Select Type --</option>
                 @foreach (var item in Enum.GetValues(typeof(CoffeeType)))
                 {
-                    <!-- each enum becomes an option in the dropdown -->
                     <option value="@item">@item</option>
                 }
             </select>
@@ -108,192 +143,300 @@
     </div>
     <br />
 
-    <!-- coffe quantity  -->
+    @*
+    ====================================================================
+    QUANTITY INPUT - Number field
+    ====================================================================
+    type="number" gives up/down arrows and numeric keyboard on mobile
+    ====================================================================
+    *@
     <div class="row">
         <div class="col-md-4">
-            <label for="openingheight">Quantity:</label>
+            <label for="quantity">Quantity:</label>
         </div>
         <div class="col-md-4">
-            <!-- something here -->
             <input type="number"
                    id="quantity"
                    style="width: 100px;"
                    @bind="quantity" />
-
         </div>
     </div>
-
-
     <br />
 
-    <!--  coffe Price -->
+    @*
+    ====================================================================
+    PRICE INPUT - Number field for decimal values
+    ====================================================================
+    *@
     <div class="row">
         <div class="col-md-4">
-            <label for="openingheight">Price:</label>
+            <label for="price">Price:</label>
         </div>
         <div class="col-md-4">
-            <!-- something here -->
             <input type="number"
                    id="price"
+                   step="0.01"
                    style="width: 100px;"
                    @bind="price" />
-
         </div>
     </div>
-
-
     <br />
 
-    <!-- buttons at the bottom -->
+    @*
+    ====================================================================
+    ACTION BUTTONS
+    ====================================================================
+    @onclick triggers C# methods when clicked
+    EXAM TIP: Button types:
+    - Primary (blue) = main action (Record)
+    - Secondary (gray) = secondary action (Clear)
+    - Success (green) = navigation (Report)
+    ====================================================================
+    *@
     <div class="row">
         <div class="col-md-12 text-center">
-            <!-- record button saves the data -->
             <button type="button" class="btn btn-primary"
                     @onclick="OnRecord">
                 Record
             </button>
             &nbsp;&nbsp;
-            <!-- clear button resets the form -->
             <button type="button" class="btn btn-secondary"
                     @onclick="OnClear">
                 Clear
             </button>
             &nbsp;&nbsp;
-            <!-- report button takes you to the report page -->
             <button type="button" class="btn btn-success"
                     @onclick="OnReport">
                 Report
             </button>
         </div>
     </div>
-
-
 </fieldset>
 
-
-
-
-
+@*
+========================================================================
+CODE SECTION - C# logic for the page
+========================================================================
+EXAM TIP: This is where all your C# variables and methods go
+========================================================================
+*@
 @code {
+    // ====================================================================
+    // VARIABLES - hold form data and errors
+    // ====================================================================
+    
+    /// <summary>
+    /// Dictionary to store error messages
+    /// Key (int) = unique error number (1, 2, 3, etc.)
+    /// Value (string) = error message to display
+    /// EXAM TIP: Dictionary prevents duplicate keys, ensures unique errors
+    /// </summary>
     private Dictionary<int, string> errorMsgs = new();
 
-
-    //variables to hold form data
-
+    /// <summary>
+    /// Form field variables - bound to inputs with @bind
+    /// EXAM TIP: Initialize strings to "" and numbers to 0
+    /// </summary>
     private string orderId = "";
     private string customerName = "";
-    // private CoffeeType coffetype = CoffeeType.Espresso;
-    // private CoffeeSize coffesize = CoffeeSize.Small;
+    
+    /// <summary>
+    /// Nullable enums for dropdowns - allows null to represent "not selected"
+    /// CoffeeType? means "CoffeeType OR null"
+    /// EXAM TIP: Use nullable (?) for dropdowns with "Select..." option
+    /// </summary>
     private CoffeeType? coffetype = null;
     private CoffeeSize? coffesize = null;
+    
     private int quantity = 0;
     private double price = 0;
 
-
-    [Inject] //ask don
+    // ====================================================================
+    // DEPENDENCY INJECTION - services provided by Blazor
+    // ====================================================================
+    
+    /// <summary>
+    /// [Inject] tells Blazor to automatically provide this service
+    /// IWebHostEnvironment = gives access to file paths
+    /// EXAM TIP: Use webHostEnvironment.ContentRootPath to get app folder
+    /// </summary>
+    [Inject]
     private IWebHostEnvironment webHostEnvironment { get; set; }
 
-    [Inject] // ask don
+    /// <summary>
+    /// NavigationManager = allows navigation to other pages
+    /// EXAM TIP: Use NavigationManager.NavigateTo("/pageroute") to redirect
+    /// </summary>
+    [Inject]
     private NavigationManager NavigationManager { get; set; }
 
+    // ====================================================================
+    // OnRecord() - VALIDATES and SAVES data to CSV file
+    // ====================================================================
+    
+    /// <summary>
+    /// Called when user clicks "Record" button
+    /// Process:
+    /// 1. Clear old errors
+    /// 2. Validate all fields
+    /// 3. If valid, create object and save to CSV
+    /// 4. Navigate to report page
+    /// EXAM TIP: This is your standard "save" method pattern
+    /// </summary>
     protected void OnRecord()
     {
+        // STEP 1: Clear previous error messages
         errorMsgs.Clear();
 
-        //validation checks
-
+        // ================================================================
+        // STEP 2: VALIDATION - check each field and add error if invalid
+        // ================================================================
+        
+        // Validate Order ID - cannot be empty
         if (string.IsNullOrEmpty(orderId))
         {
             errorMsgs.Add(1, "Order ID is required.");
         }
+        
+        // Validate Customer Name - cannot be empty
         if (string.IsNullOrEmpty(customerName))
         {
             errorMsgs.Add(2, "Customer Name is required.");
         }
+        
+        // Validate Coffee Type - must select from dropdown
+        // .HasValue checks if nullable enum has been set
         if (!coffetype.HasValue)
         {
-            errorMsgs.Add(5, "Coffee Type is required.");
+            errorMsgs.Add(3, "Coffee Type is required.");
         }
+        
+        // Validate Coffee Size - must select from dropdown
         if (!coffesize.HasValue)
         {
-            errorMsgs.Add(6, "Coffee Size is required.");
+            errorMsgs.Add(4, "Coffee Size is required.");
         }
-        if (quantity < 1 || quantity > 20)
+        
+        // Validate Quantity - must be positive (> 0)
+        // Uses Utilities class for validation
+        if (!Utilities.IsNonZeroPositive(quantity))
         {
-            errorMsgs.Add(7, "Quantity must be between 1 and 20.");
+            errorMsgs.Add(5, "Quantity must be between 1 and 20.");
         }
-        if (price < 0.01 || price > 100.00)
+        
+        // Validate Price - must be in valid range ($0.01 - $100.00)
+        // Uses Utilities class for validation
+        if (!Utilities.IsValidPrice(price))
         {
-            errorMsgs.Add(8, "Price must be between .01 and $100.00.");
+            errorMsgs.Add(6, "Price must be between $0.01 and $100.00.");
         }
-        //if no errors, save the data
-        if (errorMsgs.Count == 0)
+
+        // ================================================================
+        // STEP 3: SAVE DATA if no validation errors
+        // ================================================================
+        if (errorMsgs.Count == 0)  // Count == 0 means no errors
         {
             try
             {
-                //save the data here
-
+                // CREATE OBJECT from form data
+                // .Value gets actual enum value from nullable enum
+                // Constructor will do additional validation
                 CoffeeOrder order = new CoffeeOrder(
-                        orderId,
-                        customerName,
-                        coffetype.Value,
-                        coffesize.Value,
-                        quantity,
-                        price
-                    );
+                    orderId,
+                    customerName,
+                    coffetype.Value,    // .Value extracts enum from CoffeeType?
+                    coffesize.Value,    // .Value extracts enum from CoffeeSize?
+                    quantity,
+                    price
+                );
+
+                // BUILD FILE PATH
+                // ContentRootPath = C:\MyProject\
+                // Result = C:\MyProject\Components\Data\GoodTestFile.csv
+                // EXAM TIP: Use $@"" for file paths ($ for variables, @ for backslashes)
                 string csvFilePathName = $@"{webHostEnvironment.ContentRootPath}/Components/Data/GoodTestFile.csv";
-                //PUT THE FUCKINGH NAME OF YOUR OBJECT IN THE TOSTRING MADAFGAKERRRRRRRRRR
-                
+
+                // CONVERT OBJECT TO CSV STRING
+                // order.ToString() returns: "ORD001,John,Espresso,Small,1,3.50"
+                // \n adds new line at end
                 string line = $"{order.ToString()}\n";
-                // this method creates the file if it doesnt exist, opens it, writes, and closes it
+
+                // WRITE TO FILE
+                // AppendAllText:
+                // - Creates file if doesn't exist
+                // - Opens file
+                // - Writes text to END of file (append mode)
+                // - Closes file
+                // EXAM TIP: System.IO.File must be fully qualified (can't use "using System.IO;")
                 System.IO.File.AppendAllText(csvFilePathName, line);
-                OnClear(); //clear the form after saving
-                //sending the user to the report Coffe page:
+
+                // CLEAR FORM after successful save
+                OnClear();
+
+                // NAVIGATE to report page to see saved data
                 NavigationManager.NavigateTo("/coffeshopreportrazor");
-
-
-
             }
             catch (ArgumentNullException ex)
             {
-                //10  this happens if required fields are missing
-                errorMsgs.Add(9, $"Data Missing Error: {ex.Message}");
+                // Catch errors from null/empty required fields
+                errorMsgs.Add(7, $"Data Missing Error: {ex.Message}");
             }
             catch (ArgumentException ex)
             {
-                //11 this happens if validation fails, like walls too small or bad opening sizes
-                errorMsgs.Add(10, $"Bad Data Error: {ex.Message}");
+                // Catch validation errors from class (quantity out of range, etc.)
+                errorMsgs.Add(8, $"Bad Data Error: {ex.Message}");
             }
             catch (Exception ex)
             {
-                //12 catching any other unexpected errors
-                errorMsgs.Add(11, $"System Error: {ex.Message}");
+                // Catch any other unexpected errors
+                errorMsgs.Add(9, $"System Error: {ex.Message}");
             }
-
         }
     }
-    //2 Customer Name: cannot be empty
-    //3 Quantity: must be positive, between 1-20
-    //4 Price: must be between .01 and $100.00
 
+    // ====================================================================
+    // OnClear() - RESETS form to empty state
+    // ====================================================================
+    
+    /// <summary>
+    /// Called when user clicks "Clear" button
+    /// Resets all form fields to default empty values
+    /// EXAM TIP: Remember to clear error messages too!
+    /// </summary>
     protected void OnClear()
     {
-        //reset all form fields to default values
         orderId = "";
         customerName = "";
-        coffetype = null;
+        coffetype = null;      // null = "not selected" for dropdowns
         coffesize = null;
         quantity = 0;
         price = 0;
-        errorMsgs.Clear();
+        errorMsgs.Clear();     // Remove all error messages
     }
 
+    // ====================================================================
+    // OnInitialized() - RUNS ONCE when page loads
+    // ====================================================================
+    
+    /// <summary>
+    /// Lifecycle method - called when component first initializes
+    /// EXAM TIP: Always call base.OnInitialized() first!
+    /// Use this for any setup needed when page loads
+    /// </summary>
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-
+        // Any initialization code goes here (none needed for this page)
     }
+
+    // ====================================================================
+    // OnReport() - NAVIGATES to report page
+    // ====================================================================
+    
+    /// <summary>
+    /// Called when user clicks "Report" button
+    /// Redirects to report page to view saved orders
+    /// </summary>
     protected void OnReport()
     {
         NavigationManager.NavigateTo("/coffeshopreportrazor");

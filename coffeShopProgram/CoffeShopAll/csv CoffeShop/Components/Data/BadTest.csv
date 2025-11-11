@@ -1,0 +1,11 @@
+ORD001,John Smith,Espresso,Small,1,3.50
+ORD002,Sarah Johnson,Latte,Medium,2,8.00
+,Mike Brown,Cappuccino,Large,1,5.75
+ORD004,,Mocha,Medium,3,15.00
+ORD005,David Wilson,InvalidType,Small,2,6.00
+ORD006,Lisa Martinez,Espresso,InvalidSize,1,4.50
+ORD007,James,Latte,Large,0,11.00
+ORD008,Maria Garcia,Cappuccino,Small,25,14.00
+ORD009,Robert Taylor,Mocha,Medium,1,150.00
+ORD010,Jennifer Lee
+ORD011,William,Espresso,Small,-5,10.50

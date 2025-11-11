@@ -1,0 +1,273 @@
+﻿@*
+========================================================================
+REPORT PAGE - Display Coffee Orders from CSV
+========================================================================
+PURPOSE: Read CSV file and display data in table format
+EXAM TIP: This is your standard "READ/DISPLAY" page pattern
+Key Components:
+1. File reading (System.IO.File.ReadAllLines)
+2. Error handling (try/catch for each record)
+3. Table display (Bootstrap table)
+4. Success/Error feedback
+========================================================================
+*@
+
+@page "/coffeshopreport"
+<PageTitle>CoffeeShopReport</PageTitle>
+@rendermode InteractiveServer
+@using CoffeeShopSystem
+
+<h3>Coffee Shop Order Report</h3>
+
+@*
+========================================================================
+ERROR DISPLAY SECTION
+========================================================================
+Shows errors from file reading/parsing in red box
+*@
+@if (errorList.Count > 0)
+{
+    <div style="background-color: #f8d7da; padding: 15px; margin: 20px 50px; border-radius: 5px; border: 1px solid #f5c6cb;">
+        <strong>Please fix the following issues:</strong>
+        <ul style="margin-top: 10px;">
+            @foreach (var error in errorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+@*
+========================================================================
+SUCCESS MESSAGE SECTION
+========================================================================
+Shows green success message when records load successfully
+*@
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div style="background-color: #d4edda; padding: 15px; margin: 20px 50px; border: 1px solid #c3e6cb; border-radius: 5px;">
+        <p style="margin: 0; color: #155724;">@successMessage</p>
+    </div>
+}
+
+@*
+========================================================================
+TABLE DISPLAY SECTION
+========================================================================
+Shows data ONLY if collection has items
+EXAM TIP: Always check for null AND Count > 0
+*@
+@if (coffeeOrderList != null && coffeeOrderList.Count > 0)
+{
+    <div style="margin: 20px 0;">
+        <table class="table table-striped">
+            @* TABLE HEADER - column titles *@
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+
+            @* TABLE BODY - data rows *@
+            <tbody>
+                @* Loop through each order and create a row *@
+                @* EXAM TIP: @foreach loops through collections in Razor *@
+                @foreach (var order in coffeeOrderList)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.CustomerName</td>
+                        <td>@order.Type</td>
+                        <td>@order.Size</td>
+                        <td>@order.Quantity</td>
+                        @* ToString("C") formats as currency: $3.50 *@
+                        <td>@order.Price.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    @* Show message if no data available *@
+    @if (errorList.Count == 0)
+    {
+        <p style="margin: 20px 0;">No order details to display.</p>
+    }
+}
+
+<footer class="text-center">
+    <br />
+    &copy; copyright Coffee Shopping by Daniel Arancibia
+</footer>
+
+@*
+========================================================================
+CODE SECTION - File reading and data loading logic
+========================================================================
+*@
+@code {
+    // ====================================================================
+    // VARIABLES - hold loaded data and messages
+    // ====================================================================
+    
+    /// <summary>
+    /// Collection to hold all orders read from CSV file
+    /// EXAM TIP: Initialize to new List<>() to prevent null errors
+    /// </summary>
+    private List<CoffeeOrder> coffeeOrderList = new List<CoffeeOrder>();
+
+    /// <summary>
+    /// Success message to display when file loads successfully
+    /// </summary>
+    private string successMessage = "";
+
+    /// <summary>
+    /// List of error messages encountered during file reading
+    /// </summary>
+    private List<string> errorList = new List<string>();
+
+    // ====================================================================
+    // OnInitialized() - RUNS ONCE when page loads
+    // ====================================================================
+    
+    /// <summary>
+    /// Lifecycle method - called when page first loads
+    /// Immediately loads data from CSV file
+    /// EXAM TIP: This is where you load data for display pages
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadCoffeOrders();  // Load data immediately when page opens
+    }
+
+    // ====================================================================
+    // LoadCoffeOrders() - READS CSV FILE and creates objects
+    // ====================================================================
+    
+    /// <summary>
+    /// Main method to read CSV file and populate collection
+    /// Process:
+    /// 1. Clear existing data
+    /// 2. Check if file exists
+    /// 3. Read all lines from file
+    /// 4. Parse each line into CoffeeOrder object
+    /// 5. Handle errors for invalid records
+    /// EXAM TIP: This is your standard CSV reading pattern - MEMORIZE THIS!
+    /// </summary>
+    private void LoadCoffeOrders()
+    {
+        // STEP 1: Clear any existing data from previous loads
+        coffeeOrderList.Clear();
+        errorList.Clear();
+        successMessage = "";
+
+        // STEP 2: Define file path
+        // EXAM TIP: ./ means "start from web app root folder"
+        string filePath = "./Components/Data/GoodTestFile.csv";
+        
+        // Other test files you can use:
+        // string filePath = "./Components/Data/BadTest.csv";
+        // string filePath = "./Components/Data/EmptyDataFile.csv";
+
+        // STEP 3: Use flags to track file status
+        bool fileExists = false;
+        bool fileHasData = false;
+
+        // STEP 4: Check if file exists before trying to read
+        // EXAM TIP: Always check file exists to prevent FileNotFoundException
+        if (System.IO.File.Exists(filePath))
+        {
+            fileExists = true;
+        }
+
+        // STEP 5: Process file if it exists
+        if (fileExists)
+        {
+            // READ ALL LINES from file into string array
+            // Each line becomes one element in the array
+            // EXAM TIP: ReadAllLines loads entire file into memory
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+
+            // Check if file has content
+            if (lines.Length > 0)
+            {
+                fileHasData = true;
+            }
+
+            if (fileHasData)
+            {
+                // STEP 6: Process each line in the file
+                int recordNumber = 0;  // Track which line we're processing
+                
+                foreach (string line in lines)
+                {
+                    recordNumber++;  // Increment for each line
+
+                    // Skip empty or whitespace-only lines
+                    // EXAM TIP: Always check for empty lines!
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        // TRY to parse the line into a CoffeeOrder object
+                        // EXAM TIP: Use try/catch to handle bad data without crashing
+                        try
+                        {
+                            // PARSE CSV line into object
+                            // CoffeeOrder.Parse() is a STATIC method
+                            CoffeeOrder order = CoffeeOrder.Parse(line);
+                            
+                            // If successful, add to collection
+                            coffeeOrderList.Add(order);
+                        }
+                        catch (FormatException ex)
+                        {
+                            // Wrong number of fields or can't convert data types
+                            // Example: "ORD001,John,Espresso" (only 3 fields instead of 6)
+                            errorList.Add($"Record Format: Record {recordNumber} - {ex.Message}. Data: {line}");
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            // Required fields are missing (OrderId or CustomerName empty)
+                            errorList.Add($"Data Error: Record {recordNumber} {ex.Message} Data: {line}");
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            // Validation failed (quantity out of range, price invalid, etc.)
+                            errorList.Add($"Data Error: Record {recordNumber} {ex.Message} Data: {line}");
+                        }
+                        catch (Exception ex)
+                        {
+                            // Any other unexpected error
+                            errorList.Add($"Error: Record {recordNumber} {ex.Message} Data: {line}");
+                        }
+                    }
+                    // Empty lines are silently ignored
+                }
+
+                // STEP 7: Show success message if all records loaded without errors
+                if (coffeeOrderList.Count > 0 && errorList.Count == 0)
+                {
+                    successMessage = $"Successfully loaded {coffeeOrderList.Count} order(s).";
+                }
+            }
+            else
+            {
+                // File exists but is empty (no lines)
+                successMessage = "The file is empty. No records to display.";
+            }
+        }
+        else
+        {
+            // File does not exist at specified path
+            errorList.Add($"The file {filePath} does not exist.");
+        }
+    }
+}
