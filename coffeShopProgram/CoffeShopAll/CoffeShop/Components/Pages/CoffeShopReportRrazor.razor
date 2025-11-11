@@ -1,0 +1,119 @@
+﻿@page "/coffeshopreportrazor"
+<PageTitle>CoffeShopReport</PageTitle>
+@rendermode InteractiveServer
+@using CoffeeShopSystem
+
+
+<h3>CoffeShopReportRrazor</h3>
+
+
+
+
+<!--
+    THIS PAGE CONTAINS SOME IN LINE STYLES
+@if (errorList.Count > 0)
+{
+        <div style="background-color: #f8d7da; padding: 15px; margin: 20px 50px; border-radius: 5px; border: 1px solid #f5c6cb;">
+            <strong>Please fix the following issues:</strong>
+            <ul style="margin-top: 10px;">
+                @foreach (var error in errorList)
+                {
+                        <li>@error</li>
+                }
+            </ul>
+        </div>
+}
+
+<!--
+    feedback area for success messages
+    display only if there is a success message to show
+-->
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div style="background-color: #d4edda; padding: 15px; margin: 20px 50px; border: 1px solid #c3e6cb; border-radius: 5px;">
+        <p style="margin: 0; color: #155724;">@successMessage</p>
+    </div>
+}
+
+<!--
+    display area for the table of renovation details
+    display only if there is data to show
+-->
+@if (coffeDetailsList != null && coffeDetailsList.Count > 0)
+{
+    <div style="margin: 20px 0;">
+        @* // is more simple use margin than copy and paste the class notes stuff. *@
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>OrderId</th>
+                    <th>Customer Name</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Opening</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+
+
+            OrderId = orderId;
+            CustomerName = customerName;
+            Type = type;
+            Size = size;
+            Quantity = quantity;
+            Price = price;
+
+            <tbody>
+                @foreach (var coffe in coffeDetailsList)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.CustomerName</td>
+                        <td>@order.Type</td>
+                        <td>@order.Size</td>
+                        <td>@order.Quantity</td>
+                        <td>@order.Price</td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <!-- display message when no data is available -->
+    @if (errorList.Count == 0)
+    {
+        <p style="margin: 20px 0;">No order details to display.</p>
+    }
+}
+
+<footer class="text-center">
+    <br />
+    &copy; copyright Coffe Shopping by Daniel Arancibia
+</footer>
+
+@code {
+    //collection to hold the renovation details read from the file
+    private List<CoffeeOrder> coffeeOrderList = new List<CoffeeOrder>();
+
+    //message to display on successful processing
+    private string successMessage = "";
+
+    //collection to hold error messages encountered during processing
+    private List<string> errorList = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        //the base class has a default method for OnInitialized()
+        //the default method does your base setup
+        //it is strongly suggested that you DO NOT remove this statement
+        base.OnInitialized();
+
+        //call the method to load renovation details from the CSV file
+        LoadCoffeOrders();
+    }
+    private void 
+}
