@@ -1,0 +1,261 @@
+﻿<fieldset>
+    <legend>Shift Details</legend>
+
+    <!-- 1. Employee ID -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Employee ID:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="text"
+                   @bind="employeeId"
+                   placeholder="EMP001" />
+        </div>
+    </div>
+    <br />
+
+    <!-- 2. Employee Name -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Employee Name:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="text"
+                   @bind="employeeName"
+                   placeholder="John Smith" />
+        </div>
+    </div>
+    <br />
+
+    <!-- 3. Shift Date (THIS IS THE DATETIME ONE!) -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Shift Date:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="date"
+                   @bind="shiftDate" />
+        </div>
+    </div>
+    <br />
+
+    <!-- 4. Shift Type (Dropdown) -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Shift Type:</label>
+        </div>
+        <div class="col-md-4">
+            <select @bind="shiftType">
+                <option value="">-- Select Shift --</option>
+                @foreach (var item in Enum.GetValues(typeof(ShiftType)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+    </div>
+    <br />
+
+    <!-- 5. Hours Worked -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Hours Worked:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   step="0.5"
+                   @bind="hoursWorked" />
+        </div>
+    </div>
+    <br />
+
+    <!-- 6. Hourly Rate -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Hourly Rate:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   step="0.01"
+                   @bind="hourlyRate" />
+        </div>
+    </div>
+    <br />
+
+    <!-- Show Total Pay (live calculation!) -->
+    <div class="alert alert-info">
+        <strong>Total Pay: @CalculateTotalPay().ToString("C")</strong>
+    </div>
+
+    <!-- Buttons -->
+    <div class="text-center">
+        <button type="button" class="btn btn-primary" @onclick="OnRecord">
+            Record
+        </button>
+        &nbsp;&nbsp;
+        <button type="button" class="btn btn-secondary" @onclick="OnClear">
+            Clear
+        </button>
+        &nbsp;&nbsp;
+        <button type="button" class="btn btn-success" @onclick="OnReport">
+            View Report
+        </button>
+    </div>
+</fieldset>
+
+
+
+@code {
+    // Variables
+    private Dictionary<int, string> errorMsgs = new();
+
+    private string employeeId = "";
+    private string employeeName = "";
+    private DateTime shiftDate = DateTime.Today;  // ← DATETIME!
+    private ShiftType? shiftType = null;
+    private double hoursWorked = 0;
+    private double hourlyRate = 0;
+
+    // Dependency Injection
+    [Inject]
+    private IWebHostEnvironment webHostEnvironment { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    // Calculate Total Pay (live!)
+    private double CalculateTotalPay()
+    {
+        return hoursWorked * hourlyRate;
+    }
+
+    // OnRecord - Validate and Save
+    protected void OnRecord()
+    {
+        errorMsgs.Clear();
+
+        // 1. Validate Employee ID
+        if (string.IsNullOrWhiteSpace(employeeId))
+        {
+            errorMsgs.Add(1, "Employee ID is required");
+        }
+
+        // 2. Validate Employee Name
+        if (string.IsNullOrWhiteSpace(employeeName))
+        {
+            errorMsgs.Add(2, "Employee Name is required");
+        }
+
+        // 3. Validate Shift Date (USE UTILITIES!)
+        if (!Utilities.IsValidPastDate(shiftDate))
+        {
+            errorMsgs.Add(3, "Shift date cannot be in the future");
+        }
+
+        if (!Utilities.IsWithinLast90Days(shiftDate))
+        {
+            errorMsgs.Add(4, "Shift date must be within last 90 days");
+        }
+
+        // 4. Validate Shift Type
+        if (!shiftType.HasValue || shiftType == ShiftType.None)
+        {
+            errorMsgs.Add(5, "Shift Type is required");
+        }
+
+        // 5. Validate Hours Worked (USE UTILITIES!)
+        if (!Utilities.IsNonZeroPositive(hoursWorked))
+        {
+            errorMsgs.Add(6, "Hours worked must be positive");
+        }
+
+        if (!Utilities.IsValidShiftHours(hoursWorked))
+        {
+            errorMsgs.Add(7, "Hours worked must be between 1 and 16 hours");
+        }
+
+        // 6. Validate Hourly Rate (USE UTILITIES!)
+        if (!Utilities.IsNonZeroPositive(hourlyRate))
+        {
+            errorMsgs.Add(8, "Hourly rate must be positive");
+        }
+
+        if (hourlyRate < 15.00 || hourlyRate > 100.00)
+        {
+            errorMsgs.Add(9, "Hourly rate must be between $15.00 and $100.00");
+        }
+
+        // If no errors, save!
+        if (errorMsgs.Count == 0)
+        {
+            try
+            {
+                // Create object
+                EmployeeShift shift = new EmployeeShift(
+                    employeeId,
+                    employeeName,
+                    shiftDate,
+                    shiftType.Value,
+                    hoursWorked,
+                    hourlyRate
+                );
+
+                // Save to file
+                string path = $@"{webHostEnvironment.ContentRootPath}/Components/Data/EmployeeShifts.csv";
+                string line = $"{shift.ToString()}\n";
+                System.IO.File.AppendAllText(path, line);
+
+                // Clear and navigate
+                OnClear();
+                NavigationManager.NavigateTo("/shiftreport");
+            }
+            catch (ArgumentNullException ex)
+            {
+                errorMsgs.Add(10, $"Missing data: {ex.Message}");
+            }
+            catch (ArgumentException ex)
+            {
+                errorMsgs.Add(11, $"Invalid data: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                errorMsgs.Add(12, $"Error: {ex.Message}");
+            }
+        }
+    }
+
+    // OnClear - Reset form
+    protected void OnClear()
+    {
+        employeeId = "";
+        employeeName = "";
+        shiftDate = DateTime.Today;
+        shiftType = null;
+        hoursWorked = 0;
+        hourlyRate = 0;
+        errorMsgs.Clear();
+    }
+
+    // OnReport - Navigate to report
+    protected void OnReport()
+    {
+        NavigationManager.NavigateTo("/shiftreport");
+    }
+}
+
+
+}
+public EmployeeShift(string employeeId, string employeeName,
+                            DateTime shiftDate, ShiftType shift,
+                            double hoursWorked, double hourlyRate)
+        {
+            EmployeeId = employeeId;
+            EmployeeName = employeeName;
+            ShiftDate = shiftDate;
+            Shift = shift;
+            HoursWorked = hoursWorked;
+            HourlyRate = hourlyRate;
+        }
+        string employeeId, string employeeName,
+                            DateTime shiftDate, ShiftType shift,
+                            double hoursWorked, double hourlyRate)

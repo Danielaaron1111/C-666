@@ -1,0 +1,521 @@
+﻿@page "/renocollection"
+<PageTitle>Reno Data Collection</PageTitle>
+@rendermode InteractiveServer
+
+@using RenoSystem
+
+<h3>Reno Tracker Data Collection</h3>
+<p>Use this form to enter and record wall renovation specifications. Provide a unique Plan ID and description for your wall, then enter the wall dimensions (width and height in centimeters). If your wall includes an opening such as a window, door, or closet, select the opening type from the dropdown and enter its dimensions. The system validates all entries to ensure they meet minimum requirements (walls must be at least 26 cm wide and 100 cm tall; openings must be at least 50 cm wide and 72 cm tall). Click <strong>Record</strong> to save your data and view the report, <strong>Clear</strong> to reset the form, or <strong>Report</strong> to see previously saved renovation details. All validation errors will be displayed at the top of the page to help you correct any issues before saving.</p>
+<!--
+    error message display area
+    i show errors here if the user entered bad data
+    using bootstrap alert styling to make it stand out
+-->
+@if (errorMsgs.Count > 0)
+{
+    <div class="row alert alert-danger">
+        <p><strong>Please fix the following issues:</strong></p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                <!--
+                errors are stored in a dictionary so each one has a unique key
+                i only display the message part (the Value)
+                -->
+                <li>@error.Value</li>
+            }
+        </ul>
+    </div>
+}
+
+<!--
+    the form section
+    this is where i let users enter all their wall and opening info
+    using bootstrap for the layout
+-->
+<style>
+
+
+    legend {
+        text-align: center;
+    }
+</style>
+<fieldset>
+    <legend>Renovation Details</legend>
+    <h4>Wall Details:</h4>
+
+    <!--
+    each row has two columns - label on left, input on right
+    keeps things organized and easy to read
+    -->
+    <!-- plan id input -->
+    <!--
+    user has to fill this in, i validate it when they submit
+    -->
+    <div class="row">
+        <div class="offset-3 col-md-2">
+            <label for="planid">Plan ID:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   id="planid"
+                   placeholder="p102-Brd1-2"
+                   @bind="planId" />
+        </div>
+    </div>
+    <br />
+
+    <!-- description input -->
+    <div class="row">
+        <div class="offset-3 col-md-2">
+            <label for="description">Description:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   id="description"
+                   placeholder="Closet Wall"
+                   @bind="description" />
+        </div>
+    </div>
+    <br />
+
+    <!-- two column layout for wall and opening info -->
+    <div class="row">
+        <div class="offset-1 col-md-5">
+            <h4>Wall Dimensions</h4>
+
+            <!-- wall width input -->
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="wallwidth">Width (cm):</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number"
+                           id="wallwidth"
+                           style="width: 100px;"
+                           @bind="wallWidth" />
+                </div>
+            </div>
+            <br />
+
+            <!-- wall height input -->
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="wallheight">Height (cm):</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number"
+                           id="wallheight"
+                           style="width: 100px;"
+                           @bind="wallHeight" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h4>Opening Details</h4>
+
+            <!-- opening type dropdown -->
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="openingtype">Opening Type:</label>
+                </div>
+                <div class="col-md-4">
+                    <!-- i use a dropdown so users can only pick from valid options
+                    this keeps bad data from being entered
+                    -->
+                    <select id="openingtype" @bind="wallOpening">
+                        <!--
+                        i loop through the OpeningType enum and display each option
+                        the user picks one and i get that value back
+                        -->
+                        @foreach (var item in Enum.GetValues(typeof(OpeningType)))
+                        {
+                            <!-- each enum becomes an option in the dropdown -->
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <br />
+
+            <!-- opening width input -->
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="openingwidth">Width (cm):</label>
+                </div>
+                <div class="col-md-4">
+                    <!-- this input is disabled if opening type is None -->
+                    <input type="number"
+                           id="openingwidth"
+                           style="width: 100px;"
+                           @bind="openingWidth"
+                           disabled="@(wallOpening == OpeningType.None)" />
+                </div>
+            </div>
+            <br />
+
+            <!-- opening height input -->
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="openingheight">Height (cm):</label>
+                </div>
+                <div class="col-md-4">
+                    <!-- this input is also disabled if opening type is None -->
+                    <input type="number"
+                           id="openingheight"
+                           style="width: 100px;"
+                           @bind="openingHeight"
+                           disabled="@(wallOpening == OpeningType.None)" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <!-- buttons at the bottom -->
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <!-- record button saves the data -->
+            <button type="button" class="btn btn-primary"
+                    @onclick="OnRecord">
+                Record
+            </button>
+            &nbsp;&nbsp;
+            <!-- clear button resets the form -->
+            <button type="button" class="btn btn-secondary"
+                    @onclick="OnClear">
+                Clear
+            </button>
+            &nbsp;&nbsp;
+            <!-- report button takes you to the report page -->
+            <button type="button" class="btn btn-success"
+                    @onclick="OnReport">
+                Report
+            </button>
+        </div>
+    </div>
+</fieldset>
+
+@* <footer class="text-center">
+    <br />
+    &copy; copyright Reno Tracker by Daniel Arancibia
+</footer> *@
+
+@code {
+    // i use a dictionary to hold error messages
+    // the key is a number so each error has a unique id
+    // the value is the actual error message text
+    private Dictionary<int, string> errorMsgs = new();
+
+    // variables for holding the form data the user enters
+    private string planId = "";
+    private string description = "";
+    private int wallWidth = 0;
+    private int wallHeight = 0;
+    private OpeningType wallOpening = OpeningType.None;
+    private int openingWidth = 0;
+    private int openingHeight = 0;
+
+    // service injection double double
+    // this lets me access the web host environment to find file paths
+    [Inject] //ask don
+    private IWebHostEnvironment webHostEnvironment { get; set; }
+    //this alien should do the writing csv file work
+    // this lets me redirect the user to different pages
+    // and here i navigate to my csv folder
+    //the name is just a copy paste of the class notes i should change it
+    //remember that this is a dependency injection and is how blazor provide this instead of coding manually (is tat hardcoding?)
+    [Inject] // ask don
+    private NavigationManager NavigationManager { get; set; }
+    //this is used to redirect the user to renoreport in the demo is used in the line
+    //here i use navitate to and the link of my next page which is renoreport
+    //https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-9.0
+
+
+    //some notes from the workbook:
+
+    //Injection:
+    //this variable is required if you are using property injection
+    //  for services available from the system which are not normally included
+    //  for use to your application
+    //this service collection will allow us to find the top of your application
+    //[Inject] private IWebHostEnvironment webHostEnvironment { get; set; }
+
+    //then fill the path:
+    //prep to get to the data file that is used to save the data
+
+    //write the class data as a string to a csv text file
+    // required:
+    // a) know the location of the file (name)
+    // b) the technique to use in writing to the file
+    //    there are several ways to write to the file
+    //      a) StreamWriter/StreamReader
+    //      b) using the System.IO.File methods
+    //           (handles the streaming of the data)
+
+    //there are a couple of ways to refer to your file and its path
+    //  i) obtain the root path of your application using an injection
+    //      service called IWebHostEnvironment via property injection (see variables)
+    //  ii) use relative addressing starting a the top of your application (see report page)
+
+    ///string appPathName = webHostEnvironment.ContentRootPath; //top of this web application
+
+    //WARNING: the folder slash for your path can be both a forward or backslash
+    //              on a PC BUT for an Apple machine, you must use the forward slash (/)
+    //string csvFilePathName = $@"{appPathName}/Components/Data/GoodEmployment.csv";
+
+    //pred the output line
+    //string line = $"{employment.ToString()}\n";
+
+    //write the line to the file
+
+    //WARNING: when you use the System.IO.File you MUST use the
+    //          fully qualified naming to the class method you wish
+    //          to use.
+    //          Fully qualified naming includes namespace.methodOrProperty
+    //         you can not get by just using a reference to the
+    //           namespace at the top of your code (using System.IO;)
+
+
+    //the System.IO.File method will be AppendAllText(filepathname,string)
+    // AppendAllText will
+    //   a) create the file if it does not exist
+    //   b) opens
+    //   c) writes the text
+    //   d) closes
+    //System.IO.File.AppendAllText(csvFilePathName, line);
+
+    //talk to your user
+    //feedBackMsg = "Data has been saved";
+
+
+
+    //I know and i tested that the class has their own validation BUT i want to add extra validation just for practice and to give better user feedback
+    //Some data for validation
+    // WallHeightMust be positive AND ≥ 100 cmWallWidthMust be positive AND ≥ 26 cmOpeningWidthIf opening exists:
+    //  must be positive, ≥ 50 cm, AND ≤ 90% of wall widthOpeningHeightIf opening exists: must be positive, ≥ 72 cm,
+    //  AND ≤ 90% of wall heightPlanIdCannot be null/empty/whitespaceDescriptionCannot be null/empty/whitespace
+
+
+
+
+    protected void OnRecord()
+    {
+        // clear out any old error messages first
+        errorMsgs.Clear();
+
+        //1 VALIDATE PLAI ID  i check if plan id has data, if not i add an error
+        if (string.IsNullOrWhiteSpace(planId))
+        {
+            errorMsgs.Add(1, "Enter a plan id (e.g:  p102-Brd-2)");
+        }
+
+        //2 VALIDATE DESCRIPTION  same thing for description
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            errorMsgs.Add(2, "Enter a description for the wall. (eg: Door wall)");
+        }
+        //3 checking if wall width is filled and meets minimun requirements // communicating with the user
+        // validate wall width checking positive more than 0 and using utility class
+        if (!Utilities.IsNonZeroPositive(wallWidth) || wallWidth < 26)
+        {
+            errorMsgs.Add(3, "Wall Width must be greater than 0, positive and at least 26 cm.");
+        }
+
+
+        //4 validate wall height checking if positive more than 0 and meet the criteria
+        if (!Utilities.IsNonZeroPositive(wallHeight) || wallHeight < 100)
+        {
+            errorMsgs.Add(4, "Wall Height must be positive, greater than 0 and at least 100 cm.");
+        }
+        //=====THE FOLLOWING SECTION USE UTILITY CLASS===BECAUSE IS UTILFULL
+        //5 I know that opening type width cm and height cm works with the class validation BUT I WANNA ADD MORE FRIENDLY VALIDATION MESSAGE
+
+        // if (!Utilities.IsNonZeroPositive(openingWidth))
+        // {
+        //     errorMsgs.Add(5, "Opening Width: Opening width must be positive number greater than 0 and at least 50 cm.");
+        // }
+
+        // 6 same than above for opening height
+
+        // if (!Utilities.IsNonZeroPositive(openingHeight))
+        // {
+        //     errorMsgs.Add(6, "Opening Height: Opening width must be positive number greater than 0 and at least 72 cm.");
+        // }
+
+
+        //5 if the user picked an opening type that isnt None, i need to check the opening width and height
+        // i will validate openning dimension only if openyn type is not none does not make any sense
+        //do it separately
+
+        if (wallOpening != OpeningType.None) // method enum .none
+        {
+            //5.1checking if opening width is a valid positive number
+            if (!Utilities.IsNonZeroPositive(openingWidth) || openingWidth < 50)
+            {
+                errorMsgs.Add(5, "Opening Width must be positive and at least 50 cm.");
+            }
+
+            // 6 checking if opening height is a valid positive number
+            if (!Utilities.IsNonZeroPositive(openingHeight) || openingHeight < 72)
+            {
+                errorMsgs.Add(6, "Opening Height must be positive and at least 72 cm.");
+
+            }
+
+            //7 validate openning width doesnt exceed 90% of  Wall width
+
+            if (openingWidth > wallWidth * 0.9)
+            {
+                errorMsgs.Add(7, $"Opening Width cannot exceed {(int)(wallWidth * 0.9)} cm (90% of Wall width).");
+            }
+            //8 validate opening height doesnt exceed 90% of Wall Heigh
+            if (openingHeight > wallHeight * 0.9)
+            {
+                errorMsgs.Add(8, $"Opening Height cannot exceed {(int)(wallHeight * 0.9)} cm (90% of wall height).");
+            }
+
+            // Validate Opening Area does not exceed 90% if wall Area
+            int wallArea = wallWidth * wallHeight;
+            int openingArea = openingWidth * openingHeight;
+            if (openingArea >= wallArea * 0.9)
+            {
+                errorMsgs.Add(9, $"Opening area is too large. Maximum allowed: {(int)(wallArea * 0.9)} cm².");
+            }
+
+
+
+        }
+        //we are not checking opening minimum edg so wont be included
+
+        // 9 if the opening type is None, i force the opening width and height to be zero // THIS IS NOT NECESARRY BECAUSE THE CLASS WILL HANDLE IT BUT JUST IN CASE :D
+        // else
+        // {
+        //     openingWidth = 0;
+        //     openingHeight = 0;
+        // }
+
+        // if i got no errors, i proceed with saving
+        if (errorMsgs.Count == 0)
+        {
+            // i use try-catch to handle any errors that might happen when creating or saving the data
+            try
+            {   // i create this object with all the form data in the constrcutor that validates everything again
+                // if naythiing is wrong it will throw an exception that i catch below
+                // in this way i have two layers of validation one here and one in the class >)
+                //however thinking in the exercise description i design a front end approeach validation
+
+                // creating a new RenoDetail object validates all the business rules (THIS IS NOT ANAP 1520 I KNOW BUT sounds cool)
+                // if something is wrong, it throws an exception
+                RenoDetail detail = new RenoDetail(
+                    planId,
+                    description,
+                    wallWidth,
+                    wallHeight,
+                    wallOpening,
+                    openingWidth,
+                    openingHeight
+                );
+
+
+                //Building the file path to save the data and getting the content root path (however the appPathName was not in the notes_
+                // ) (i will get a reference of this with this link : )
+                // now i need to save this to a csv file
+                // first i get the root path of the application
+                // string appPathName = webHostEnvironment.ContentRootPath; // good idea but nope
+
+                // building the full path to the csv file using forward slashes for cross-platform support
+                string csvFilePathName = $@"{webHostEnvironment.ContentRootPath}/Components/Data/GoodTestFile.csv";
+                // string csvFilePathName = $@"{appPathName}/Components/Data/GoodTestFile.csv";
+                // string csvFilepathName2 = $@"{appPathName}\Components\Data\BadTest.csv";
+                // string csvFilepathName3 = $@"{appPathName}\Components\Data\EmptyDataFile.csv";
+                // string csvFilepathName4 = $@"{appPathName}\Components\Data\GoodTestFile.csv";
+
+                //This step ensure the directory exists before saving the file but i will ask Don if we need that
+                //Because is not in the class notes and also is not in the assigment instructions so i will comment
+                //this block for now
+                // Ensure directory exists before saving
+                // string directory = Path.GetDirectoryName(csvFilePathName);
+                // if (!Directory.Exists(directory))
+                // {
+                //     Directory.CreateDirectory(directory);
+                // }
+
+
+
+
+                // converting the detail object to a string for saving
+                string line = $"{detail.ToString()}\n"; // converts my object to a csv format string and return a formated string
+
+                // appending the line to the csv file
+                // this method creates the file if it doesnt exist, opens it, writes, and closes it
+                System.IO.File.AppendAllText(csvFilePathName, line);
+
+                // clearing the form after successful save
+                OnClear();
+
+                // sending the user to the report page to see what was saved
+                NavigationManager.NavigateTo("/RenoReport"); // the navigate to is was not in the class notes i think so but probably we gonna learn it now with the new content
+                // if this comment is not enough here is a website that can be useful for future reference or as a citation of the use of this "navitageto" method:
+                //https://blazor-university.com/routing/navigating-our-app-via-code/
+                //https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing?view=aspnetcore-9.0
+                //I LEAVE THESE COMMENTS because we are learning and maybe im not using the most proper method to do this navitation (if im not please provide me feedback, TY so much)
+            }
+            catch (ArgumentNullException ex)
+            {
+                //10  this happens if required fields are missing
+                errorMsgs.Add(10, $"Data Missing Error: {ex.Message}");
+            }
+            catch (ArgumentException ex)
+            {
+                //11 this happens if validation fails, like walls too small or bad opening sizes
+                errorMsgs.Add(11, $"Bad Data Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                //12 catching any other unexpected errors
+                errorMsgs.Add(12, $"System Error: {ex.Message}");
+            }
+        }
+    }
+
+    protected void OnClear()
+    {
+        // clearing all error messages on my dictionay
+        errorMsgs.Clear();
+
+        // resetting all form fields back to empty/default
+        planId = "";
+        description = "";
+        wallWidth = 0;
+        wallHeight = 0;
+        wallOpening = OpeningType.None;
+        openingWidth = 0;
+        openingHeight = 0;
+    }
+
+
+    // protected void OnReport()
+    // {
+    //     just navigate to the report page
+    //     NavigationManager.NavigateTo("/RenoReport");
+    // }
+
+    protected override void OnInitialized() // ask don about the base stuff
+    {
+        // i call the base method to do the default setup stuff
+        base.OnInitialized();
+        //this is not necessary here but maybe in the future could be if the
+
+        // then i customize it by setting the default opening type to None
+        wallOpening = OpeningType.None;
+    }
+
+    protected void OnReport()
+    {
+        NavigationManager.NavigateTo("/RenoReport");
+    }
+
+
+}

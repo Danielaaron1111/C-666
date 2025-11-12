@@ -3,40 +3,44 @@
   "WorkspaceRootPath": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\data\\goodtestfile.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\data\\goodtestfile.csv||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\pages\\coffeshopcollect.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\pages\\coffeshopcollect.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\pages\\coffeshopreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\pages\\coffeshopreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\model\\coffeorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\model\\coffeorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\pages\\coffeshopreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\pages\\coffeshopreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\model\\coffesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\model\\coffesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\pages\\coffeshopcollect.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\pages\\coffeshopcollect.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\model\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\model\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\data\\goodtestfile.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\data\\goodtestfile.csv||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\pages\\buttons.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\pages\\buttons.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\csv CoffeShop\\Components\\Data\\BadTest.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:csv CoffeShop\\Components\\Data\\BadTest.csv||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\model\\coffesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\model\\coffesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\model\\coffetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\model\\coffetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\model\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|solutionrelative:coffeshop\\components\\model\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9AE68694-3FBF-4FA1-A67D-E0D71DCD39A4}|CoffeShop\\CoffeShop.csproj|c:\\github\\c-666\\coffeshopprogram\\coffeshopall\\coffeshop\\components\\data\\badtest.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -54,23 +58,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "BadTest.csv",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\csv CoffeShop\\Components\\Data\\BadTest.csv",
-              "RelativeDocumentMoniker": "csv CoffeShop\\Components\\Data\\BadTest.csv",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\csv CoffeShop\\Components\\Data\\BadTest.csv",
-              "RelativeToolTip": "csv CoffeShop\\Components\\Data\\BadTest.csv",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
-              "WhenOpened": "2025-11-11T21:20:03.043Z"
+              "DocumentIndex": 6,
+              "Title": "Buttons.razor",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\Buttons.razor",
+              "RelativeDocumentMoniker": "CoffeShop\\Components\\Pages\\Buttons.razor",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\Buttons.razor",
+              "RelativeToolTip": "CoffeShop\\Components\\Pages\\Buttons.razor",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAA4AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-11T21:54:47.713Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
+              "Title": "GoodTestFile.csv",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\GoodTestFile.csv",
+              "RelativeDocumentMoniker": "CoffeShop\\Components\\Data\\GoodTestFile.csv",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\GoodTestFile.csv",
+              "RelativeToolTip": "CoffeShop\\Components\\Data\\GoodTestFile.csv",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
+              "WhenOpened": "2025-11-11T04:07:28.322Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CoffeSize.cs",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeSize.cs",
+              "RelativeDocumentMoniker": "CoffeShop\\Components\\Model\\CoffeSize.cs",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeSize.cs",
+              "RelativeToolTip": "CoffeShop\\Components\\Model\\CoffeSize.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T03:55:38.414Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CoffeShopReport.razor",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
+              "RelativeDocumentMoniker": "CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
+              "RelativeToolTip": "CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAAAH4AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-11T03:53:11.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "GoodTestFile.csv",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\csv CoffeShop\\Components\\Data\\GoodTestFile.csv",
               "RelativeDocumentMoniker": "csv CoffeShop\\Components\\Data\\GoodTestFile.csv",
@@ -82,44 +126,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "GoodTestFile.csv",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\GoodTestFile.csv",
-              "RelativeDocumentMoniker": "CoffeShop\\Components\\Data\\GoodTestFile.csv",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\GoodTestFile.csv",
-              "RelativeToolTip": "CoffeShop\\Components\\Data\\GoodTestFile.csv",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "BadTest.csv",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\csv CoffeShop\\Components\\Data\\BadTest.csv",
+              "RelativeDocumentMoniker": "csv CoffeShop\\Components\\Data\\BadTest.csv",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\csv CoffeShop\\Components\\Data\\BadTest.csv",
+              "RelativeToolTip": "csv CoffeShop\\Components\\Data\\BadTest.csv",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
-              "WhenOpened": "2025-11-11T04:07:28.322Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T21:20:03.043Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "BadTest.csv",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\BadTest.csv",
-              "RelativeDocumentMoniker": "CoffeShop\\Components\\Data\\BadTest.csv",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\BadTest.csv",
-              "RelativeToolTip": "CoffeShop\\Components\\Data\\BadTest.csv",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
-              "WhenOpened": "2025-11-11T04:07:23.756Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CoffeSize.cs",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeSize.cs",
-              "RelativeDocumentMoniker": "CoffeShop\\Components\\Model\\CoffeSize.cs",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeSize.cs",
-              "RelativeToolTip": "CoffeShop\\Components\\Model\\CoffeSize.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T03:55:38.414Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
               "Title": "CoffeType.cs",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeType.cs",
               "RelativeDocumentMoniker": "CoffeShop\\Components\\Model\\CoffeType.cs",
@@ -131,7 +150,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
+              "Title": "CoffeOrder.cs",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeOrder.cs",
+              "RelativeDocumentMoniker": "CoffeShop\\Components\\Model\\CoffeOrder.cs",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeOrder.cs",
+              "RelativeToolTip": "CoffeShop\\Components\\Model\\CoffeOrder.cs",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAcwIoAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T03:54:23.086Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BadTest.csv",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\BadTest.csv",
+              "RelativeDocumentMoniker": "CoffeShop\\Components\\Data\\BadTest.csv",
+              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Data\\BadTest.csv",
+              "RelativeToolTip": "CoffeShop\\Components\\Data\\BadTest.csv",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
+              "WhenOpened": "2025-11-11T04:07:23.756Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Utilities.cs",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\Utilities.cs",
               "RelativeDocumentMoniker": "CoffeShop\\Components\\Model\\Utilities.cs",
@@ -139,23 +183,12 @@
               "RelativeToolTip": "CoffeShop\\Components\\Model\\Utilities.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T03:54:42.903Z"
+              "WhenOpened": "2025-11-11T03:54:42.903Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CoffeShopReport.razor",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
-              "RelativeDocumentMoniker": "CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
-              "RelativeToolTip": "CoffeShop\\Components\\Pages\\CoffeShopReport.razor",
-              "ViewState": "AgIAAKwAAAAAAAAAAAAjwBEBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-11T03:53:11.847Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "CoffeShop\\Components\\Layout\\NavMenu.razor",
@@ -168,26 +201,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "CoffeOrder.cs",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeOrder.cs",
-              "RelativeDocumentMoniker": "CoffeShop\\Components\\Model\\CoffeOrder.cs",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Model\\CoffeOrder.cs",
-              "RelativeToolTip": "CoffeShop\\Components\\Model\\CoffeOrder.cs",
-              "ViewState": "AgIAALEAAAAAAAAAAAAMwMMAAABNAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T03:54:23.086Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "CoffeShopCollect.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\CoffeShopCollect.razor",
               "RelativeDocumentMoniker": "CoffeShop\\Components\\Pages\\CoffeShopCollect.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\CoffeShop\\Components\\Pages\\CoffeShopCollect.razor",
               "RelativeToolTip": "CoffeShop\\Components\\Pages\\CoffeShopCollect.razor",
-              "ViewState": "AgIAAKABAAAAAAAAAAAAALcBAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAOcAAAAAAAAAAAAAAHgBAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-11T03:52:46.978Z"
+              "WhenOpened": "2025-11-11T03:52:46.978Z",
+              "EditorCaption": ""
             }
           ]
         }

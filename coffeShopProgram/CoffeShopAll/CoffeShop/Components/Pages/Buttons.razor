@@ -1,0 +1,620 @@
+﻿@*
+========================================================================
+INTERACTIVE UI PATTERNS DEMO
+========================================================================
+This page demonstrates common Blazor UI patterns:
+1. Dropdowns that enable/disable fields
+2. Checkboxes that show/hide sections
+3. Conditional rendering
+4. Dynamic button states
+5. Radio buttons
+6. Multiple validation scenarios
+========================================================================
+*@
+
+@page "/uidemo"
+<PageTitle>UI Patterns Demo</PageTitle>
+@rendermode InteractiveServer
+
+<h3>Blazor UI Patterns - Interactive Form Examples</h3>
+
+<style>
+    .section-box {
+        border: 2px solid #007bff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
+
+    .disabled-section {
+        background-color: #e9ecef;
+        opacity: 0.6;
+    }
+
+    legend {
+        text-align: center;
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
+
+@*
+========================================================================
+PATTERN 1: Dropdown that Enables/Disables Other Fields
+========================================================================
+SCENARIO: If user selects "None", disable related input fields
+REAL EXAMPLE: Like opening type (if None, disable opening dimensions)
+*@
+<fieldset class="section-box">
+    <legend>Pattern 1: Conditional Field Enabling</legend>
+    <p><strong>Scenario:</strong> Select a vehicle type. If "None", other fields are disabled.</p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="vehicleType">Vehicle Type:</label>
+        </div>
+        <div class="col-md-4">
+            <select id="vehicleType" @bind="selectedVehicleType" class="form-control">
+                <option value="">-- Select Vehicle --</option>
+                @foreach (var type in Enum.GetValues(typeof(VehicleType)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </div>
+    </div>
+    <br />
+
+    @* These fields are DISABLED when selectedVehicleType == VehicleType.None *@
+    <div class="row">
+        <div class="col-md-3">
+            <label for="vehicleYear">Year:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   id="vehicleYear"
+                   @bind="vehicleYear"
+                   disabled="@(selectedVehicleType == null || selectedVehicleType == VehicleType.None)"
+                   class="form-control"
+                   placeholder="@(selectedVehicleType == VehicleType.None ? "Select a vehicle type first" : "Enter year")" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="vehiclePrice">Price:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   id="vehiclePrice"
+                   @bind="vehiclePrice"
+                   step="0.01"
+                   disabled="@(selectedVehicleType == null || selectedVehicleType == VehicleType.None)"
+                   class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    @* Display selected info *@
+    @if (selectedVehicleType != null && selectedVehicleType != VehicleType.None)
+    {
+        <div class="alert alert-info">
+            <strong>Currently Selected:</strong> @selectedVehicleType
+        </div>
+    }
+</fieldset>
+
+@*
+========================================================================
+PATTERN 2: Checkbox that Shows/Hides Entire Section
+========================================================================
+SCENARIO: "Has Warranty" checkbox reveals warranty details section
+*@
+<fieldset class="section-box">
+    <legend>Pattern 2: Show/Hide Section with Checkbox</legend>
+    <p><strong>Scenario:</strong> Check the box to reveal additional fields.</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label>
+                <input type="checkbox" @bind="hasWarranty" />
+                Has Warranty
+            </label>
+        </div>
+    </div>
+    <br />
+
+    @* This entire section only appears if hasWarranty is true *@
+    @if (hasWarranty)
+    {
+        <div class="alert alert-success">
+            <h5>Warranty Details (This section appears because checkbox is checked!)</h5>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="warrantyYears">Warranty Years:</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number"
+                           id="warrantyYears"
+                           @bind="warrantyYears"
+                           class="form-control" />
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="warrantyProvider">Provider:</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text"
+                           id="warrantyProvider"
+                           @bind="warrantyProvider"
+                           class="form-control" />
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary">
+            <em>Check "Has Warranty" to enter warranty details.</em>
+        </div>
+    }
+</fieldset>
+
+@*
+========================================================================
+PATTERN 3: Radio Buttons that Change Available Options
+========================================================================
+SCENARIO: Payment method selection reveals different fields
+*@
+<fieldset class="section-box">
+    <legend>Pattern 3: Radio Buttons with Conditional Fields</legend>
+    <p><strong>Scenario:</strong> Different payment methods show different input fields.</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label><strong>Payment Method:</strong></label><br />
+
+            <label>
+                <input type="radio"
+                       name="payment"
+                       value="@PaymentMethod.CreditCard"
+                       checked="@(selectedPayment == PaymentMethod.CreditCard)"
+                       @onchange="@(() => selectedPayment = PaymentMethod.CreditCard)" />
+                Credit Card
+            </label>
+            &nbsp;&nbsp;
+
+            <label>
+                <input type="radio"
+                       name="payment"
+                       value="@PaymentMethod.Cash"
+                       checked="@(selectedPayment == PaymentMethod.Cash)"
+                       @onchange="@(() => selectedPayment = PaymentMethod.Cash)" />
+                Cash
+            </label>
+            &nbsp;&nbsp;
+
+            <label>
+                <input type="radio"
+                       name="payment"
+                       value="@PaymentMethod.BankTransfer"
+                       checked="@(selectedPayment == PaymentMethod.BankTransfer)"
+                       @onchange="@(() => selectedPayment = PaymentMethod.BankTransfer)" />
+                Bank Transfer
+            </label>
+        </div>
+    </div>
+    <br />
+
+    @* Different fields appear based on radio selection *@
+    @if (selectedPayment == PaymentMethod.CreditCard)
+    {
+        <div class="alert alert-primary">
+            <h5>Credit Card Information</h5>
+            <input type="text" @bind="cardNumber" placeholder="Card Number" class="form-control" />
+            <br />
+            <input type="text" @bind="cardExpiry" placeholder="MM/YY" class="form-control" />
+        </div>
+    }
+    else if (selectedPayment == PaymentMethod.Cash)
+    {
+        <div class="alert alert-warning">
+            <h5>Cash Payment</h5>
+            <p>No additional information needed. Payment will be collected in person.</p>
+        </div>
+    }
+    else if (selectedPayment == PaymentMethod.BankTransfer)
+    {
+        <div class="alert alert-info">
+            <h5>Bank Transfer Details</h5>
+            <input type="text" @bind="accountNumber" placeholder="Account Number" class="form-control" />
+            <br />
+            <input type="text" @bind="routingNumber" placeholder="Routing Number" class="form-control" />
+        </div>
+    }
+</fieldset>
+
+@*
+========================================================================
+PATTERN 4: Dropdown with Multiple Levels
+========================================================================
+SCENARIO: Country selection changes available provinces/states
+*@
+<fieldset class="section-box">
+    <legend>Pattern 4: Cascading Dropdowns</legend>
+    <p><strong>Scenario:</strong> Select country first, then province/state options change.</p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="country">Country:</label>
+        </div>
+        <div class="col-md-4">
+            <select id="country" @bind="selectedCountry" class="form-control">
+                <option value="">-- Select Country --</option>
+                <option value="Canada">Canada</option>
+                <option value="USA">USA</option>
+                <option value="Mexico">Mexico</option>
+            </select>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="region">Province/State:</label>
+        </div>
+        <div class="col-md-4">
+            <select id="region"
+                    @bind="selectedRegion"
+                    disabled="@(string.IsNullOrEmpty(selectedCountry))"
+                    class="form-control">
+                <option value="">-- Select Region --</option>
+
+                @* Different options based on country *@
+                @if (selectedCountry == "Canada")
+                {
+                    <option value="Alberta">Alberta</option>
+                    <option value="British Columbia">British Columbia</option>
+                    <option value="Ontario">Ontario</option>
+                    <option value="Quebec">Quebec</option>
+                }
+                else if (selectedCountry == "USA")
+                {
+                    <option value="California">California</option>
+                    <option value="Texas">Texas</option>
+                    <option value="New York">New York</option>
+                    <option value="Florida">Florida</option>
+                }
+                else if (selectedCountry == "Mexico")
+                {
+                    <option value="Mexico City">Mexico City</option>
+                    <option value="Jalisco">Jalisco</option>
+                    <option value="Nuevo León">Nuevo León</option>
+                }
+            </select>
+        </div>
+    </div>
+    <br />
+
+    @if (!string.IsNullOrEmpty(selectedCountry) && !string.IsNullOrEmpty(selectedRegion))
+    {
+        <div class="alert alert-success">
+            <strong>Selected Location:</strong> @selectedRegion, @selectedCountry
+        </div>
+    }
+</fieldset>
+
+@*
+========================================================================
+PATTERN 5: Dynamic Button States
+========================================================================
+SCENARIO: Buttons enabled/disabled based on form state
+*@
+<fieldset class="section-box">
+    <legend>Pattern 5: Dynamic Button States</legend>
+    <p><strong>Scenario:</strong> Submit button only enabled when form is valid.</p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="username">Username:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="text"
+                   id="username"
+                   @bind="username"
+                   placeholder="At least 3 characters"
+                   class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="email">Email:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="email"
+                   id="email"
+                   @bind="email"
+                   placeholder="user@example.com"
+                   class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            @* Button is disabled until both fields are filled *@
+            <button type="button"
+                    class="btn btn-primary"
+                    disabled="@(!IsFormValid())"
+                    @onclick="OnSubmit">
+                @(IsFormValid() ? "Submit (Form Valid)" : "Submit (Fill All Fields)")
+            </button>
+            &nbsp;&nbsp;
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    @onclick="OnReset">
+                Reset
+            </button>
+        </div>
+    </div>
+    <br />
+
+    @* Show validation status *@
+    <div class="alert @(IsFormValid() ? "alert-success" : "alert-warning")">
+        <strong>Form Status:</strong>
+        @if (IsFormValid())
+        {
+            <span>✅ Ready to submit!</span>
+        }
+        else
+        {
+            <span>⚠️ Please fill all required fields</span>
+        }
+    </div>
+</fieldset>
+
+@*
+========================================================================
+PATTERN 6: Multi-Select with Display
+========================================================================
+SCENARIO: Select multiple options and see them displayed
+*@
+<fieldset class="section-box">
+    <legend>Pattern 6: Multiple Selections Display</legend>
+    <p><strong>Scenario:</strong> Select multiple hobbies and see your selections.</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label><strong>Select Your Hobbies:</strong></label><br />
+
+            <label>
+                <input type="checkbox" @bind="likesReading" />
+                Reading
+            </label>
+            &nbsp;&nbsp;
+
+            <label>
+                <input type="checkbox" @bind="likesSports" />
+                Sports
+            </label>
+            &nbsp;&nbsp;
+
+            <label>
+                <input type="checkbox" @bind="likesCooking" />
+                Cooking
+            </label>
+            &nbsp;&nbsp;
+
+            <label>
+                <input type="checkbox" @bind="likesGaming" />
+                Gaming
+            </label>
+            &nbsp;&nbsp;
+
+            <label>
+                <input type="checkbox" @bind="likesTravel" />
+                Travel
+            </label>
+        </div>
+    </div>
+    <br />
+
+    @* Display selected hobbies *@
+    @if (GetSelectedHobbies().Count > 0)
+    {
+        <div class="alert alert-info">
+            <strong>Your Selected Hobbies:</strong>
+            <ul>
+                @foreach (var hobby in GetSelectedHobbies())
+                {
+                    <li>@hobby</li>
+                }
+            </ul>
+            <strong>Total:</strong> @GetSelectedHobbies().Count hobby(ies)
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary">
+            <em>No hobbies selected yet.</em>
+        </div>
+    }
+</fieldset>
+
+@*
+========================================================================
+PATTERN 7: Number Input with Live Calculation
+========================================================================
+SCENARIO: Calculate total price based on quantity and unit price
+*@
+<fieldset class="section-box">
+    <legend>Pattern 7: Live Calculations</legend>
+    <p><strong>Scenario:</strong> Total price updates automatically.</p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="unitPrice">Unit Price:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   id="unitPrice"
+                   @bind="unitPrice"
+                   step="0.01"
+                   class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="orderQuantity">Quantity:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   id="orderQuantity"
+                   @bind="orderQuantity"
+                   class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    <div class="alert alert-success">
+        <h4>Total Price: @CalculateTotal().ToString("C")</h4>
+        <small>(Unit Price × Quantity = @unitPrice × @orderQuantity)</small>
+    </div>
+</fieldset>
+
+@*
+========================================================================
+CODE SECTION
+========================================================================
+*@
+@code {
+    // ====================================================================
+    // ENUMS for Demo
+    // ====================================================================
+    public enum VehicleType
+    {
+        None,
+        Car,
+        Truck,
+        Motorcycle,
+        SUV
+    }
+
+    public enum PaymentMethod
+    {
+        CreditCard,
+        Cash,
+        BankTransfer
+    }
+
+    // ====================================================================
+    // PATTERN 1: Conditional Field Enabling
+    // ====================================================================
+    private VehicleType? selectedVehicleType = null;
+    private int vehicleYear = 0;
+    private double vehiclePrice = 0;
+
+    // ====================================================================
+    // PATTERN 2: Show/Hide Section
+    // ====================================================================
+    private bool hasWarranty = false;
+    private int warrantyYears = 0;
+    private string warrantyProvider = "";
+
+    // ====================================================================
+    // PATTERN 3: Radio Buttons
+    // ====================================================================
+    private PaymentMethod selectedPayment = PaymentMethod.CreditCard;
+    private string cardNumber = "";
+    private string cardExpiry = "";
+    private string accountNumber = "";
+    private string routingNumber = "";
+
+    // ====================================================================
+    // PATTERN 4: Cascading Dropdowns
+    // ====================================================================
+    private string selectedCountry = "";
+    private string selectedRegion = "";
+
+    // ====================================================================
+    // PATTERN 5: Dynamic Button States
+    // ====================================================================
+    private string username = "";
+    private string email = "";
+
+    /// <summary>
+    /// Checks if form has minimum valid data
+    /// EXAM TIP: Create helper methods for complex validation logic
+    /// </summary>
+    private bool IsFormValid()
+    {
+        return !string.IsNullOrWhiteSpace(username) &&
+               username.Length >= 3 &&
+               !string.IsNullOrWhiteSpace(email) &&
+               email.Contains("@");
+    }
+
+    private void OnSubmit()
+    {
+        // Handle form submission
+        Console.WriteLine("Form submitted!");
+    }
+
+    private void OnReset()
+    {
+        username = "";
+        email = "";
+    }
+
+    // ====================================================================
+    // PATTERN 6: Multiple Selections
+    // ====================================================================
+    private bool likesReading = false;
+    private bool likesSports = false;
+    private bool likesCooking = false;
+    private bool likesGaming = false;
+    private bool likesTravel = false;
+
+    /// <summary>
+    /// Returns list of selected hobbies
+    /// EXAM TIP: Helper methods can build lists dynamically
+    /// </summary>
+    private List<string> GetSelectedHobbies()
+    {
+        var hobbies = new List<string>();
+
+        if (likesReading) hobbies.Add("Reading");
+        if (likesSports) hobbies.Add("Sports");
+        if (likesCooking) hobbies.Add("Cooking");
+        if (likesGaming) hobbies.Add("Gaming");
+        if (likesTravel) hobbies.Add("Travel");
+
+        return hobbies;
+    }
+
+    // ====================================================================
+    // PATTERN 7: Live Calculations
+    // ====================================================================
+    private double unitPrice = 0;
+    private int orderQuantity = 0;
+
+    /// <summary>
+    /// Calculates total in real-time
+    /// EXAM TIP: Methods called in @() expressions run every time display updates
+    /// </summary>
+    private double CalculateTotal()
+    {
+        return unitPrice * orderQuantity;
+    }
+}

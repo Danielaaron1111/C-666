@@ -1,0 +1,785 @@
+﻿@*
+========================================================================
+RENTAL REPORT PAGE - Display Data from CSV File
+========================================================================
+PURPOSE: Read CSV file and display game rentals in table format
+
+EXAM QUICK START TEMPLATE:
+Copy this structure for ANY report/display page:
+1. @page directive
+2. @rendermode InteractiveServer
+3. @using namespace
+4. Error display section
+5. Success message section
+6. Table section (@if data exists)
+7. @code section with load logic
+
+TIP: Report pages are simpler than entry pages!
+Main work is in LoadData() method.
+========================================================================
+*@
+
+@page "/rentalreport"
+<PageTitle>Rental Report</PageTitle>
+@rendermode InteractiveServer
+@using GameRentalSystem
+
+<h3>Rental Report</h3>
+
+@*
+========================================================================
+ERROR DISPLAY SECTION
+========================================================================
+Shows errors encountered during file reading/parsing
+PATTERN: Same as entry page, but using List instead of Dictionary
+
+EXAM TIP: Reports often use List<string> for errors because
+we don't need unique keys - just collect all error messages.
+
+ALTERNATIVE using Dictionary (also valid):
+private Dictionary<int, string> errorMsgs = new();
+@foreach (var error in errorMsgs)
+{
+    <li>@error.Value</li>
+}
+========================================================================
+*@
+@if (errorList.Count > 0)
+{
+    <div style="background-color: #f8d7da; padding: 15px; margin: 20px 50px; border-radius: 5px; border: 1px solid #f5c6cb;">
+        <strong>Please fix the following issues:</strong>
+        <ul style="margin-top: 10px;">
+            @foreach (var error in errorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+@*
+========================================================================
+SUCCESS MESSAGE SECTION
+========================================================================
+Shows green message when data loads successfully
+
+DRAG & DROP SUCCESS MESSAGE TEMPLATES:
+
+OPTION 1: Inline style (what we're using)
+<div style="background-color: #d4edda; padding: 15px; margin: 20px 50px; border: 1px solid #c3e6cb; border-radius: 5px;">
+    <p style="margin: 0; color: #155724;">@successMessage</p>
+</div>
+
+OPTION 2: Bootstrap alert
+<div class="alert alert-success">
+    @successMessage
+</div>
+
+OPTION 3: Bootstrap alert with icon
+<div class="alert alert-success" role="alert">
+    <strong>Success!</strong> @successMessage
+</div>
+
+EXAM TIP: All three work! Use Bootstrap if available (simpler).
+========================================================================
+*@
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div style="background-color: #d4edda; padding: 15px; margin: 20px 50px; border: 1px solid #c3e6cb; border-radius: 5px;">
+        <p style="margin: 0; color: #155724;">@successMessage</p>
+    </div>
+}
+
+@*
+========================================================================
+TABLE DISPLAY SECTION (CRITICAL FOR EXAM!)
+========================================================================
+EXAM PATTERN - Always check BOTH conditions:
+@if (LIST != null && LIST.Count > 0)
+
+WHY BOTH CHECKS?
+1. LIST != null → Prevents null reference exception
+2. LIST.Count > 0 → Ensures there's data to display
+
+EXAM TIP: Missing either check can cause runtime errors!
+
+TABLE STRUCTURE:
+<table class="BOOTSTRAP_CLASSES">
+    <thead>  ← Headers
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+        </tr>
+    </thead>
+    <tbody>  ← Data rows
+        @foreach (var item in list)
+        {
+            <tr>
+                <td>@item.Property1</td>
+                <td>@item.Property2</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+BOOTSTRAP TABLE CLASSES (drag & drop):
+- table                  → Basic table
+- table table-striped    → Zebra stripes (alternating row colors)
+- table table-bordered   → Borders around cells
+- table table-hover      → Highlight row on mouse hover
+- table table-sm         → Compact table (less padding)
+
+COMBINE CLASSES: class="table table-striped table-hover"
+========================================================================
+*@
+@if (GameRentalList != null && GameRentalList.Count > 0)
+{
+    <div style="margin: 20px 0;">
+        <table class="table table-striped">
+            @*
+            --------------------------------------------------------
+            TABLE HEADER
+            --------------------------------------------------------
+            EXAM TIP: Header text should match data columns exactly!
+            
+            COLUMN ORDER MUST MATCH DATA ORDER:
+            If data shows: RentalId, GameTitle, CustomerName
+            Headers must be: Rental ID, Game Title, Customer Name
+            (In same order!)
+            
+            STYLING TIP: background-color helps headers stand out
+            --------------------------------------------------------
+            *@
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>Rental ID</th>
+                    <th>Game Title</th>
+                    <th>Customer Name</th>
+                    <th>Platform</th>
+                    <th>Rental Days</th>
+                    <th>Daily Rate</th>
+                </tr>
+            </thead>
+
+            @*
+            --------------------------------------------------------
+            TABLE BODY - DATA ROWS
+            --------------------------------------------------------
+            EXAM PATTERN:
+            @foreach (var ITEM in LIST)
+            {
+                <tr>
+                    <td>@ITEM.Property1</td>
+                    <td>@ITEM.Property2</td>
+                    ...
+                </tr>
+            }
+            
+            CRITICAL: Number of <td> must match number of <th>!
+            
+            DISPLAYING DIFFERENT DATA TYPES:
+            
+            String: @item.StringProperty
+            → Shows: "Elden Ring"
+            
+            Integer: @item.IntProperty
+            → Shows: 7
+            
+            Double: @item.DoubleProperty
+            → Shows: 5.99
+            
+            Double (currency): @item.DoubleProperty.ToString("C")
+            → Shows: $5.99
+            
+            Enum: @item.EnumProperty or @item.EnumProperty.ToString()
+            → Shows: PlayStation5
+            
+            Boolean: @item.BoolProperty (or custom display)
+            → Shows: True/False
+            → Custom: @(item.BoolProperty ? "Yes" : "No")
+            
+            DateTime: @item.DateProperty.ToString("yyyy-MM-dd")
+            → Shows: 2024-01-15
+            
+            EXAM TIP: .ToString("C") only for numbers (currency)!
+            Don't use on enums, strings, or other types!
+            --------------------------------------------------------
+            *@
+            <tbody>
+                @foreach (var rental in GameRentalList)
+                {
+                    <tr>
+                        <td>@rental.RentalId</td>
+                        <td>@rental.GameTitle</td>
+                        <td>@rental.CustomerName</td>
+
+                        @*
+                        ENUM DISPLAY - Just use property or .ToString()
+                        Both work the same for enums
+                        *@
+                        <td>@rental.Platform</td>
+
+                        <td>@rental.RentalDays</td>
+
+                        @*
+                        CURRENCY DISPLAY - Use .ToString("C")
+                        Shows: $5.99 instead of 5.99
+                        
+                        OTHER FORMAT OPTIONS:
+                        .ToString("N2")  → 5.99 (number with 2 decimals)
+                        .ToString("F2")  → 5.99 (fixed-point with 2 decimals)
+                        .ToString("P")   → 599.00% (percentage)
+                        *@
+                        <td>@rental.DailyRate.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    @*
+    --------------------------------------------------------
+    NO DATA MESSAGE
+    --------------------------------------------------------
+    Shows only if:
+    - List is null or empty
+    - AND no errors were encountered
+    
+    EXAM TIP: Check errorList.Count == 0 to avoid showing
+    "no data" message when errors explain why no data!
+    --------------------------------------------------------
+    *@
+    @if (errorList.Count == 0)
+    {
+        <p style="margin: 20px 0;">No rental details to display.</p>
+    }
+}
+
+@*
+========================================================================
+FOOTER (Optional)
+========================================================================
+DRAG & DROP FOOTER TEMPLATES:
+
+Simple:
+<footer class="text-center">
+    <br />
+    &copy; 2024 Your Name
+</footer>
+
+With divider:
+<hr />
+<footer class="text-center">
+    &copy; 2024 Your Name | All Rights Reserved
+</footer>
+
+Styled:
+<footer style="margin-top: 50px; padding: 20px; background-color: #f8f9fa; text-align: center;">
+    &copy; 2024 Your Name
+</footer>
+
+EXAM TIP: Footer is optional, but looks professional!
+========================================================================
+*@
+<footer class="text-center">
+    <br />
+    &copy; copyright Game Rental System by Daniel Arancibia
+</footer>
+
+@*
+========================================================================
+CODE SECTION - File Reading Logic
+========================================================================
+EXAM CHECKLIST for Report Page:
+✅ List to hold data
+✅ Success message string
+✅ Error list
+✅ OnInitialized() method
+✅ LoadData() method
+========================================================================
+*@
+@code {
+    @*
+    ====================================================================
+    VARIABLES SECTION
+    ====================================================================
+    *@
+
+    /// <summary>
+    /// Collection to hold all rentals loaded from CSV
+    /// EXAM TIP: Initialize to new List<>() to prevent null errors
+    ///
+    /// ALTERNATIVE: Can also declare without initialization:
+    /// private List<GameRental> GameRentalList;
+    /// Then initialize in OnInitialized(): GameRentalList = new List<GameRental>();
+    /// </summary>
+    private List<GameRental> GameRentalList = new List<GameRental>();
+
+    /// <summary>
+    /// Success message to display when data loads successfully
+    /// </summary>
+    private string successMessage = "";
+
+    /// <summary>
+    /// List of error messages encountered during file reading
+    /// EXAM TIP: Using List instead of Dictionary because we don't
+    /// need unique keys - just collecting all errors
+    /// </summary>
+    private List<string> errorList = new List<string>();
+
+    @*
+    ====================================================================
+    OnInitialized() - LOADS DATA WHEN PAGE OPENS
+    ====================================================================
+    CRITICAL FOR REPORT PAGES!
+    
+    EXAM PATTERN:
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadDataMethod();  ← Call your load method here
+    }
+    
+    WHY? Report pages need to show data immediately when opened.
+    OnInitialized() runs automatically when page loads.
+    
+    EXAM TIP: Always call base.OnInitialized() first!
+    ====================================================================
+    *@
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadRentalOrders();  // Load CSV data immediately
+    }
+
+    @*
+    ====================================================================
+    LoadRentalOrders() - READS CSV FILE AND CREATES OBJECTS
+    ====================================================================
+    THIS IS THE MOST IMPORTANT METHOD FOR REPORT PAGES!
+    MEMORIZE THIS PATTERN!
+    
+    EXAM PROCESS (7 Steps):
+    1. Clear existing data
+    2. Define file path
+    3. Check if file exists
+    4. Read all lines from file
+    5. Parse each line into object
+    6. Handle errors for invalid records
+    7. Set success message
+    
+    EXAM TIP: This exact pattern works for ANY CSV reading!
+    Just change: class name, file path, and field count.
+    ====================================================================
+    *@
+    private void LoadRentalOrders()
+    {
+        @*
+        --------------------------------------------------------
+        STEP 1: Clear existing data
+        --------------------------------------------------------
+        CRITICAL: Always clear before loading!
+        Prevents duplicate data if method is called multiple times.
+        
+        EXAM TIP: Clear() works on:
+        - List<T>
+        - Dictionary<K, V>
+        - Any collection implementing ICollection
+        --------------------------------------------------------
+        *@
+        GameRentalList.Clear();
+        errorList.Clear();
+        successMessage = "";
+
+        @*
+        --------------------------------------------------------
+        STEP 2: Define file path
+        --------------------------------------------------------
+        DRAG & DROP FILE PATH TEMPLATES:
+        
+        OPTION 1: Relative path from web root (SIMPLEST!)
+        string path = "./Components/Data/FILE.csv";
+        → Starts from web application root folder
+        → ./ means "start here"
+        → Use forward slashes /
+        
+        OPTION 2: Using IWebHostEnvironment (more explicit)
+        [Inject]
+        private IWebHostEnvironment env { get; set; }
+        string path = $@"{env.ContentRootPath}/Components/Data/FILE.csv";
+        
+        OPTION 3: Absolute path (not recommended for deployed apps)
+        string path = "C:/MyProject/Data/FILE.csv";
+        
+        EXAM TIP: Option 1 (relative path) is most common and simplest!
+        Works on any computer without changes.
+        
+        FILE NAMING CONVENTIONS:
+        ✅ GoodTestFile.csv
+        ✅ BadTestFile.csv
+        ✅ EmptyDataFile.csv
+        → Use descriptive names for testing!
+        --------------------------------------------------------
+        *@
+        string filePath = "./Components/Data/GoodTestFile.csv";
+
+        // Test files you can swap in:
+        // string filePath = "./Components/Data/BadTestFile.csv";
+        // string filePath = "./Components/Data/EmptyDataFile.csv";
+
+        @*
+        --------------------------------------------------------
+        STEP 3: Use flags to track file status
+        --------------------------------------------------------
+        EXAM PATTERN: Use boolean flags for clear logic flow
+        
+        WHY FLAGS?
+        Makes code more readable and prevents nested if statements
+        
+        ALTERNATIVE (without flags):
+        if (System.IO.File.Exists(filePath))
+        {
+            var lines = System.IO.File.ReadAllLines(filePath);
+            if (lines.Length > 0)
+            {
+                // Process lines...
+            }
+        }
+        
+        WITH FLAGS (clearer):
+        bool fileExists = ...
+        bool fileHasData = ...
+        if (fileExists && fileHasData) { ... }
+        
+        EXAM TIP: Either approach works! Choose what's clearer.
+        --------------------------------------------------------
+        *@
+        bool fileExists = false;
+        bool fileHasData = false;
+
+        @*
+        --------------------------------------------------------
+        STEP 4: Check if file exists (CRITICAL!)
+        --------------------------------------------------------
+        EXAM PATTERN:
+        if (System.IO.File.Exists(filePath))
+        {
+            // File exists, safe to read
+        }
+        else
+        {
+            // File missing, show error
+        }
+        
+        CRITICAL: Must use System.IO.File (fully qualified)
+        Cannot just use: File.Exists() (won't work!)
+        
+        WHY CHECK?
+        If file doesn't exist and you try to read it:
+        → FileNotFoundException thrown!
+        → App crashes!
+        
+        EXAM TIP: Always check file exists before reading!
+        
+        OTHER FILE OPERATIONS:
+        System.IO.File.Delete(path)        → Delete file
+        System.IO.File.Copy(src, dest)     → Copy file
+        System.IO.File.Move(src, dest)     → Move/rename file
+        System.IO.Directory.Exists(path)   → Check folder exists
+        --------------------------------------------------------
+        *@
+        if (System.IO.File.Exists(filePath))
+        {
+            fileExists = true;
+        }
+
+        if (fileExists)
+        {
+            @*
+            ----------------------------------------------------
+            STEP 5: Read all lines from file
+            ----------------------------------------------------
+            EXAM PATTERN:
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+            
+            WHAT IT DOES:
+            - Reads entire file
+            - Splits into array of strings
+            - Each line becomes one array element
+            - Automatically closes file
+            
+            EXAMPLE FILE:
+            RENT001,Elden Ring,John,PS5,7,5.99
+            RENT002,Mario Kart,Sarah,Switch,3,4.99
+            
+            RESULT ARRAY:
+            lines[0] = "RENT001,Elden Ring,John,PS5,7,5.99"
+            lines[1] = "RENT002,Mario Kart,Sarah,Switch,3,4.99"
+            lines.Length = 2
+            
+            ALTERNATIVE METHOD:
+            System.IO.File.ReadAllText(path) → Returns entire file as one string
+            
+            EXAM TIP: ReadAllLines is perfect for CSV files!
+            Each line = one record
+            ----------------------------------------------------
+            *@
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+
+            // Check if file has content (not empty)
+            if (lines.Length > 0)
+            {
+                fileHasData = true;
+            }
+
+            if (fileHasData)
+            {
+                @*
+                --------------------------------------------
+                STEP 6: Process each line (MOST IMPORTANT!)
+                --------------------------------------------
+                EXAM PATTERN - Three parts:
+                1. Loop through lines with counter
+                2. Skip empty lines
+                3. Try to parse, catch errors
+                
+                MEMORIZE THIS STRUCTURE!
+                --------------------------------------------
+                *@
+
+                /// <summary>
+                /// Record number counter for error messages
+                /// EXAM TIP: Helps user identify which line has error
+                /// Error: "Record 5 has invalid data"
+                /// Much better than: "Invalid data" (which line?)
+                /// </summary>
+                int recordNumber = 0;
+
+                foreach (string line in lines)
+                {
+                    recordNumber++;  // Increment for each line (1, 2, 3...)
+
+                    @*
+                    ----------------------------------------
+                    SKIP EMPTY LINES
+                    ----------------------------------------
+                    EXAM PATTERN:
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        // Process line
+                    }
+                    
+                    WHY SKIP?
+                    CSV files often have empty lines:
+                    - At end of file
+                    - Between sections
+                    - Accidental blank lines
+                    
+                    Empty lines don't have data, so skip them!
+                    
+                    EXAM TIP: Always check for empty lines!
+                    Otherwise Parse() will fail on empty string.
+                    ----------------------------------------
+                    *@
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        @*
+                        --------------------------------
+                        TRY-CATCH FOR PARSING
+                        --------------------------------
+                        CRITICAL EXAM PATTERN!
+                        
+                        WHY TRY-CATCH?
+                        Parse() can throw exceptions:
+                        - Wrong number of fields
+                        - Invalid data types
+                        - Failed validation
+                        
+                        Without try-catch: One bad line crashes entire app!
+                        With try-catch: Skip bad lines, process good ones.
+                        
+                        EXAM TIP: Catch SPECIFIC exceptions first!
+                        Order: FormatException → ArgumentNullException → ArgumentException → Exception
+                        --------------------------------
+                        *@
+                        try
+                        {
+                            @*
+                            ----------------------------
+                            PARSE LINE INTO OBJECT
+                            ----------------------------
+                            EXAM PATTERN:
+                            MyClass obj = MyClass.Parse(csvLine);
+                            
+                            Parse() is a STATIC method
+                            Call it on: ClassName.Parse()
+                            NOT on instance: obj.Parse() (wrong!)
+                            
+                            WHAT PARSE DOES:
+                            1. Splits line by comma
+                            2. Validates field count
+                            3. Converts strings to proper types
+                            4. Creates and returns object
+                            
+                            EXAMPLE:
+                            Line: "RENT001,Elden Ring,John,PS5,7,5.99"
+                            Parse() returns: GameRental object with all properties set
+                            ----------------------------
+                            *@
+                            GameRental rental = GameRental.Parse(line);
+
+                            // If successful (no exception), add to collection
+                            GameRentalList.Add(rental);
+                        }
+                        @*
+                        ----------------------------
+                        EXCEPTION HANDLING
+                        ----------------------------
+                        EXAM TIP: Catch in this order (specific to general)!
+                        
+                        1. FormatException
+                        2. ArgumentNullException  
+                        3. ArgumentException
+                        4. Exception
+                        
+                        WHY THIS ORDER?
+                        ArgumentNullException IS-A ArgumentException IS-A Exception
+                        If Exception first, it catches everything!
+                        ----------------------------
+                        *@
+                        catch (FormatException ex)
+                        {
+                            @*
+                            WHEN: Wrong number of fields OR can't convert types
+                            
+                            EXAMPLES:
+                            "RENT001,Elden Ring,John"              → Only 3 fields (need 6)
+                            "RENT001,Elden Ring,John,PS5,ABC,5.99" → "ABC" not an integer
+                            "RENT001,Elden Ring,John,PS5,7,XYZ"    → "XYZ" not a double
+                            
+                            EXAM TIP: Include record number AND data in error message!
+                            Helps debug which line is bad.
+                            *@
+                            errorList.Add($"Record Format: Record {recordNumber} - {ex.Message}. Data: {line}");
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            @*
+                            WHEN: Required field is null/empty
+                            
+                            EXAMPLES:
+                            ",Elden Ring,John,PS5,7,5.99"    → Missing RentalId
+                            "RENT001,,John,PS5,7,5.99"       → Missing GameTitle
+                            "RENT001,Elden Ring,,PS5,7,5.99" → Missing CustomerName
+                            
+                            EXAM TIP: Class properties throw this when null/empty
+                            *@
+                            errorList.Add($"Data Error: Record {recordNumber} - {ex.Message}. Data: {line}");
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            @*
+                            WHEN: Validation failed
+                            
+                            EXAMPLES:
+                            "RENT001,Elden Ring,John,PS5,0,5.99"    → Days = 0 (invalid)
+                            "RENT001,Elden Ring,John,PS5,7,0"       → Rate = 0 (invalid)
+                            "RENT001,Elden Ring,John,PS5,100,5.99"  → Days = 100 (too many)
+                            
+                            EXAM TIP: Constructor and property setters throw this
+                            *@
+                            errorList.Add($"Data Error: Record {recordNumber} - {ex.Message}. Data: {line}");
+                        }
+                        catch (Exception ex)
+                        {
+                            @*
+                            WHEN: Any other unexpected error
+                            
+                            EXAMPLES:
+                            - Memory full
+                            - Disk error
+                            - Corrupt data
+                            - Unexpected format
+                            
+                            EXAM TIP: Catch-all for safety!
+                            Should rarely happen if other catches are correct.
+                            *@
+                            errorList.Add($"Error: Record {recordNumber} - {ex.Message}. Data: {line}");
+                        }
+                    }
+                    @*
+                    EXAM NOTE: Empty lines are silently ignored
+                    No error message, no processing
+                    Just skip and continue to next line
+                    *@
+                }
+
+                @*
+                ----------------------------------------
+                STEP 7: Set success message
+                ----------------------------------------
+                EXAM PATTERN: Show success ONLY if:
+                1. Some records loaded (Count > 0)
+                2. No errors occurred (errorList.Count == 0)
+                
+                WHY BOTH CONDITIONS?
+                If 10 records, 5 valid, 5 invalid:
+                - GameRentalList.Count = 5
+                - errorList.Count = 5
+                - Don't show "success" - had errors!
+                
+                EXAM TIP: Success = ALL records loaded without errors
+                ----------------------------------------
+                *@
+                if (GameRentalList.Count > 0 && errorList.Count == 0)
+                {
+                    successMessage = $"Successfully loaded {GameRentalList.Count} rental(s).";
+                }
+            }
+            else
+            {
+                @*
+                File exists but is completely empty (0 lines)
+                Not an error - just no data yet
+                *@
+                successMessage = "The file is empty. No records to display.";
+            }
+        }
+        else
+        {
+            @*
+            File doesn't exist at the specified path
+            This IS an error - expected file missing!
+            *@
+            errorList.Add($"The file {filePath} does not exist.");
+        }
+    }
+}
+
+@*
+========================================================================
+EXAM SUMMARY - REPORT PAGE CHECKLIST
+========================================================================
+✅ Variables (List, errorList, successMessage)
+✅ OnInitialized() calls LoadMethod()
+✅ LoadMethod() with 7 steps:
+   1. Clear collections
+   2. Define file path
+   3. Check file exists
+   4. Read all lines
+   5. Loop through lines with counter
+   6. Parse with try-catch (4 exception types)
+   7. Set success message
+✅ Error display section
+✅ Success message section
+✅ Table with headers and data
+✅ No data message
+
+EXAM TIP: This template works for ANY report page!
+Just change: Class name, file path, properties to display.
+
+TIME SAVER: Keep this template for reference during quiz!
+========================================================================
+*@

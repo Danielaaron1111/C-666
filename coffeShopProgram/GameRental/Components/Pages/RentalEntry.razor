@@ -1,0 +1,844 @@
+﻿@*
+========================================================================
+RENTAL ENTRY PAGE - Game Rental Data Collection
+========================================================================
+PURPOSE: Form to collect game rental information and save to CSV file
+
+EXAM QUICK START TEMPLATE:
+Copy this structure for ANY data entry page:
+1. @page directive with route
+2. @rendermode InteractiveServer
+3. @using YourNamespace
+4. Error display section
+5. Form with inputs
+6. Buttons (Record, Clear, Report)
+7. @code section with validation and save logic
+
+TIP: Start with this skeleton and fill in your specific fields!
+========================================================================
+*@
+
+@page "/rentalentry"
+<PageTitle>Rental Entry</PageTitle>
+@rendermode InteractiveServer
+@using GameRentalSystem
+
+<h3>RentalEntry</h3>
+
+@*
+========================================================================
+ERROR DISPLAY SECTION
+========================================================================
+Shows validation errors in red alert box
+PATTERN: Always check if errorMsgs.Count > 0 before displaying
+
+QUICK TIP: Copy-paste this entire error section for any page!
+Just make sure you have: private Dictionary<int, string> errorMsgs = new();
+
+STYLING OPTIONS (drag and drop alternatives):
+- class="alert alert-danger"        (Bootstrap red)
+- class="alert alert-warning"       (Bootstrap yellow)
+- style="background-color: #f8d7da" (Custom red)
+========================================================================
+*@
+@if (errorMsgs.Count > 0)
+{
+    <div class="row alert alert-danger">
+        <p><strong>Please fix the following issues:</strong></p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                @* 
+                Display only the message (Value), not the key number
+                REMEMBER: Dictionary has Key (int) and Value (string)
+                *@
+                <li>@error.Value</li>
+            }
+        </ul>
+    </div>
+}
+
+<style>
+    legend {
+        text-align: center;
+    }
+</style>
+
+@*
+========================================================================
+FORM SECTION - Data Input Fields
+========================================================================
+PATTERN: Each input follows same structure:
+1. Row div with Bootstrap classes
+2. Label column (offset for alignment)
+3. Input column with @bind
+4. <br /> for spacing
+
+QUICK TIP: Copy one complete row, paste, then change:
+- id, placeholder, @bind variable name
+========================================================================
+*@
+<fieldset>
+    <legend>Game Rental Entry</legend>
+    <h4>Entry Detail</h4>
+
+    @*
+    ====================================================================
+    TEXT INPUT PATTERN - Use for strings
+    ====================================================================
+    DRAG & DROP TEMPLATE:
+    <div class="row">
+        <div class="offset-3 col-md-2">
+            <label for="FIELD_ID">LABEL_TEXT:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   id="FIELD_ID"
+                   placeholder="EXAMPLE_TEXT"
+                   @bind="VARIABLE_NAME" />
+        </div>
+    </div>
+    <br />
+    
+    EXAM TIP: type="text" for strings (RentalId, Name, etc.)
+    ====================================================================
+    *@
+    <div class="row">
+        <div class="offset-3 col-md-2">
+            <label for="rentalid">RentalId: </label>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   id="rentalid"
+                   placeholder="RENT001"
+                   @bind="rentalId" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="offset-3 col-md-2">
+            <label for="gametitle">GameTitle: </label>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   id="gametitle"
+                   placeholder="Elden Ring"
+                   @bind="gameTitle" />
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="offset-3 col-md-2">
+            <label for="customername">CustomerName: </label>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   id="customername"
+                   placeholder="John Smith"
+                   @bind="customerName" />
+        </div>
+    </div>
+    <br />
+
+    @*
+    ====================================================================
+    DROPDOWN (SELECT) PATTERN - Use for enums
+    ====================================================================
+    CRITICAL EXAM PATTERN - MEMORIZE THIS!
+    
+    DRAG & DROP TEMPLATE:
+    <select id="FIELD_ID" @bind="NULLABLE_ENUM_VARIABLE">
+        <option value="">-- Select ITEM --</option>
+        @foreach (var item in Enum.GetValues(typeof(YOUR_ENUM_TYPE)))
+        {
+            <option value="@item">@item</option>
+        }
+    </select>
+    
+    IMPORTANT STEPS:
+    1. Variable must be nullable: GamePlatform? (with ?)
+    2. First option value="" for default "not selected"
+    3. Loop through Enum.GetValues(typeof(YourEnum))
+    4. Each option shows enum value
+    
+    VALIDATION:
+    if (!variable.HasValue || variable == EnumType.None)
+    
+    EXAM TIP: This pattern works for ANY enum dropdown!
+    Just change: enum type name and variable name
+    ====================================================================
+    *@
+    <div class="row">
+        <div class="col-md-4">
+            <label for="platform">Select Platform:</label>
+        </div>
+        <div class="col-md-4">
+            <select id="platform" @bind="gameplatform">
+                @* 
+                Default option - value="" binds to null 
+                This lets us detect if user hasn't selected anything
+                *@
+                <option value="">-- Select Platform --</option>
+
+                @* 
+                Loop through ALL values in the GamePlatform enum
+                Enum.GetValues(typeof(GamePlatform)) returns all enum options
+                Each becomes an <option> in the dropdown
+                *@
+                @foreach (var item in Enum.GetValues(typeof(GamePlatform)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+    </div>
+    <br />
+
+    @*
+    ====================================================================
+    NUMBER INPUT PATTERN - Use for integers
+    ====================================================================
+    DRAG & DROP TEMPLATE:
+    <input type="number"
+           id="FIELD_ID"
+           style="width: 100px;"
+           min="MIN_VALUE"
+           max="MAX_VALUE"
+           @bind="INTEGER_VARIABLE" />
+    
+    EXAM TIP: type="number" gives you:
+    - Up/down arrows
+    - Numeric keyboard on mobile
+    - Browser validation with min/max
+    
+    OPTIONAL ATTRIBUTES:
+    - min="1"     → minimum value allowed
+    - max="100"   → maximum value allowed
+    - step="1"    → increment amount (default for integers)
+    ====================================================================
+    *@
+    <div class="row">
+        <div class="col-md-4">
+            <label for="rentaldays">Rental Days:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   id="rentaldays"
+                   style="width: 100px;"
+                   min="1"
+                   max="30"
+                   @bind="rentalDays" />
+        </div>
+    </div>
+    <br />
+
+    @*
+    ====================================================================
+    DECIMAL/MONEY INPUT PATTERN - Use for double/decimal
+    ====================================================================
+    DRAG & DROP TEMPLATE:
+    <input type="number"
+           id="FIELD_ID"
+           style="width: 100px;"
+           min="MIN_VALUE"
+           max="MAX_VALUE"
+           step="0.01"
+           @bind="DOUBLE_VARIABLE" />
+    
+    CRITICAL: step="0.01" allows decimals (like money: 5.99)
+    
+    EXAM TIP: For prices/money, always use:
+    - type="number"
+    - step="0.01" (two decimal places)
+    - @bind with double variable
+    ====================================================================
+    *@
+    <div class="row">
+        <div class="col-md-4">
+            <label for="dailyrate">Daily Rate:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number"
+                   id="dailyrate"
+                   style="width: 100px;"
+                   min="1.00"
+                   max="100.00"
+                   step="0.01"
+                   @bind="dailyRate" />
+        </div>
+    </div>
+    <br />
+
+    @*
+    ====================================================================
+    BUTTONS SECTION
+    ====================================================================
+    DRAG & DROP BUTTON TEMPLATES:
+    
+    PRIMARY (Blue) - Main action:
+    <button type="button" class="btn btn-primary" @onclick="METHOD_NAME">
+        BUTTON_TEXT
+    </button>
+    
+    SECONDARY (Gray) - Reset/Clear:
+    <button type="button" class="btn btn-secondary" @onclick="METHOD_NAME">
+        BUTTON_TEXT
+    </button>
+    
+    SUCCESS (Green) - Navigation/View:
+    <button type="button" class="btn btn-success" @onclick="METHOD_NAME">
+        BUTTON_TEXT
+    </button>
+    
+    DANGER (Red) - Delete:
+    <button type="button" class="btn btn-danger" @onclick="METHOD_NAME">
+        BUTTON_TEXT
+    </button>
+    
+    WARNING (Yellow) - Caution:
+    <button type="button" class="btn btn-warning" @onclick="METHOD_NAME">
+        BUTTON_TEXT
+    </button>
+    
+    INFO (Light Blue) - Information:
+    <button type="button" class="btn btn-info" @onclick="METHOD_NAME">
+        BUTTON_TEXT
+    </button>
+    
+    EXAM TIP: &nbsp;&nbsp; adds space between buttons
+    ====================================================================
+    *@
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-primary"
+                    @onclick="OnRecord">
+                Record
+            </button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-secondary"
+                    @onclick="OnClear">
+                Clear
+            </button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-success"
+                    @onclick="OnReport">
+                Report
+            </button>
+        </div>
+    </div>
+</fieldset>
+
+@*
+========================================================================
+CODE SECTION - C# Logic
+========================================================================
+EXAM CHECKLIST - Everything you need in @code section:
+✅ Error Dictionary
+✅ Form field variables (match @bind names exactly!)
+✅ Dependency injection ([Inject])
+✅ OnRecord() method (validate & save)
+✅ OnClear() method (reset form)
+✅ OnReport() method (navigate)
+✅ OnInitialized() method (optional setup)
+========================================================================
+*@
+@code {
+    @*
+    ====================================================================
+    VARIABLES SECTION
+    ====================================================================
+    EXAM TIP: Always declare these at the top of @code section
+    *@
+
+    /// <summary>
+    /// Dictionary stores error messages
+    /// Key = unique number (1, 2, 3...)
+    /// Value = error message string
+    ///
+    /// EXAM TIP: Dictionary prevents duplicate keys!
+    /// If you do: errorMsgs.Add(1, "Error A"); errorMsgs.Add(1, "Error B");
+    /// It will throw exception! Use unique keys.
+    ///
+    /// ALTERNATIVE: Use List<string> if you don't need unique keys
+    /// private List<string> errorList = new List<string>();
+    /// </summary>
+    private Dictionary<int, string> errorMsgs = new();
+
+    /// <summary>
+    /// Optional feedback message for user
+    /// EXAM TIP: Can skip this if you just navigate after save
+    /// </summary>
+    private string feedBackMsg = "";
+
+    /// <summary>
+    /// Form field variables - MUST match @bind names exactly!
+    ///
+    /// INITIALIZATION PATTERNS:
+    /// - Strings: = ""
+    /// - Integers: = 0
+    /// - Doubles: = 0 or 0.0
+    /// - Nullable enums: = null
+    /// - Booleans: = false
+    /// - DateTime: = DateTime.Today
+    ///
+    /// EXAM TIP: Variable names should be camelCase (start with lowercase)
+    /// </summary>
+    private string rentalId = "";
+    private string gameTitle = "";
+    private string customerName = "";
+    private GamePlatform? gameplatform = null;  // Nullable enum for dropdown
+    private int rentalDays = 0;
+    private double dailyRate = 0;
+
+    @*
+    ====================================================================
+    DEPENDENCY INJECTION
+    ====================================================================
+    EXAM PATTERN - Two common injections:
+    
+    [Inject]
+    private IWebHostEnvironment webHostEnvironment { get; set; }
+    → Use for: Getting file paths (ContentRootPath)
+    
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+    → Use for: Navigating between pages (NavigateTo)
+    
+    EXAM TIP: [Inject] must be on separate line above property!
+    
+    OTHER COMMON INJECTIONS (for reference):
+    [Inject] private HttpClient Http { get; set; }
+    [Inject] private IJSRuntime JS { get; set; }
+    [Inject] private ILogger<MyComponent> Logger { get; set; }
+    ====================================================================
+    *@
+    [Inject]
+    private IWebHostEnvironment webHostEnvironment { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    @*
+    ====================================================================
+    OnRecord() - MAIN VALIDATION AND SAVE METHOD
+    ====================================================================
+    EXAM PATTERN - Three-step process:
+    1. Clear old errors
+    2. Validate all fields (add errors if invalid)
+    3. If no errors, save data
+    
+    EXAM TIP: This method structure works for ANY data entry form!
+    ====================================================================
+    *@
+    protected void OnRecord()
+    {
+        // ================================================================
+        // STEP 1: Clear old error messages
+        // ================================================================
+        errorMsgs.Clear();
+
+        // ================================================================
+        // STEP 2: VALIDATION - Check EVERY field
+        // ================================================================
+
+        @*
+        --------------------------------------------------------------------
+        STRING VALIDATION PATTERN
+        --------------------------------------------------------------------
+        DRAG & DROP TEMPLATE:
+        if (string.IsNullOrWhiteSpace(VARIABLE_NAME))
+        {
+            errorMsgs.Add(KEY_NUMBER, "FIELD_NAME is required");
+        }
+        
+        WHY IsNullOrWhiteSpace?
+        - Checks for null
+        - Checks for empty string ""
+        - Checks for whitespace "   "
+        All in one method!
+        
+        ALTERNATIVE (less common):
+        if (string.IsNullOrEmpty(variable))  // Doesn't check whitespace
+        --------------------------------------------------------------------
+        *@
+        if (string.IsNullOrWhiteSpace(rentalId))
+        {
+            errorMsgs.Add(1, "Rental ID is required");
+        }
+
+        if (string.IsNullOrWhiteSpace(gameTitle))
+        {
+            errorMsgs.Add(2, "Game Title is required");
+        }
+
+        if (string.IsNullOrWhiteSpace(customerName))
+        {
+            errorMsgs.Add(3, "Customer Name is required");
+        }
+
+        @*
+        --------------------------------------------------------------------
+        NULLABLE ENUM VALIDATION PATTERN (CRITICAL FOR EXAM!)
+        --------------------------------------------------------------------
+        DRAG & DROP TEMPLATE:
+        if (!ENUM_VARIABLE.HasValue || ENUM_VARIABLE == EnumType.None)
+        {
+            errorMsgs.Add(KEY, "Please select ITEM_NAME");
+        }
+        
+        TWO CHECKS NEEDED:
+        1. !variable.HasValue → Checks if null (user didn't select anything)
+        2. variable == EnumType.None → Checks if user selected "None"
+        
+        EXAM TIP: BOTH checks are important!
+        If enum has "None" option, must check for it!
+        --------------------------------------------------------------------
+        *@
+        if (!gameplatform.HasValue || gameplatform == GamePlatform.None)
+        {
+            errorMsgs.Add(4, "Game Platform is required");
+        }
+
+        @*
+        --------------------------------------------------------------------
+        INTEGER VALIDATION PATTERNS
+        --------------------------------------------------------------------
+        PATTERN 1: Using Utilities class (if available)
+        if (!Utilities.IsNonZeroPositive(INTEGER_VARIABLE))
+        {
+            errorMsgs.Add(KEY, "FIELD must be positive");
+        }
+        
+        PATTERN 2: Direct validation (no Utilities)
+        if (INTEGER_VARIABLE <= 0)
+        {
+            errorMsgs.Add(KEY, "FIELD must be greater than 0");
+        }
+        
+        PATTERN 3: Range validation
+        if (INTEGER_VARIABLE < MIN || INTEGER_VARIABLE > MAX)
+        {
+            errorMsgs.Add(KEY, $"FIELD must be between {MIN} and {MAX}");
+        }
+        
+        EXAM TIP: Use whichever pattern your instructor prefers!
+        All are valid.
+        --------------------------------------------------------------------
+        *@
+        if (!Utilities.IsNonZeroPositive(rentalDays))
+        {
+            errorMsgs.Add(5, "Rental days must be positive");
+        }
+
+        @*
+        --------------------------------------------------------------------
+        DOUBLE/DECIMAL VALIDATION PATTERNS
+        --------------------------------------------------------------------
+        PATTERN 1: Using overloaded Utilities method
+        if (!Utilities.IsNonZeroPositive(DOUBLE_VARIABLE))
+        {
+            errorMsgs.Add(KEY, "FIELD must be positive");
+        }
+        
+        PATTERN 2: Direct validation (if Utilities doesn't support double)
+        if (DOUBLE_VARIABLE <= 0)
+        {
+            errorMsgs.Add(KEY, "FIELD must be greater than $0.00");
+        }
+        
+        PATTERN 3: Price range validation
+        if (DOUBLE_VARIABLE < 1.00 || DOUBLE_VARIABLE > 100.00)
+        {
+            errorMsgs.Add(KEY, "FIELD must be between $1.00 and $100.00");
+        }
+        
+        EXAM TIP: Remember to add Utilities method for double if needed:
+        public static bool IsNonZeroPositive(double value) { return value > 0; }
+        --------------------------------------------------------------------
+        *@
+        if (!Utilities.IsNonZeroPositive(dailyRate))
+        {
+            errorMsgs.Add(6, "Daily Rate must be greater than $0.00");
+        }
+
+        // ================================================================
+        // STEP 3: SAVE DATA (only if no validation errors)
+        // ================================================================
+
+        @*
+        --------------------------------------------------------------------
+        SAVE LOGIC PATTERN
+        --------------------------------------------------------------------
+        EXAM CHECKLIST:
+        ✅ Check if (errorMsgs.Count == 0)
+        ✅ Wrap in try-catch
+        ✅ Create object from form data
+        ✅ Build file path
+        ✅ Convert object to CSV string
+        ✅ Save to file
+        ✅ Clear form
+        ✅ Navigate to report
+        
+        EXAM TIP: This exact pattern works for ANY save operation!
+        --------------------------------------------------------------------
+        *@
+        if (errorMsgs.Count == 0)  // No errors = safe to save
+        {
+            try
+            {
+                @*
+                --------------------------------------------------------
+                CREATE OBJECT
+                --------------------------------------------------------
+                EXAM TIP: Use .Value to extract enum from nullable
+                gameplatform.Value converts GamePlatform? → GamePlatform
+                
+                Constructor may throw exceptions if validation fails!
+                That's why we have try-catch.
+                --------------------------------------------------------
+                *@
+                GameRental rental = new GameRental(
+                    rentalId,
+                    gameTitle,
+                    customerName,
+                    gameplatform.Value,  // Extract enum from nullable
+                    rentalDays,
+                    dailyRate
+                );
+
+                @*
+                --------------------------------------------------------
+                BUILD FILE PATH
+                --------------------------------------------------------
+                DRAG & DROP TEMPLATES:
+                
+                OPTION 1: Using IWebHostEnvironment (absolute path)
+                string path = $@"{webHostEnvironment.ContentRootPath}/Components/Data/FILE.csv";
+                
+                OPTION 2: Relative path (starts from web root)
+                string path = "./Components/Data/FILE.csv";
+                
+                EXAM TIP: $@"" syntax explained:
+                $ = allows {variables} in string
+                @ = allows / and \ without escaping
+                
+                PATH EXAMPLES:
+                "/Components/Data/MyFile.csv"     ✅ Works
+                "./Components/Data/MyFile.csv"    ✅ Works
+                "Components/Data/MyFile.csv"      ✅ Works
+                "C:/MyProject/Data/MyFile.csv"    ✅ Works (absolute)
+                --------------------------------------------------------
+                *@
+                string csvFilePathName = $@"{webHostEnvironment.ContentRootPath}/Components/Data/GoodTestFile.csv";
+
+                @*
+                --------------------------------------------------------
+                CONVERT TO CSV STRING
+                --------------------------------------------------------
+                PATTERN: object.ToString() + "\n"
+                
+                ToString() returns: "RENT001,Elden Ring,John,PS5,7,5.99"
+                \n adds newline (moves to next line in file)
+                
+                EXAM TIP: The \n is CRITICAL! Without it, all records
+                will be on one line and won't parse correctly!
+                --------------------------------------------------------
+                *@
+                string line = $"{rental.ToString()}\n";
+
+                @*
+                --------------------------------------------------------
+                WRITE TO FILE
+                --------------------------------------------------------
+                CRITICAL EXAM PATTERN:
+                System.IO.File.AppendAllText(filePath, textToWrite);
+                
+                MUST use fully qualified name: System.IO.File
+                Cannot just use: File.AppendAllText() (won't work!)
+                
+                AppendAllText:
+                ✅ Creates file if doesn't exist
+                ✅ Opens file
+                ✅ Writes text to END of file (append = add to end)
+                ✅ Closes file
+                ✅ All automatic!
+                
+                ALTERNATIVE METHOD (overwrites file):
+                System.IO.File.WriteAllText(path, text); // Deletes old content!
+                
+                EXAM TIP: Use AppendAllText for adding records
+                Use WriteAllText for replacing entire file
+                --------------------------------------------------------
+                *@
+                System.IO.File.AppendAllText(csvFilePathName, line);
+
+                // Optional success message
+                feedBackMsg = "Data has been saved successfully!";
+
+                @*
+                --------------------------------------------------------
+                CLEAR FORM AFTER SAVE
+                --------------------------------------------------------
+                EXAM TIP: Always clear form after successful save!
+                Users expect empty form for next entry.
+                --------------------------------------------------------
+                *@
+                OnClear();
+
+                @*
+                --------------------------------------------------------
+                NAVIGATE TO REPORT PAGE
+                --------------------------------------------------------
+                PATTERN: NavigationManager.NavigateTo("/route");
+                
+                EXAM TIP: Route must match @page directive on target page
+                If report page has: @page "/rentalreport"
+                Then navigate with: "/rentalreport"
+                
+                IMPORTANT: Route is case-insensitive
+                "/RentalReport" and "/rentalreport" both work
+                --------------------------------------------------------
+                *@
+                NavigationManager.NavigateTo("/rentalreport");
+            }
+            @*
+            --------------------------------------------------------
+            EXCEPTION HANDLING (CRITICAL FOR EXAM!)
+            --------------------------------------------------------
+            EXAM PATTERN - Three catch blocks:
+            
+            1. ArgumentNullException
+               → Missing required fields (null/empty strings)
+               
+            2. ArgumentException
+               → Validation failed (number out of range, etc.)
+               
+            3. Exception
+               → Any other unexpected error (file access, etc.)
+            
+            EXAM TIP: Order matters! Specific exceptions BEFORE general!
+            ArgumentNullException before ArgumentException before Exception
+            
+            WHY? ArgumentNullException IS-A ArgumentException IS-A Exception
+            If you put Exception first, it catches everything!
+            --------------------------------------------------------
+            *@
+            catch (ArgumentNullException ex)
+            {
+                // Required field is null/empty (PlanId, CustomerName, etc.)
+                errorMsgs.Add(7, $"Data Missing Error: {ex.Message}");
+            }
+            catch (ArgumentException ex)
+            {
+                // Validation failed (days out of range, price invalid, etc.)
+                errorMsgs.Add(8, $"Bad Data Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Unexpected error (file locked, permissions, disk full, etc.)
+                errorMsgs.Add(9, $"System Error: {ex.Message}");
+            }
+        }
+        @*
+        EXAM NOTE: If errorMsgs.Count > 0, the error display section
+        at top of page will automatically show errors. No need to
+        do anything else here!
+        *@
+    }
+
+    @*
+    ====================================================================
+    OnClear() - RESET FORM TO EMPTY STATE
+    ====================================================================
+    EXAM PATTERN - Reset every variable to default value
+    
+    DRAG & DROP TEMPLATE:
+    protected void OnClear()
+    {
+        // Strings → ""
+        stringVariable = "";
+        
+        // Integers → 0
+        intVariable = 0;
+        
+        // Doubles → 0 or 0.0
+        doubleVariable = 0;
+        
+        // Nullable enums → null
+        enumVariable = null;
+        
+        // Booleans → false
+        boolVariable = false;
+        
+        // DateTime → DateTime.Today
+        dateVariable = DateTime.Today;
+        
+        // Clear errors
+        errorMsgs.Clear();
+    }
+    
+    EXAM TIP: Clear() removes all items from collection
+    Works with: Dictionary, List, etc.
+    ====================================================================
+    *@
+    protected void OnClear()
+    {
+        rentalId = "";
+        gameTitle = "";
+        customerName = "";
+        gameplatform = null;
+        rentalDays = 0;
+        dailyRate = 0;
+        errorMsgs.Clear();
+    }
+
+    @*
+    ====================================================================
+    OnInitialized() - RUNS ONCE WHEN PAGE LOADS
+    ====================================================================
+    EXAM PATTERN:
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // Your initialization code here
+    }
+    
+    CRITICAL: Always call base.OnInitialized() first!
+    
+    WHEN TO USE:
+    ✅ Set default values (already done in variable declarations)
+    ✅ Load initial data (usually in Report pages, not Entry pages)
+    ✅ Set up state when page first opens
+    
+    EXAM TIP: For data entry pages, usually don't need special
+    initialization. Variables already have defaults.
+    For report pages, this is where you call LoadData() method.
+    ====================================================================
+    *@
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // No special initialization needed for entry page
+    }
+
+    @*
+    ====================================================================
+    OnReport() - NAVIGATE TO REPORT PAGE
+    ====================================================================
+    SIMPLE PATTERN:
+    protected void OnReport()
+    {
+        NavigationManager.NavigateTo("/route");
+    }
+    
+    EXAM TIP: This method just navigates. No validation needed.
+    User can view report anytime, even without saving new data.
+    ====================================================================
+    *@
+    protected void OnReport()
+    {
+        NavigationManager.NavigateTo("/rentalreport");
+    }
+}

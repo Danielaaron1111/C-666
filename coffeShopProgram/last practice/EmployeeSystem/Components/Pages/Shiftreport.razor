@@ -1,0 +1,167 @@
+﻿@page "/shiftreport"
+<PageTitle>Shift Report</PageTitle>
+@rendermode InteractiveServer
+@using EmployeeSystem
+
+<h3>Employee Shift Report</h3>
+
+@* Error Display *@
+@if (errorList.Count > 0)
+{
+    <div class="alert alert-danger">
+        <strong>Errors:</strong>
+        <ul>
+            @foreach (var error in errorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+@* Success Message *@
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+
+@* Table Display *@
+@if (shiftList != null && shiftList.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr style="background-color: #f0f0f0;">
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Shift Date</th>
+                <th>Shift Type</th>
+                <th>Hours Worked</th>
+                <th>Hourly Rate</th>
+                <th>Total Pay</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var shift in shiftList)
+            {
+                <tr>
+                    <td>@shift.EmployeeId</td>
+                    <td>@shift.EmployeeName</td>
+                    <td>@shift.ShiftDate.ToString("yyyy-MM-dd")</td>
+                    <td>@shift.Shift</td>
+                    <td>@shift.HoursWorked</td>
+                    <td>@shift.HourlyRate.ToString("C")</td>
+                    <td>@shift.TotalPay.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @* Summary Section *@
+    <div class="alert alert-primary">
+        <h5>Summary:</h5>
+        <p><strong>Total Shifts:</strong> @shiftList.Count</p>
+        <p><strong>Total Hours Worked:</strong> @shiftList.Sum(s => s.HoursWorked).ToString("F1") hours</p>
+        <p><strong>Total Payroll:</strong> @shiftList.Sum(s => s.TotalPay).ToString("C")</p>
+    </div>
+}
+else
+{
+    @if (errorList.Count == 0)
+    {
+        <p>No shifts to display.</p>
+    }
+}
+
+<footer class="text-center">
+    <br />
+    &copy; Employee Shift System by Daniel Arancibia
+</footer>
+
+@code {
+    private List<EmployeeShift> shiftList = new List<EmployeeShift>();
+    private string successMessage = "";
+    private List<string> errorList = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadShifts();
+    }
+
+    private void LoadShifts()
+    {
+        shiftList.Clear();
+        errorList.Clear();
+        successMessage = "";
+
+        string filePath = "./Components/Data/EmployeeShifts.csv";
+
+        bool fileExists = false;
+        bool fileHasData = false;
+
+        if (System.IO.File.Exists(filePath))
+        {
+            fileExists = true;
+        }
+
+        if (fileExists)
+        {
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+
+            if (lines.Length > 0)
+            {
+                fileHasData = true;
+            }
+
+            if (fileHasData)
+            {
+                int recordNumber = 0;
+
+                foreach (string line in lines)
+                {
+                    recordNumber++;
+
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        try
+                        {
+                            EmployeeShift shift = EmployeeShift.Parse(line);
+                            shiftList.Add(shift);
+                        }
+                        catch (FormatException ex)
+                        {
+                            errorList.Add($"Record {recordNumber}: Format error - {ex.Message}. Data: {line}");
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            errorList.Add($"Record {recordNumber}: Missing data - {ex.Message}. Data: {line}");
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            errorList.Add($"Record {recordNumber}: Invalid data - {ex.Message}. Data: {line}");
+                        }
+                        catch (Exception ex)
+                        {
+                            errorList.Add($"Record {recordNumber}: Error - {ex.Message}. Data: {line}");
+                        }
+                    }
+                }
+
+                if (shiftList.Count > 0 && errorList.Count == 0)
+                {
+                    successMessage = $"Successfully loaded {shiftList.Count} shift(s).";
+                }
+            }
+            else
+            {
+                successMessage = "The file is empty. No shifts to display.";
+            }
+        }
+        else
+        {
+            errorList.Add($"The file {filePath} does not exist.");
+        }
+    }
+}

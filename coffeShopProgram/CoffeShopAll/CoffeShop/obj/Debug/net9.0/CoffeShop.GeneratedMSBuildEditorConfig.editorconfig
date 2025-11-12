@@ -24,6 +24,10 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/GitHub/C-666/coffeShopProgram/CoffeShopAll/CoffeShop/Components/Pages/Buttons.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xCdXR0b25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/GitHub/C-666/coffeShopProgram/CoffeShopAll/CoffeShop/Components/Pages/CoffeShopCollect.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb2ZmZVNob3BDb2xsZWN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
