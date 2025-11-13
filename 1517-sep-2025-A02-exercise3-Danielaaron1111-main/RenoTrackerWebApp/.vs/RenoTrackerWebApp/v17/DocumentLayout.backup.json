@@ -3,7 +3,8 @@
   "WorkspaceRootPath": "C:\\GitHub\\C-666\\1517-sep-2025-A02-exercise3-Danielaaron1111-main\\RenoTrackerWebApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\MyClass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{24CCE214-AFEA-4E4F-A655-957623B89660}|RenoTrackerWebApp.csproj|c:\\github\\c-666\\1517-sep-2025-a02-exercise3-danielaaron1111-main\\renotrackerwebapp\\model\\renodetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{24CCE214-AFEA-4E4F-A655-957623B89660}|RenoTrackerWebApp.csproj|solutionrelative:model\\renodetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,14 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MyClass.cs",
-              "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\MyClass.cs",
-              "RelativeDocumentMoniker": "..\\..\\coffeShopProgram\\CoffeShopAll\\MyClass.cs",
-              "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\CoffeShopAll\\MyClass.cs",
-              "RelativeToolTip": "..\\..\\coffeShopProgram\\CoffeShopAll\\MyClass.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "RenoDetail.cs",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\1517-sep-2025-A02-exercise3-Danielaaron1111-main\\RenoTrackerWebApp\\Model\\RenoDetail.cs",
+              "RelativeDocumentMoniker": "Model\\RenoDetail.cs",
+              "ToolTip": "C:\\GitHub\\C-666\\1517-sep-2025-A02-exercise3-Danielaaron1111-main\\RenoTrackerWebApp\\Model\\RenoDetail.cs",
+              "RelativeToolTip": "Model\\RenoDetail.cs",
+              "ViewState": "AgIAAK8AAAAAAAAAAAAwwLUAAABnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T21:25:34.686Z",
+              "WhenOpened": "2025-11-12T16:24:14.873Z",
               "EditorCaption": ""
             }
           ]

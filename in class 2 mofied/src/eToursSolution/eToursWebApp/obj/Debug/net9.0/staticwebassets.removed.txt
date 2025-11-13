@@ -1,0 +1,3 @@
+C:\GitHub\C-666\1517-sep-2025-A02-inclass2-Danielaaron1111-498f023572f574dbbcb2a91fd6a68752521a7a56\src\eToursSolution\eToursWebApp\wwwroot\app.css
+C:\GitHub\C-666\1517-sep-2025-A02-inclass2-Danielaaron1111-498f023572f574dbbcb2a91fd6a68752521a7a56\src\eToursSolution\eToursWebApp\wwwroot\bootstrap\bootstrap.min.css
+C:\GitHub\C-666\1517-sep-2025-A02-inclass2-Danielaaron1111-498f023572f574dbbcb2a91fd6a68752521a7a56\src\eToursSolution\eToursWebApp\wwwroot\bootstrap\bootstrap.min.css.map

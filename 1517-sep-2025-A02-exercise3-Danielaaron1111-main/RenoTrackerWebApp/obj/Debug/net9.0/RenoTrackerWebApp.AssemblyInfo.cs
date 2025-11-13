@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RenoTrackerWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9edfea84ec0c94f5e217f0d773b16320da1842e6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3143c95195cd619bd0062e7c2fd2a6056300173f")]
 [assembly: System.Reflection.AssemblyProductAttribute("RenoTrackerWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RenoTrackerWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
