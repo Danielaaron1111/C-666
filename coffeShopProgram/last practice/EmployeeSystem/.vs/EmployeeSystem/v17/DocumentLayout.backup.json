@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\renocolletion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\renocolletion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\tubularreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\tubularreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\shiftreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\shiftreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\shiftentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\shiftentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\rentalreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\rentalreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\rentalentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\rentalentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\renoreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\renoreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\rentalentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\rentalentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\renocolletion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\renocolletion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\dataentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\dataentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\coffeshopreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -21,26 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\coffeshopcollect.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\coffeshopcollect.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\dataentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\dataentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\shiftentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\shiftentry.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\shiftreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\shiftreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\tubularreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\tubularreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\pages\\rentalreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|solutionrelative:components\\pages\\rentalreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BEF328AD-2C21-4C37-9A85-313BA277576E}|EmployeeSystem.csproj|c:\\github\\c-666\\coffeshopprogram\\last practice\\employeesystem\\components\\model\\enumshiftype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -62,11 +62,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 0,
               "Title": "TubularReport.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\TubularReport.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\TubularReport.razor",
@@ -79,120 +79,111 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "DataEntry.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\DataEntry.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\DataEntry.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\DataEntry.razor",
               "RelativeToolTip": "Components\\Pages\\DataEntry.razor",
-              "ViewState": "AgIAAHYBAAAAAAAAAAAwwJ4BAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAHYBAAAAAAAAAAAwwI0BAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:49:25.669Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:49:25.669Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 3,
               "Title": "rentalReport.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\rentalReport.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\rentalReport.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\rentalReport.razor",
               "RelativeToolTip": "Components\\Pages\\rentalReport.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABADAAACAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:48:45.826Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:48:45.826Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "rentalEntry.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\rentalEntry.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\rentalEntry.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\rentalEntry.razor",
               "RelativeToolTip": "Components\\Pages\\rentalEntry.razor",
-              "ViewState": "AgIAACMDAAAAAAAAAAAwwEsDAAABAAAAAAAAAA==",
+              "ViewState": "AgIAACMDAAAAAAAAAAAwwDsDAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:48:22.184Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:48:22.184Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "renocolletion.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\renocolletion.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\renocolletion.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\renocolletion.razor",
               "RelativeToolTip": "Components\\Pages\\renocolletion.razor",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAIgAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAAAI4AAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:45:54.22Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:45:54.22Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "renoreport.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\renoreport.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\renoreport.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\renoreport.razor",
               "RelativeToolTip": "Components\\Pages\\renoreport.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADABAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:45:24.265Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:45:24.265Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "coffeshopreport.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\coffeshopreport.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\coffeshopreport.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\coffeshopreport.razor",
               "RelativeToolTip": "Components\\Pages\\coffeshopreport.razor",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAABEBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFEAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:44:28.729Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:44:28.729Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "coffeshopCollect.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\coffeshopCollect.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\coffeshopCollect.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\coffeshopCollect.razor",
               "RelativeToolTip": "Components\\Pages\\coffeshopCollect.razor",
-              "ViewState": "AgIAAJYBAAAAAAAAAAAwwL4BAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJYBAAAAAAAAAAAwwK0BAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T04:44:16.286Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T04:44:16.286Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
               "Title": "Shiftreport.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\Shiftreport.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Shiftreport.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\Shiftreport.razor",
               "RelativeToolTip": "Components\\Pages\\Shiftreport.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAABcAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T03:36:49.631Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T03:36:49.631Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "ShiftEntry.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\ShiftEntry.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\ShiftEntry.razor",
               "ToolTip": "C:\\GitHub\\C-666\\coffeShopProgram\\last practice\\EmployeeSystem\\Components\\Pages\\ShiftEntry.razor",
               "RelativeToolTip": "Components\\Pages\\ShiftEntry.razor",
-              "ViewState": "AgIAANgAAAAAAAAAAAAAAGcAAAALAAAAAAAAAA==",
+              "ViewState": "AgIAANgAAAAAAAAAAAAAAO8AAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-12T03:36:25.093Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T03:36:25.093Z"
             },
             {
               "$type": "Document",
@@ -204,8 +195,7 @@
               "RelativeToolTip": "Components\\model\\Utilities.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAxwBAAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T03:35:23.99Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T03:35:23.99Z"
             },
             {
               "$type": "Document",
@@ -217,8 +207,7 @@
               "RelativeToolTip": "Components\\model\\EmployeeSystem.cs",
               "ViewState": "AgIAAFEAAAAAAAAAAAAmwFwAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T03:35:02.218Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T03:35:02.218Z"
             },
             {
               "$type": "Document",
@@ -230,8 +219,7 @@
               "RelativeToolTip": "Components\\model\\enumShiftype.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T03:34:43.183Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T03:34:43.183Z"
             }
           ]
         }

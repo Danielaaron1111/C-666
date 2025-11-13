@@ -1,0 +1,183 @@
+﻿@page "/collection"
+<PageTitle>Excursion Collection</PageTitle>
+@rendermode InteractiveServer
+
+@using eToursWebApp.Model;
+
+
+<h1>Excursion Collection</h1>
+
+@if (feedBackMsg.Length > 0)
+{
+    <div class="alert alert-info">
+        <p>@feedBackMsg</p>
+    </div>
+}
+
+@if (errorMsgs.Count > 0)
+{
+    <div class="alert alert-danger">
+        <p>Please fix the following issues:</p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+<!-- 
+Activity 3
+
+create the input form as shown in question (exact layout is not required)
+use the enum class to create the select control
+
+-->
+@* Create the mockup form image shown below. Do not use EditForm.
+Validate all data. This should be done in the event method.
+Add any necessary properties/variables to the page for your form.
+Collect and display all possible errors at one time. An area to display a summary of errors has already been placed on the page.
+Append the data to the good csv file located in the Data folder if the data passes validation. *@
+<fieldset>
+    <div class="row">
+        <div class="offset-4 col-md-2">
+            <label for="title">Excursion Name</label>
+        </div>
+        <div class="col-md-2">
+            <input type="text" id="excursionname" placeholder="enter name"
+                   @bind="excursionname" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class=" offset-4 col-md-2">
+            <label for="years">Excursion duration in hours</label>
+        </div>
+        <div class="col-md-2">
+           
+            <input type="number" id="years" placeholder="eg 3.4" style="width:75px;"
+                   step="0.1" @bind="excursionDuration" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class=" offset-4 col-md-2">
+            <label for="startdate">Excursion Date</label>
+        </div>
+        <div class="col-md-2">
+            <input type="date" id="startdate"
+                   @bind="excursionDate" />
+        </div>
+    </div>
+
+    <select id="levels" @bind="excursiontypee">
+      
+        @foreach (var item in Enum.GetValues(typeof(ExcursionType)))
+        {
+            
+            <option value="@item">@item</option>
+        }
+    </select>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-outline-primary rounded-pill"
+                    @onclick="OnCollect">
+                Submit
+            </button>
+            &nbsp;&nbsp
+            <button type="submit" class="btn btn-outline-secondary rounded-pill"
+                    @onclick="OnClear">
+                Clear
+            </button>
+
+        </div>
+    </div>
+
+</fieldset>
+
+
+
+
+
+@code {
+    private string feedBackMsg = "";
+    private List<string> errorMsgs = new List<string>();
+
+    [Inject]
+    private IJSRuntime? jSRuntime { get; set; }
+
+    // Activity 3
+
+    // add any require variables to process your form
+    private string excursionname = "";
+    private double excursionDuration = 0;
+    private DateTime excursionDate = DateTime.Today;
+    private ExcursionType excursiontypee = ExcursionType.Walk; //default value 
+
+    protected override void OnInitialized()
+    { 
+        base.OnInitialized();
+        // Activity 3
+
+        // default excursion date to Today
+        excursionDate = DateTime.Today;
+    }
+
+    private Exception GetInnerException(Exception ex)
+    {
+        while (ex.InnerException != null)
+            ex = ex.InnerException;
+        return ex;
+    }
+
+    //Activity 3
+
+    // add needed event method for collecting, validating and saving data.
+    // i forget to add the saving file part but there is some code here to validate the form
+
+
+    protected void OnCollect()
+    {
+        feedBackMsg = "";
+        errorMsgs.Clear();
+
+        if (string.IsNullOrWhiteSpace(excursionname))
+        {
+            errorMsgs.Add("Excursion name cannot be empty.");
+        }
+
+        if (excursionDuration <= 0)
+        {
+            errorMsgs.Add("Duration must be a non-zero positive value.");
+        }
+
+        if (excursionDate < DateTime.Today)
+        {
+            errorMsgs.Add("Excursion date cannot be in the past.");
+        }
+
+        if (errorMsgs.Count == 0)
+        {
+            feedBackMsg = "Excursion data collected successfully!";
+        }
+    }
+
+    protected void OnClear()
+    {
+        excursionname = "";
+        excursionDuration = 0;
+        excursionDate = DateTime.Today;
+        excursiontypee = ExcursionType.Walk; //i initialize to default value
+    }
+
+
+
+
+
+
+    // add needed event method to clear the form
+
+   
+}

@@ -1,0 +1,182 @@
+﻿@page "/schedule"
+<PageTitle>Excursion Schedule</PageTitle>
+@rendermode InteractiveServer
+
+@using eToursWebApp.Model
+
+<h1>Excursion Schedule</h1>
+
+@if (feedBackMsg.Length > 0)
+{
+    <div class="alert alert-info">
+        <p>@feedBackMsg</p>
+    </div>
+}
+
+@if (errorMsgs.Count > 0)
+{
+    <div class="alert alert-danger">
+        <p>Please fix the following issues:</p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+<!--
+    Activity 2
+    create a table display for the data, see image in question for layout
+    create separate messages if a) the data file does not exist and 
+                                b) the data file exists but is empty 
+-->
+@if (excursions == null)
+{
+    @* a *@
+    <div class="row alert alert-info text-center">
+        <p>Open an employment history file</p>
+    </div>
+}
+else if (excursions.Count == 0)
+{
+    @* b *@
+    <div class="row alert alert-info text-center">
+        <p>Employment history file is empty, no data.</p>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="offset-2 col-md-8 overflow-scroll" style="height:450px">
+            <table class="table table-striped">
+                <thead style="position:sticky; top: 0; background-color:white;">
+                    <tr>
+                        <th>Name</th>
+                        <th>Excursion Date</th>
+                        <th>Duration</th>
+                        <th>Tour Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var excursionRow in excursions)
+                    {
+                        <tr>
+                            <td>@excursionRow.Name</td>
+                            <td>@excursionRow.ExcursionDate.ToString("MMM dd, yyyy")</td>
+                            <td>@excursionRow.Duration</td>
+                            <td>@excursionRow.TourType</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@if (!string.IsNullOrWhiteSpace(feedBackMsg))
+{
+    <div class="row alert alert-success text-center">
+        <p>@feedBackMsg</p>
+    </div>
+}
+
+@if (errorMsgs.Count > 0)
+{
+    <div class="row alert alert-danger">
+        <p>Please fix the following issues:</p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                <!--
+                This is a List collection
+                there is only one component, the string
+                therefore you would NOT need the .Value
+                -->
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private string feedBackMsg = "";
+    private List<string> errorMsgs = new List<string>();
+    private List<Excursion> excursions;
+    
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        //test files for assessment
+
+        // string filename = @"./Data/eTourGood.csv";
+        // string filename = @"./Data/eTourEmpty.csv";
+        string filename = @"./Data/eTourGoodBad.csv";
+        // string filename = @"./Data/eTourNotThere.csv";
+
+        //Activity 2
+
+        //write the code to 
+        //  a) read the file
+        //  b) place the records in a collection to display in the table above
+        //  c) user friendly error handling is required.
+        //  d) all records in the file must be handled, processed as good or bad
+
+        Reading(filename);
+    }
+    private void Reading(string filename)
+    {
+        excursions = new List<Excursion>();
+        errorMsgs.Clear();
+        feedBackMsg = "";
+        try
+        {
+            if (System.IO.File.Exists(filename))
+            {
+                excursions = new();
+                string[] userdata = System.IO.File.ReadAllLines(filename);
+
+                foreach (string line in userdata)
+                {
+                    try
+                    {
+                        Excursion excursion = Excursion.Parse(line);
+                        excursions.Add(excursion);
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMsgs.Add($"Error parsing record: {GetInnerException(ex).Message}");
+                    }
+                }
+
+                if (excursions.Count > 0)
+                {
+                    feedBackMsg = $"Successfully loaded {excursions.Count} excursion(s).";
+                }
+            }
+            else
+            {
+                errorMsgs.Add($"System Error: File {filename} does not exist.");
+            }
+        }
+        //id add this but not sure if its needed we have not seen this getinnerexpection before
+        catch (Exception ex)
+        {
+            errorMsgs.Add($"System Error: {GetInnerException(ex).Message}");
+        }
+    }
+
+    //DO WE HAVE TO ADD TE INNER EXEPTION METHOD AGAIN???? 
+    private Exception GetInnerException(Exception ex)
+    {
+        while (ex.InnerException != null)
+            ex = ex.InnerException;
+        return ex;
+    }
+}
+
+
+    
+            
