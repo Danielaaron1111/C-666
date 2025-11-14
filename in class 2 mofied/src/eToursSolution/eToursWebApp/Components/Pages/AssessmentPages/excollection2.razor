@@ -1,0 +1,316 @@
+﻿@page "/collection"
+<PageTitle>Excursion Collection</PageTitle>
+@rendermode InteractiveServer
+
+@using eToursWebApp.Model;
+
+
+<h1>Excursion Collection</h1>
+
+@if (feedBackMsg.Length > 0)
+{
+    <div class="alert alert-info">
+        <p>@feedBackMsg</p>
+    </div>
+}
+
+@if (errorMsgs.Count > 0)
+{
+    <div class="alert alert-danger">
+        <p>Please fix the following issues:</p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+
+<!--
+Activity 3
+
+create the input form as shown in question (exact layout is not required)
+use the enum class to create the select control
+
+ public Excursion(string name, DateTime excursiondate, double duration, ExcursionType tourtype)
+        {
+            if (excursiondate < DateTime.Today)
+            {
+                throw new ArgumentException($"Excursion date {excursiondate} is invalid. Must be a date greater than today", "ExcurationDate");
+            }
+            Name = name;
+            ExcursionDate = excursiondate;
+            Duration = duration;
+            TourType = tourtype;
+        }
+
+
+
+-->
+<div class="row mb-3">
+    <label class="col-md-3 col-form-label">Excursion Name</label>
+    <div class="col-md-4">
+        <input type="text" class="form-control"
+               @bind="name"
+               placeholder="enter name" />
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-md-3 col-form-label">Excursion Date</label>
+    <div class="col-md-4">
+        <input type="date" class="form-control"
+               @bind="excursiondate"
+               placeholder="" />
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-md-3 col-form-label">Excursion Duration</label>
+    <div class="col-md-4">
+        <input type="number" class="form-control"
+               @bind="duration"
+               placeholder="eg. 3.5" />
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-md-3 col-form-label">Excursion Type</label>
+    <div class="col-md-4">
+        <select class="form-control" @bind="tourtype">
+            @foreach (var type in Enum.GetValues(typeof(ExcursionType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <button type="button" class="btn btn-primary"
+                @onclick="OnCollect">
+            Submit
+        </button>
+        &nbsp;&nbsp;
+        <button type="button" class="btn btn-secondary"
+                @onclick="OnClear">
+            Clear
+        </button>
+    </div>
+</div>
+
+
+
+
+
+
+@code {
+
+
+    private string feedBackMsg = "";
+
+    private List<string> errorMsgs = new List<string>();
+
+    [Inject]
+    private IJSRuntime jSRuntime { get; set; }
+
+    // Activity 3
+
+    // add any require variables to process your form
+    private string name = "";
+    private DateTime excursiondate = DateTime.Today;
+    private double duration = 0;
+    private ExcursionType tourtype = ExcursionType.Walk;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // Activity 3
+
+        // default excursion date to Today
+
+    }
+
+    private void OnClear()
+    {
+        // Ask user to confirm
+
+
+
+        name = "";
+        excursiondate = DateTime.Today;
+        duration = 0;
+        tourtype = ExcursionType.Walk;
+        //also clear any messages
+        feedBackMsg = "";
+        errorMsgs.Clear();
+
+
+    }
+
+    private void OnCollect()
+    {
+        // Clear previous messages before validation
+        feedBackMsg = "";
+        errorMsgs.Clear();
+
+        // ===========================================
+        // STEP 1: VALIDATION
+        // ===========================================
+        // Validate each field and collect all errors
+        // Instead of using 'return' to exit early, we use a flag approach
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            errorMsgs.Add("Excursion Name is required.");
+        }
+        if (excursiondate < DateTime.Today)
+        {
+            errorMsgs.Add("Excursion Date must be today or a future date.");
+        }
+        if (duration <= 0)
+        {
+            errorMsgs.Add("Excursion Duration must be a positive number.");
+        }
+
+        // ===========================================
+        // STEP 2: PROCEED ONLY IF VALIDATION PASSED
+        // ===========================================
+        // Instead of: if (errorMsgs.Count > 0) { return; }
+        // We use: if (errorMsgs.Count == 0) { /* process data */ }
+        // This avoids the 'return' statement and makes the flow clearer
+
+        if (errorMsgs.Count == 0)  // ← Only execute if NO errors found
+        {
+            // ===========================================
+            // STEP 3: TRY TO SAVE THE DATA
+            // ===========================================
+            try
+            {
+                // Create new Excursion object using the greedy constructor
+                Excursion newExcursion = new Excursion(name, excursiondate, duration, tourtype);
+
+                // Convert excursion object to CSV format using ToString() method
+                string csvLine = newExcursion.ToString();
+
+                // Define the file path where we'll save the data
+                string filename = @"./Data/eTourGood.csv";
+
+
+                // ============================================================
+                // CSV WRITING METHODS - DIFFERENT APPROACHES
+                // ============================================================
+
+                // METHOD 1: File.AppendAllText (CURRENTLY USED) ✓
+                // --------------------------------------------------------
+                // Pros: Simple, one-line solution, automatically handles file creation
+                // Cons: Opens/closes file each time (slower for multiple writes)
+                // Best for: Single writes or infrequent appends
+                File.AppendAllText(filename, csvLine + Environment.NewLine);
+
+
+                // METHOD 2: StreamWriter with AppendText (COMMENTED)
+                // --------------------------------------------------------
+                // Pros: More control over writing process, can write multiple lines efficiently
+                // Cons: Slightly more verbose code
+                // Best for: Writing multiple records at once
+                // using (StreamWriter writer = File.AppendText(filename))
+                // {
+                //     writer.WriteLine(csvLine);
+                //     // You could write multiple lines here if needed:
+                //     // writer.WriteLine(anotherCsvLine);
+                //     // The 'using' statement ensures the file is properly closed
+                // }
+
+
+                // METHOD 3: StreamWriter with custom buffer (COMMENTED)
+                // --------------------------------------------------------
+                // Pros: Best performance for large files, custom buffer size (65536 bytes)
+                // Cons: More complex, overkill for small files
+                // Best for: Writing large amounts of data
+                // using (StreamWriter writer = new StreamWriter(filename, append: true, Encoding.UTF8, 65536))
+                // {
+                //     writer.WriteLine(csvLine);
+                //     // The 'append: true' parameter means add to end of file (don't overwrite)
+                //     // The 65536 is the buffer size in bytes (64KB)
+                // }
+
+
+                // METHOD 4: File.WriteAllLines for multiple records (COMMENTED)
+                // --------------------------------------------------------
+                // Pros: Can write entire collection at once
+                // Cons: Overwrites file, not suitable for appending single records
+                // Best for: Saving entire collection of excursions
+                // List<string> allLines = new List<string>();
+                // if (File.Exists(filename))
+                // {
+                //     allLines.AddRange(File.ReadAllLines(filename));
+                // }
+                // allLines.Add(csvLine);
+                // File.WriteAllLines(filename, allLines);
+
+
+                // ============================================================
+                // NEWLINE CHARACTER OPTIONS
+                // ============================================================
+                // Option A: Environment.NewLine (RECOMMENDED) ✓
+                // - Automatically uses correct line ending for the OS
+                // - Windows: \r\n  |  Linux/Mac: \n
+                // - Most portable and professional approach
+
+                // Option B: "\n" (ALTERNATIVE)
+                // - Universal line ending, works on most systems
+                // - File.AppendAllText(filename, csvLine + "\n");
+
+                // Option C: "\r\n" (WINDOWS SPECIFIC)
+                // - Explicitly Windows line ending
+                // - File.AppendAllText(filename, csvLine + "\r\n");
+
+
+                // ===========================================
+                // STEP 4: SUCCESS - SHOW MESSAGE AND CLEAR FORM
+                // ===========================================
+                feedBackMsg = "Excursion saved successfully!";
+
+                // Clear the form after successful save
+                name = "";
+                excursiondate = DateTime.Today;
+                duration = 0;
+                tourtype = ExcursionType.Walk;
+
+            }
+            catch (Exception ex)
+            {
+                // ===========================================
+                // STEP 5: HANDLE ANY ERRORS DURING SAVE
+                // ===========================================
+                // Get the innermost exception for clearer error message
+                Exception innerEx = GetInnerException(ex);
+                errorMsgs.Add($"Error saving excursion: {innerEx.Message}");
+
+                // Note: We don't use 'return' here either
+                // The catch block handles the error and the method naturally ends
+            }
+        }
+        // If errorMsgs.Count > 0, we skip the entire if block above
+        // and the method ends naturally without needing 'return'
+    }
+
+
+    private Exception GetInnerException(Exception ex)
+    {
+        // This helper method drills down to find the root cause of an exception
+        // Some exceptions wrap other exceptions (InnerException)
+        // We loop until we find the deepest one
+        while (ex.InnerException != null)
+            ex = ex.InnerException;
+        return ex;
+    }
+
+    //Activity 3
+
+    // add needed event method for collecting, validating and saving data.
+
+
+    // add needed event method to clear the form
+
+}

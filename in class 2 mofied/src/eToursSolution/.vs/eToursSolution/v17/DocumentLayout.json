@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\excursionschedule.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\components\\pages\\assessmentpages\\excursionschedule.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\report3.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\components\\pages\\assessmentpages\\report3.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\collection3.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\components\\pages\\assessmentpages\\collection3.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\report2.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\components\\pages\\assessmentpages\\report2.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\excollection2.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\components\\pages\\assessmentpages\\excollection2.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\excursioncollection.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -13,6 +25,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\model\\excursion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\model\\excursion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|c:\\github\\c-666\\in class 2 mofied\\src\\etourssolution\\etourswebapp\\components\\pages\\assessmentpages\\excursionschedule.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F250FCAD-E128-4DD2-BC73-94522D523792}|eToursWebApp\\eToursWebApp.csproj|solutionrelative:etourswebapp\\components\\pages\\assessmentpages\\excursionschedule.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,36 +38,89 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "collection3.razor",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\collection3.razor",
+              "RelativeDocumentMoniker": "eToursWebApp\\Components\\Pages\\AssessmentPages\\collection3.razor",
+              "ToolTip": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\collection3.razor",
+              "RelativeToolTip": "eToursWebApp\\Components\\Pages\\AssessmentPages\\collection3.razor",
+              "ViewState": "AgIAAL8BAAAAAAAAAAAAAN0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-14T12:59:40.24Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "report3.razor",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\report3.razor",
+              "RelativeDocumentMoniker": "eToursWebApp\\Components\\Pages\\AssessmentPages\\report3.razor",
+              "ToolTip": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\report3.razor",
+              "RelativeToolTip": "eToursWebApp\\Components\\Pages\\AssessmentPages\\report3.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-14T12:59:27.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "report2.razor",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\report2.razor",
+              "RelativeDocumentMoniker": "eToursWebApp\\Components\\Pages\\AssessmentPages\\report2.razor",
+              "ToolTip": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\report2.razor",
+              "RelativeToolTip": "eToursWebApp\\Components\\Pages\\AssessmentPages\\report2.razor",
+              "ViewState": "AgIAAPYAAAAAAAAAAAAuwAwBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-14T12:56:27.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "excollection2.razor",
+              "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\excollection2.razor",
+              "RelativeDocumentMoniker": "eToursWebApp\\Components\\Pages\\AssessmentPages\\excollection2.razor",
+              "ToolTip": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\excollection2.razor",
+              "RelativeToolTip": "eToursWebApp\\Components\\Pages\\AssessmentPages\\excollection2.razor",
+              "ViewState": "AgIAAB0BAAAAAAAAAAAAADsBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-14T12:54:45.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "ExcursionCollection.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\ExcursionCollection.razor",
               "RelativeDocumentMoniker": "eToursWebApp\\Components\\Pages\\AssessmentPages\\ExcursionCollection.razor",
               "ToolTip": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\ExcursionCollection.razor",
               "RelativeToolTip": "eToursWebApp\\Components\\Pages\\AssessmentPages\\ExcursionCollection.razor",
-              "ViewState": "AgIAAL4AAAAAAAAAAAAAANwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAAAJcAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-13T02:12:45.156Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Excursion.cs",
               "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Model\\Excursion.cs",
               "RelativeDocumentMoniker": "eToursWebApp\\Model\\Excursion.cs",
               "ToolTip": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Model\\Excursion.cs",
               "RelativeToolTip": "eToursWebApp\\Model\\Excursion.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAqwCQAAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAACsAAAAAAAAAAAAiwEcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T02:03:21.762Z"
+              "WhenOpened": "2025-11-13T02:03:21.762Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "ExcursionSchedule.razor",
               "DocumentMoniker": "C:\\GitHub\\C-666\\in class 2 mofied\\src\\eToursSolution\\eToursWebApp\\Components\\Pages\\AssessmentPages\\ExcursionSchedule.razor",
               "RelativeDocumentMoniker": "eToursWebApp\\Components\\Pages\\AssessmentPages\\ExcursionSchedule.razor",

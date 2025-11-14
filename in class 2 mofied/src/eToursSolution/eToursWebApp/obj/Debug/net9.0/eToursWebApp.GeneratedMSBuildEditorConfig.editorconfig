@@ -24,12 +24,28 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/AssessmentPages/collection3.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3Nlc3NtZW50UGFnZXNcY29sbGVjdGlvbjMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/AssessmentPages/excollection2.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3Nlc3NtZW50UGFnZXNcZXhjb2xsZWN0aW9uMi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/AssessmentPages/ExcursionCollection.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3Nlc3NtZW50UGFnZXNcRXhjdXJzaW9uQ29sbGVjdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/AssessmentPages/ExcursionSchedule.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3Nlc3NtZW50UGFnZXNcRXhjdXJzaW9uU2NoZWR1bGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/AssessmentPages/report2.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3Nlc3NtZW50UGFnZXNccmVwb3J0Mi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/AssessmentPages/report3.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3Nlc3NtZW50UGFnZXNccmVwb3J0My5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/GitHub/C-666/in class 2 mofied/src/eToursSolution/eToursWebApp/Components/Pages/Counter.razor]
