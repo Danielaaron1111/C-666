@@ -8,32 +8,24 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\daran\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/danielaaron/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\GitHub\\c-666\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\TestingMaterial.csproj",
+      "projectUniqueName": "/Users/danielaaron/1517 C# App development all folders/C-666/ConsoleAppsForTesting/TestingMaterial/TestingMaterial.csproj",
       "projectName": "TestingMaterial",
-      "projectPath": "C:\\GitHub\\c-666\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\TestingMaterial.csproj",
-      "packagesPath": "C:\\Users\\daran\\.nuget\\packages\\",
-      "outputPath": "C:\\GitHub\\c-666\\C-666\\ConsoleAppsForTesting\\TestingMaterial\\obj\\",
+      "projectPath": "/Users/danielaaron/1517 C# App development all folders/C-666/ConsoleAppsForTesting/TestingMaterial/TestingMaterial.csproj",
+      "packagesPath": "/Users/danielaaron/.nuget/packages/",
+      "outputPath": "/Users/danielaaron/1517 C# App development all folders/C-666/ConsoleAppsForTesting/TestingMaterial/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\daran\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/danielaaron/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -73,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
