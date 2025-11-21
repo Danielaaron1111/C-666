@@ -1,0 +1,280 @@
+================================================================================
+RENO ASSIGNMENT - COMPLETE SOLUTION WITH REQUIREMENTS
+Exercise 4 - Database Querying Based on Filters
+================================================================================
+
+This document shows the complete solution with exact assignment requirements
+quoted for each section.
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1. Program.cs - Connection String Setup
+2. RenoSystemExtensions.cs - Dependency Injection
+3. SupplyServices.cs - BLL Service Methods
+4. JobServices.cs - BLL Service Methods
+5. Query.razor - Main Query Page
+6. NavMenu.razor - Navigation Update
+7. Home.razor - Customized Home Page
+
+
+================================================================================
+FILE 1: RenoTracker\Program.cs
+================================================================================
+
+README REQUIREMENT (Section B - Line 119-128):
+"Create your database connection string in the appsettings.json file
+
+ConnectionStrings: {
+    RenoDB : Server=xxxx;Database=Renos;Trusted_Connection=true;...
+}
+
+Replace the Server=xxxx in the above with your server name."
+
+SOLUTION:
+----------
+
+using RenoTracker.Components;
+
+var builder = WebApplication.CreateBuilder(args);
+
+//retrieve the connection string from the appsetting.json
+//the connection string will be passed to the class library using
+//  the encapsulated extension method
+//the connection string will be registered to get access to the database
+
+// MUST MATCH the key in appsettings.json ("RenosDB")
+string connectionstring = builder.Configuration.GetConnectionString("RenosDB");
+
+//get access to any extended services
+//gain access to any available services that have been registered in IServiceCollections
+//the technique used in this example has the registrations encapsulated
+//  within the class library via an extension method
+builder.Services.RenoSystemExtensionServices(options => options.UseSqlServer(connectionstring));
+
+// Add services to the container.
+builder.Services.AddRazorComponents();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+}
+
+app.UseAntiforgery();
+
+app.MapStaticAssets();
+app.MapRazorComponents<App>();
+
+app.Run();
+
+
+================================================================================
+FILE 2: RenoSystem\RenoSystemExtensions.cs
+================================================================================
+
+README REQUIREMENT (Section C - Line 69-77):
+"Create a class called RenoSystemExtensions at the root of the application library.
+Change the class to be public static.
+
+Add the static method RenoSystemExtensionServices.
+
+Within the method, you will register your DbContext and the AddTransient factory
+for your BLL service classes."
+
+SOLUTION:
+----------
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+#region Additional Namespaces
+using RenoSystem.BLL;
+using RenoSystem.ENTITIES;
+#endregion
+
+namespace RenoSystem
+{
+    // README: "Change the class to be public static"
+    public static class RenoSystemExtensionsServices
+    {
+        // README: "Add the static method RenoSystemExtensionServices"
+        public static void RenosSystemExtensionServices(this IServiceCollection services,
+                Action<DbContextOptionsBuilder> options)
+        {
+            // README: "register your DbContext"
+            services.AddDbContext<RenosContext>(options);
+
+            // README: "AddTransient factory for your BLL service classes"
+            services.AddTransient<JobServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<RenosContext>();
+                return new JobServices(context);
+            });
+
+            services.AddTransient<SupplyServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<RenosContext>();
+                return new SupplyServices(context);
+            });
+        }
+    }
+}
+
+
+================================================================================
+FILE 3: RenoSystem\BLL\JobServices.cs
+================================================================================
+
+README REQUIREMENT (Section D - Line 90-99):
+"Create a new service class called JobServices in your BLL folder.
+This class will contain one service method to return the complete list of Jobs.
+This query list will be sorted alphabetically by Description.
+
+In this class, create a public method called Job_GetList() that:
+- Has no parameters
+- You will need to include the associated Client instance for each job.
+- Returns an ordered collection (by Description) of all records of the Job entity."
+
+SOLUTION:
+----------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
+#region Additional Namespaces
+using RenoSystem.ENTITIES;
+#endregion
+
+namespace RenoSystem.BLL
+{
+    // README: "Create a new service class called JobServices"
+    public class JobServices
+    {
+        // README (Line 85): "internal constructor that requires an instance of the RenosContext"
+        private readonly RenosContext _context;
+
+        internal JobServices(RenosContext context)
+        {
+            _context = context;
+        }
+
+        // README: "create a public method called Job_GetList()"
+        // README: "Has no parameters"
+        // README: "include the associated Client instance for each job"
+        // README: "Returns an ordered collection (by Description)"
+        public IEnumerable<Job> Job_GetList()
+        {
+            return _context.Jobs
+                .Include(j => j.Client)          // README: "include the associated Client instance"
+                .OrderBy(j => j.Description)     // README: "sorted alphabetically by Description"
+                .ToList();
+        }
+    }
+}
+
+
+================================================================================
+FILE 4: RenoSystem\BLL\SupplyServices.cs
+================================================================================
+
+README REQUIREMENT (Section D - Line 100-115):
+"Create a new service class called SupplyServices in your BLL folder.
+This class will contain two service methods: to return the page list of supplies
+for a specified job ordered by Material and another to return the total number
+of materials for a specified job.
+
+Create a public method called GetByJobId(int, int, int) that:
+- Has one parameter for the data and 2 parameters to handle paging
+- Returns a collection of Supply records, ordered alphabetically by Material,
+  where the JobId equals the parameter value for the current page to be displayed.
+- The data parameter value will be an integer job id value.
+
+Create a public method called GetJobSupplyCount(int) that:
+- Has one parameter for the data
+- Returns the total count of records where the JobId equals the parameter."
+
+SOLUTION:
+----------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+#region Additional Namespaces
+using RenoSystem.ENTITIES;
+#endregion
+
+namespace RenoSystem.BLL
+{
+    // README: "Create a new service class called SupplyServices"
+    public class SupplyServices
+    {
+        private readonly RenosContext _context;
+
+        internal SupplyServices(RenosContext context)
+        {
+            _context = context;
+        }
+
+        // README: "Create a public method called GetByJobId(int, int, int)"
+        // README: "Has one parameter for the data and 2 parameters to handle paging"
+        public List<Supply> GetByJobId(int jobId, int pageNumber, int pageSize)
+        {
+            // Validation (required by README Line 88)
+            if (jobId <= 0)
+            {
+                throw new ArgumentException($"Job ID {jobId} is invalid. Must be greater than 0.");
+            }
+
+            // Calculate skip for paging
+            // Page 1: skip = 0, Page 2: skip = 10, Page 3: skip = 20
+            int skip = (pageNumber - 1) * pageSize;
+
+            // README: "Returns a collection of Supply records"
+            // README: "ordered alphabetically by Material"
+            // README: "where the JobId equals the parameter value"
+            // README: "for the current page to be displayed"
+            IEnumerable<Supply> info = _context.Supplies
+                                                .Where(x => x.JobId == jobId)     // Filter by JobId
+                                                .OrderBy(x => x.Material)          // Order by Material
+                                                .Skip(skip)                        // Skip records for previous pages
+                                                .Take(pageSize);                   // Take only pageSize records
+
+            return info.ToList();
+        }
+
+        // README: "Create a public method called GetJobSupplyCount(int)"
+        // README: "Has one parameter for the data"
+        // README: "Returns the total count of records where the JobId equals the parameter"
+        public int GetJobSupplyCount(int jobId)
+        {
+            return _context.Supplies
+                           .Where(x => x.JobId == jobId)
+                           .Count();
+        }
+    }
+}
+
+
+================================================================================
+SUMMARY OF CHANGES
+================================================================================
+
+✅ Program.cs - Fixed connection string key to match appsettings.json
+✅ RenoSystemExtensions.cs - Registered both JobServices and SupplyServices
+✅ JobServices.cs - Implemented Job_GetList() with Include() for Client data
+✅ SupplyServices.cs - Implemented GetByJobId() with paging and GetJobSupplyCount()
+
+NEXT STEPS:
+- Create Query.razor page
+- Update NavMenu.razor
+- Customize Home.razor
+
+================================================================================
+END OF DOCUMENT
+================================================================================
