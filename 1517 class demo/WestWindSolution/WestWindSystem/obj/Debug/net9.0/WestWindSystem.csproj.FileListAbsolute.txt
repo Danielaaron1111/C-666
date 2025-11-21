@@ -1,0 +1,13 @@
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\bin\Debug\net9.0\WestWindSystem.deps.json
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\bin\Debug\net9.0\WestWindSystem.dll
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\bin\Debug\net9.0\WestWindSystem.pdb
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.csproj.AssemblyReference.cache
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.AssemblyInfoInputs.cache
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.AssemblyInfo.cs
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.csproj.CoreCompileInputs.cache
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.sourcelink.json
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.dll
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\refint\WestWindSystem.dll
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\WestWindSystem.pdb
+C:\GitHub\1517-sep-2025-dwelch-A02\WestWindSolution\WestWindSystem\obj\Debug\net9.0\ref\WestWindSystem.dll
