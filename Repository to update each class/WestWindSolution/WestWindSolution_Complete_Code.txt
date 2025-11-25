@@ -1,0 +1,1619 @@
+================================================================================
+                    WESTWIND SOLUTION - COMPLETE CODE DOCUMENTATION
+================================================================================
+
+SOLUTION NAME: WestWindSolution
+LOCATION: c:\GitHub\C-666\Repository to update each class\WestWindSolution
+
+================================================================================
+                              SOLUTION STRUCTURE
+================================================================================
+
+WestWindSolution/
+├── WestWindSolution.sln
+├── WestWindApp/
+│   ├── WestWindApp.csproj
+│   └── Program.cs
+└── WestWindSystem/
+    ├── WestWindSystem.csproj
+    ├── WestWindExtensions.cs
+    ├── BLL/
+    │   ├── BuildVersionServices.cs
+    │   ├── RegionServices.cs
+    │   ├── ShipperServices.cs
+    │   └── ShipmentServices.cs
+    ├── DAL/
+    │   └── WestWindContext.cs
+    └── Entities/
+        ├── Address.cs
+        ├── BuildVersion.cs
+        ├── Category.cs
+        ├── Customer.cs
+        ├── Employee.cs
+        ├── ManifestItem.cs
+        ├── Order.cs
+        ├── OrderDetail.cs
+        ├── Payment.cs
+        ├── PaymentType.cs
+        ├── Product.cs
+        ├── Region.cs
+        ├── Shipment.cs
+        ├── Shipper.cs
+        ├── Supplier.cs
+        └── Territory.cs
+
+================================================================================
+                              PROJECT DETAILS
+================================================================================
+
+PROJECT 1: WestWindApp
+Type: Blazor Web Application (.NET 9.0)
+GUID: {730877C1-D41B-43FB-A874-33B987B70F62}
+Dependencies: WestWindSystem
+
+PROJECT 2: WestWindSystem
+Type: Class Library (.NET 9.0)
+GUID: {0AF7ED25-8472-4D93-BD74-6140659D2986}
+Dependencies: Microsoft.EntityFrameworkCore.SqlServer
+
+================================================================================
+                          SOLUTION FILE CONTENT
+================================================================================
+
+FILE: WestWindSolution.sln
+--------------------------------------------------------------------------------
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36212.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WestWindApp", "WestWindApp\WestWindApp.csproj", "{730877C1-D41B-43FB-A874-33B987B70F62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WestWindSystem", "WestWindSystem\WestWindSystem.csproj", "{0AF7ED25-8472-4D93-BD74-6140659D2986}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{730877C1-D41B-43FB-A874-33B987B70F62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730877C1-D41B-43FB-A874-33B987B70F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730877C1-D41B-43FB-A874-33B987B70F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730877C1-D41B-43FB-A874-33B987B70F62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF7ED25-8472-4D93-BD74-6140659D2986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF7ED25-8472-4D93-BD74-6140659D2986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF7ED25-8472-4D93-BD74-6140659D2986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF7ED25-8472-4D93-BD74-6140659D2986}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0ACAC01-D9F3-467C-ABFA-866BD6407AAD}
+	EndGlobalSection
+EndGlobal
+
+================================================================================
+                         WESTWINDAPP PROJECT CODE
+================================================================================
+
+FOLDER: WestWindApp
+PROJECT: WestWindApp
+
+FILE: Program.cs
+PATH: WestWindApp/Program.cs
+--------------------------------------------------------------------------------
+
+using WestWindApp.Components;
+
+#region Additional Namespaces
+using Microsoft.EntityFrameworkCore;
+using WestWindSystem;
+#endregion
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+//retrieve the connection string from the appsetting.json
+//the connection string will be passed to the class library using
+//  the encapsulated extension method
+//the connection string will be registered to get access to the database
+string connectionstring = builder.Configuration.GetConnectionString("WWDB");
+
+//get access to any extended services
+//gain access to any available services that have been registered in IServiceCollections
+//the technique used in this example has the registrations encapsulated
+//  within the class library via an extension method
+//technically, you could put all the setup that is in the extension method
+//  here in this file
+builder.Services.WestWindExtensionServices(options => options.UseSqlServer(connectionstring));
+
+
+// Add services to the container.
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+}
+
+
+app.UseAntiforgery();
+
+app.MapStaticAssets();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
+app.Run();
+
+================================================================================
+                       WESTWINDSYSTEM PROJECT CODE
+================================================================================
+
+FOLDER: WestWindSystem
+PROJECT: WestWindSystem
+
+================================================================================
+FILE: WestWindExtensions.cs
+PATH: WestWindSystem/WestWindExtensions.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+#region Additional Namespaces
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using WestWindSystem.BLL;
+using WestWindSystem.DAL;
+#endregion
+
+namespace WestWindSystem
+{
+    public static class WestWindExtensions
+    {
+        //this class can hold an set of extension methods
+        //this sample creates an extension method that will add services
+        //  to IServiceCollection
+        //this method will be called from an separate project to
+        //  gain data from the WestWind database
+        //In this demo, the call will be done in the WestWindApp Program.cs file
+        //this method will do 2 things:
+        //  a) register the context connection string
+        //  b) register ALL services that I create within the BLL class(es)
+
+        public static void WestWindExtensionServices(this IServiceCollection services,
+                Action<DbContextOptionsBuilder> options)
+        {
+            //handle the connection string
+            //add my context class to the services (IServiceCollection)
+            //we wish it to use the string I send in on each creation of the
+            //      instance of my DbContext class
+            services.AddDbContext<WestWindContext>(options);
+
+            //to register a service class you will use the IServiceCollection method
+            //  .AddTransient<T> where T is the service class name
+            //for any outside user coding that requires access to one or more services
+            //  you MUST register the service class, hence all public methods within the class
+            //  will be available
+            services.AddTransient<BuildVersionServices>((serviceProvider) =>
+            {
+                //obtain the context information already registered in
+                //      IServiceCollection (see above)
+                var context = serviceProvider.GetService<WestWindContext>();
+
+                //create an instance of the services class when the service is requested
+                //once the class has been registered, it can be used by ANY outside
+                //  source as long as the outside source has referenced the extension
+                //  class method (see your Program.cs in your wb app)
+                return new BuildVersionServices(context);
+            });
+
+            services.AddTransient<RegionServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<WestWindContext>();
+                return new RegionServices(context);
+            });
+            services.AddTransient<ShipmentServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<WestWindContext>();
+                return new ShipmentServices(context);
+            });
+            services.AddTransient<ShipperServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<WestWindContext>();
+                return new ShipperServices(context);
+            });
+        }
+    }
+}
+
+================================================================================
+                              BLL FOLDER CODE
+================================================================================
+
+FOLDER: WestWindSystem/BLL
+DESCRIPTION: Business Logic Layer - Service classes for data operations
+
+--------------------------------------------------------------------------------
+FILE: BuildVersionServices.cs
+PATH: WestWindSystem/BLL/BuildVersionServices.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+#region Additional Namespaces
+using WestWindSystem.DAL;
+using WestWindSystem.Entities;
+#endregion
+
+namespace WestWindSystem.BLL
+{
+    public class BuildVersionServices
+    {
+        #region setup of the context connection variable and class constructor
+
+        //this class will create an instance of the WestWindContext class
+        //  everytime that the services is used by the outside user
+
+        //any method (aka service) will probably need access to our database
+        //this will be done via the context class (WestWindContext)
+        //during the instantiation of this service class, we will create
+        //  an instance of the context class
+        //we will save this instance in a private variable usable throughout the class
+        //during the instantiation of this service class the constructor will
+        //  receive as a parameter the registered connection from the IServiceCollection
+
+        private readonly WestWindContext _context;
+
+        internal BuildVersionServices(WestWindContext registeredcontext)
+        {
+            _context = registeredcontext;
+        }
+        #endregion
+
+        #region Query Services
+        /*********************** Services *****************************/
+        // a service is a method
+        //this class will be referenced by external users (aka web app)
+        //therefore the class and the services need to be public
+        public BuildVersion BuildVersion_Get()
+        {
+            //get the data from the database via the context class property
+            /*
+            * this will use the context property BuildVersions to obtain the
+            *      data from the database via the context class
+            *  the call return the dataset (DbSet) from the sql table
+            *  data returned by the query in this fashion is returned as a set
+            *      with the datatype of IEnumerable<T>, where T is the
+            *      name of the entity
+            *  the dataset create will contain 0, 1 or more records, one for
+            *      each row on your sql table
+            */
+            //get the data from the database as a collection of records
+            IEnumerable<BuildVersion> info = _context.BuildVersions;
+
+            //extract a record from the DbSet collection
+            /*
+             * data returned is one row from the data placed within info
+             * Linq/built-in collection methtods has a method that limits the number of rows from a
+             *      data collection: .FirstOrDefault()
+             * this method will return the first record in the dataset collection
+             * if the collection is empty it will return the default of the datatype
+             *  (in this case, it is an instance of a class, thus the default is null)
+             */
+            return info.FirstOrDefault();
+        }
+        #endregion
+    }
+}
+
+--------------------------------------------------------------------------------
+FILE: RegionServices.cs
+PATH: WestWindSystem/BLL/RegionServices.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+#region Additional Namespaces
+using WestWindSystem.DAL;
+using WestWindSystem.Entities;
+#endregion
+
+namespace WestWindSystem.BLL
+{
+    public class RegionServices
+    {
+        #region setup of the context connection variable and class constructor
+        private readonly WestWindContext _context;
+
+        internal RegionServices(WestWindContext registeredcontext)
+        {
+            _context = registeredcontext;
+        }
+        #endregion
+
+        #region Query Services
+
+        //first query will be used to retrieve all the records of the
+        //      entity so they may be used in a select control on the
+        //      web page
+        //this should ONLY be considered IF the entity has very few records (consider 100 as a max)
+        //this can be considered IF you need the data as part of your
+        //      foreign key display handling on your web page
+
+        //remember methods are your services.
+        public List<Region> Region_GetAll()
+        {
+            //by default the two generic collections used by Linq (Language Integraded Query)
+            //  are IQueryAble and IEnumerable
+            //within your C# the collection is IEnumerable<T>
+
+            //create a variable to catch the data returned from the
+            //  DAL context DbSet property associated with the
+            //  Region entity (aka table)
+            //
+            //the call consists of the context class instance (which is an object)
+            //  and the DbSet and optionally any additional Linq methods
+
+            IEnumerable<Region> info = _context.Regions; //all records, unsorted
+
+            //send back an ordered list of regions
+            //the collection info is being passed to a Linq method called OrderBy()
+            //the OrderBy() method will return a temporary collection
+            //      and can be passed to the next method
+            //the temporary collection is being passed to the ToList() method
+            //the ToList() method will return a List<T> collection
+            //that collection is returned from the service method
+
+            //.OrderBy() ascending 1st ordering attribute
+            //.OrderDescendingBy() descending 1st ordering attribute
+            //.ThenBy() ascending for each additional ordering attribute
+            //.ThenDescendingBy() descending for each additional ordering attribute
+            //YES: these can be mixed and matched
+            return info.OrderBy(x => x.RegionDescription).ToList();
+        }
+
+        //looking up a single record given a specific value
+        public Region Region_GetByID(int regionid)
+        {
+            Region info = null;
+
+            //the code within the FirstOrDefault is a predicate
+            //the predicate is the condition that is applied to during the methods actions
+            //the predicate for this method is the condition to match to find the desired record
+
+            //since the query is based on the pkey of the table, only one record,
+            //      if any, should be found
+            info = _context.Regions.FirstOrDefault(x => x.RegionID == regionid);
+            return info;
+
+            //an alternate way of coding the query
+            //notice that the Linq methods can be broken up onto their own lines
+            //info = _context.Regions
+            //                .Where(x => x.RegionID == regionid)
+            //                .FirstOrDefault();
+            //return info;
+
+            //an alternate way of coding the query
+            //IEnumerable<Region> infoset = _context.Regions
+            //                                     .Where(x => x.RegionID == regionid);
+            //return infoset.FirstOrDefault();
+
+            // an alternate way of coding the query
+            // .Find() searches primary keys therefore just needs the incoming argument
+            // since our search is on the primary key, we can use this method
+            //return _context.Regions.Find(regionid);
+        }
+        #endregion
+    }
+}
+
+--------------------------------------------------------------------------------
+FILE: ShipperServices.cs
+PATH: WestWindSystem/BLL/ShipperServices.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+#region Additional Namespaces
+using WestWindSystem.DAL;
+using WestWindSystem.Entities;
+#endregion
+
+namespace WestWindSystem.BLL
+{
+    public class ShipperServices
+    {
+        #region setup of the context connection variable and class constructor
+        private readonly WestWindContext _context;
+
+        internal ShipperServices(WestWindContext registeredcontext)
+        {
+            _context = registeredcontext;
+        }
+        #endregion
+
+        #region Service Queries
+        //return a list of shippers
+        public List<Shipper> Shipper_GetAll()
+        {
+            IEnumerable<Shipper> info = _context.Shippers
+                                                .OrderBy(x => x.CompanyName);
+            return info.ToList();
+        }
+        #endregion
+    }
+}
+
+--------------------------------------------------------------------------------
+FILE: ShipmentServices.cs
+PATH: WestWindSystem/BLL/ShipmentServices.cs
+--------------------------------------------------------------------------------
+
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+#region Additional Namespaces
+using WestWindSystem.DAL;
+using WestWindSystem.Entities;
+#endregion
+
+
+namespace WestWindSystem.BLL
+{
+    public class ShipmentServices
+    {
+        #region setup of the context connection variable and class constructor
+        private readonly WestWindContext _context;
+
+        internal ShipmentServices(WestWindContext registeredcontext)
+        {
+            _context = registeredcontext;
+        }
+        #endregion
+
+        #region Query Services
+        //return all shipments for a particular year/month
+        //public List<Shipment> Shipment_GetByYearandMonth(int year, int month)
+        //{
+        //    //Can one do validation within the service? Yes
+        //    //Why: hackers could change the service packet before leaving the
+        //    //      the browser
+        //    if(year < 1950 || year > DateTime.Today.Year)
+        //    {
+        //        throw new ArgumentException($"Year {year} is invalid. Year must be between 1950 and today.");
+        //    }
+        //    if (month < 1 || month > 12)
+        //    {
+        //        throw new ArgumentException($"Month {month} is invalid. Month must be between 1 and 12.");
+        //    }
+
+        //    //attempt to retrieve data from the database
+        //    IEnumerable<Shipment> info = _context.Shipments
+        //                                        .Where(x => x.ShippedDate.Year == year
+        //                                                && x.ShippedDate.Month == month)
+        //                                        .OrderBy(x => x.ShippedDate);
+        //    return info.ToList();
+        //}
+
+        //this query is used if you are using scrolling on your web page
+        public List<Shipment> Shipment_GetByYearandMonth(int year, int month)
+        {
+
+            if (year < 1950 || year > DateTime.Today.Year)
+            {
+                throw new ArgumentException($"Year {year} is invalid. Year must be between 1950 and today.");
+            }
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentException($"Month {month} is invalid. Month must be between 1 and 12.");
+            }
+
+            //This uses the technique (b) discussed on the ShipmentTable page
+            //note there is a required using class, see Additional namespaces above.
+            //uses the .Include method to add navigational instances to the return record
+            //note the predicate uses the virtual navigational property of the Shipment entity
+            //This will include the associated record from the Shippers table (parent) for
+            //      the shipment record (child)
+
+            //sql:  from tableA inner join tableB on tableA.fkey = tableB.pkey
+
+            IEnumerable<Shipment> info = _context.Shipments
+                                                .Include(x => x.ShipViaNavigation)
+                                                .Where(x => x.ShippedDate.Year == year
+                                                        && x.ShippedDate.Month == month)
+                                                .OrderBy(x => x.ShippedDate);
+            return info.ToList();
+        }
+
+        //Pagination
+        //return the total number of records that would be returned for the query
+        //this query will NOT return any actual query result records
+        public int Shipment_GetByYearandMonthCount(int year, int month)
+        {
+
+            if (year < 1950 || year > DateTime.Today.Year)
+            {
+                throw new ArgumentException($"Year {year} is invalid. Year must be between 1950 and today.");
+            }
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentException($"Month {month} is invalid. Month must be between 1 and 12.");
+            }
+
+            //execute the query without any additional methods use to join other tables or organize the
+            //   queried dataset
+            //use .Count() to obtain the number of rows
+            int info = _context.Shipments
+                                .Where(x => x.ShippedDate.Year == year
+                                        && x.ShippedDate.Month == month)
+                                .Count();
+            return info;
+
+            //return _context.Shipments
+                                //.Where(x => x.ShippedDate.Year == year
+                                //        && x.ShippedDate.Month == month)
+                                //.Count();
+        }
+
+        public List<Shipment> Shipment_GetByYearandMonthPaging(int year, int month, int currentpagenumber, int itemperpage)
+        {
+            //this method will return the data set records that are NEEDED for the current page
+            //it does NOT return the entire data set collection
+            //the method needs to determine the record subset to return
+            if (year < 1950 || year > DateTime.Today.Year)
+            {
+                throw new ArgumentException($"Year {year} is invalid. Year must be between 1950 and today.");
+            }
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentException($"Month {month} is invalid. Month must be between 1 and 12.");
+            }
+
+            //even for paging you still need the complete query data set
+            //  in the organization of all records
+            IEnumerable<Shipment> info = _context.Shipments
+                                                .Include(x => x.ShipViaNavigation)
+                                                .Where(x => x.ShippedDate.Year == year
+                                                        && x.ShippedDate.Month == month)
+                                                .OrderBy(x => x.ShippedDate);
+
+            //paging calculations
+            //calculate the number of records to skip
+            //subtract 1 from the natural page number (currentpagenumber) to get the page index number
+            int recordsSkipped = itemperpage * (currentpagenumber - 1);
+
+            //return JUST the records for the page
+            //Skip: skip the first x items representing previous pages
+            //Take: take up to the necessary number of items on a page
+
+            return info.Skip(recordsSkipped).Take(itemperpage).ToList();
+        }
+        #endregion
+    }
+}
+
+================================================================================
+                              DAL FOLDER CODE
+================================================================================
+
+FOLDER: WestWindSystem/DAL
+DESCRIPTION: Data Access Layer - Database context configuration
+
+--------------------------------------------------------------------------------
+FILE: WestWindContext.cs
+PATH: WestWindSystem/DAL/WestWindContext.cs
+--------------------------------------------------------------------------------
+
+// <auto-generated> This file has been auto generated by EF Core Power Tools. </auto-generated>
+#nullable disable
+using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using WestWindSystem.Entities;
+
+namespace WestWindSystem.DAL;
+
+/*
+ * the internal access level restricts calls to this class to ONLY other
+ *  classes/methods within the library
+ */
+
+internal partial class WestWindContext : DbContext
+{
+    public WestWindContext(DbContextOptions<WestWindContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<Address> Addresses { get; set; }
+
+    public virtual DbSet<BuildVersion> BuildVersions { get; set; }
+
+    public virtual DbSet<Category> Categories { get; set; }
+
+    public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<Employee> Employees { get; set; }
+
+    public virtual DbSet<ManifestItem> ManifestItems { get; set; }
+
+    public virtual DbSet<Order> Orders { get; set; }
+
+    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+
+    public virtual DbSet<Payment> Payments { get; set; }
+
+    public virtual DbSet<PaymentType> PaymentTypes { get; set; }
+
+    public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<Region> Regions { get; set; }
+
+    public virtual DbSet<Shipment> Shipments { get; set; }
+
+    public virtual DbSet<Shipper> Shippers { get; set; }
+
+    public virtual DbSet<Supplier> Suppliers { get; set; }
+
+    public virtual DbSet<Territory> Territories { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.UseCollation("Latin1_General_CI_AS");
+
+        modelBuilder.Entity<BuildVersion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__BuildVer__3214EC07ECBE05E2");
+
+            entity.Property(e => e.ReleaseDate).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.Property(e => e.CustomerID).IsFixedLength();
+
+            entity.HasOne(d => d.Address).WithOne(p => p.Customer)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Customers_Addresses");
+        });
+
+        modelBuilder.Entity<Employee>(entity =>
+        {
+            entity.Property(e => e.Active)
+                .HasDefaultValue(true)
+                .HasAnnotation("Relational:DefaultConstraintName", "DF_Employees__Active");
+            entity.Property(e => e.OnLeave).HasAnnotation("Relational:DefaultConstraintName", "DF_Employees_OnLeave");
+
+            entity.HasOne(d => d.Address).WithOne(p => p.Employee)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Employees_Addresses");
+
+            entity.HasOne(d => d.ReportsToNavigation).WithMany(p => p.InverseReportsToNavigation).HasConstraintName("FK_Employees_Employees");
+
+            entity.HasMany(d => d.Territories).WithMany(p => p.Employees)
+                .UsingEntity<Dictionary<string, object>>(
+                    "EmployeeTerritory",
+                    r => r.HasOne<Territory>().WithMany()
+                        .HasForeignKey("TerritoryID")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_EmployeeTerritories_Territories"),
+                    l => l.HasOne<Employee>().WithMany()
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_EmployeeTerritories_Employees"),
+                    j =>
+                    {
+                        j.HasKey("EmployeeID", "TerritoryID").IsClustered(false);
+                        j.ToTable("EmployeeTerritories");
+                        j.IndexerProperty<string>("TerritoryID").HasMaxLength(20);
+                    });
+        });
+
+        modelBuilder.Entity<ManifestItem>(entity =>
+        {
+            entity.HasKey(e => e.ManifestItemID).HasName("PK__Manifest__9000192CED9A3563");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ManifestItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ManifestItems_ToProducts");
+
+            entity.HasOne(d => d.Shipment).WithMany(p => p.ManifestItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ManifestItems_ToShipments");
+        });
+
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.Property(e => e.CustomerID).IsFixedLength();
+            entity.Property(e => e.Freight)
+                .HasDefaultValue(0m)
+                .HasAnnotation("Relational:DefaultConstraintName", "DF_Orders_Freight");
+            entity.Property(e => e.Shipped).HasAnnotation("Relational:DefaultConstraintName", "DF__Orders__Shipped__5AEE82B9");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orders_Customers");
+
+            entity.HasOne(d => d.SalesRep).WithMany(p => p.Orders).HasConstraintName("FK_Orders_Employees");
+
+            entity.HasOne(d => d.ShipAddress).WithMany(p => p.Orders).HasConstraintName("FK_Orders_Addresses");
+        });
+
+        modelBuilder.Entity<OrderDetail>(entity =>
+        {
+            entity.Property(e => e.Discount).HasAnnotation("Relational:DefaultConstraintName", "DF_Order_Details_Discount");
+            entity.Property(e => e.Quantity)
+                .HasDefaultValue((short)1)
+                .HasAnnotation("Relational:DefaultConstraintName", "DF_Order_Details_Quantity");
+            entity.Property(e => e.UnitPrice).HasAnnotation("Relational:DefaultConstraintName", "DF_Order_Details_UnitPrice");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Details_Orders");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Details_Products");
+        });
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.HasKey(e => e.PaymentID).HasName("PK_PAY_PayID");
+
+            entity.Property(e => e.Amount).HasAnnotation("Relational:DefaultConstraintName", "DF_PAY_PayAmt_0");
+            entity.Property(e => e.PaymentDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasAnnotation("Relational:DefaultConstraintName", "DF_PAY_PDate_Today");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Payments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Payments_ToTable");
+
+            entity.HasOne(d => d.PaymentType).WithMany(p => p.Payments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PAY_PTYP_PayTypeID");
+        });
+
+        modelBuilder.Entity<PaymentType>(entity =>
+        {
+            entity.HasKey(e => e.PaymentTypeID).HasName("PK_PTYP_PayTypeID");
+
+            entity.Property(e => e.PaymentTypeID).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.Property(e => e.Discontinued).HasAnnotation("Relational:DefaultConstraintName", "DF_Products_Discontinued");
+            entity.Property(e => e.UnitPrice).HasAnnotation("Relational:DefaultConstraintName", "DF_Products_UnitPrice");
+            entity.Property(e => e.UnitsOnOrder).HasAnnotation("Relational:DefaultConstraintName", "DF_Products_UnitsOnOrder");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Products)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Products_Categories");
+
+            entity.HasOne(d => d.Supplier).WithMany(p => p.Products)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Products_Suppliers");
+        });
+
+        modelBuilder.Entity<Region>(entity =>
+        {
+            entity.HasKey(e => e.RegionID)
+                .HasName("PK_Region")
+                .IsClustered(false);
+
+            entity.Property(e => e.RegionDescription).IsFixedLength();
+        });
+
+        modelBuilder.Entity<Shipment>(entity =>
+        {
+            entity.HasKey(e => e.ShipmentID).HasName("PK__Shipment__5CAD378DE98CC61C");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Shipments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Shipments_ToOrders");
+
+            entity.HasOne(d => d.ShipViaNavigation).WithMany(p => p.Shipments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Shipments_ToTShippers");
+        });
+
+        modelBuilder.Entity<Supplier>(entity =>
+        {
+            entity.HasOne(d => d.Address).WithOne(p => p.Supplier)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Suppliers_Addresses");
+        });
+
+        modelBuilder.Entity<Territory>(entity =>
+        {
+            entity.HasKey(e => e.TerritoryID).IsClustered(false);
+
+            entity.Property(e => e.TerritoryDescription).IsFixedLength();
+
+            entity.HasOne(d => d.Region).WithMany(p => p.Territories)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Territories_Region");
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
+
+================================================================================
+                            ENTITIES FOLDER CODE
+================================================================================
+
+FOLDER: WestWindSystem/Entities
+DESCRIPTION: Entity models representing database tables
+
+--------------------------------------------------------------------------------
+FILE: Address.cs
+PATH: WestWindSystem/Entities/Address.cs
+--------------------------------------------------------------------------------
+
+// <auto-generated> This file has been auto generated by EF Core Power Tools. </auto-generated>
+#nullable disable
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class Address
+{
+    [Key]
+    public int AddressID { get; set; }
+
+    [Required]
+    [Column("Address")]
+    [StringLength(60)]
+    public string Address1 { get; set; }
+
+    [Required]
+    [StringLength(15)]
+    public string City { get; set; }
+
+    [StringLength(15)]
+    public string Region { get; set; }
+
+    [StringLength(10)]
+    public string PostalCode { get; set; }
+
+    [Required]
+    [StringLength(15)]
+    public string Country { get; set; }
+
+    [InverseProperty("Address")]
+    public virtual Customer Customer { get; set; }
+
+    [InverseProperty("Address")]
+    public virtual Employee Employee { get; set; }
+
+    [InverseProperty("ShipAddress")]
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    [InverseProperty("Address")]
+    public virtual Supplier Supplier { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: BuildVersion.cs
+PATH: WestWindSystem/Entities/BuildVersion.cs
+--------------------------------------------------------------------------------
+
+// <auto-generated> This file has been auto generated by EF Core Power Tools. </auto-generated>
+#nullable disable
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Table("BuildVersion")]
+public partial class BuildVersion
+{
+    [Key]
+    public int Id { get; set; }
+
+    public int Major { get; set; }
+
+    public int Minor { get; set; }
+
+    public int Build { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ReleaseDate { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: Category.cs
+PATH: WestWindSystem/Entities/Category.cs
+--------------------------------------------------------------------------------
+
+// <auto-generated> This file has been auto generated by EF Core Power Tools. </auto-generated>
+#nullable disable
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("CategoryName", Name = "CategoryName")]
+public partial class Category
+{
+    [Key]
+    public int CategoryID { get; set; }
+
+    [Required]
+    [StringLength(15)]
+    public string CategoryName { get; set; }
+
+    [Column(TypeName = "ntext")]
+    public string Description { get; set; }
+
+    public byte[] Picture { get; set; }
+
+    [StringLength(40)]
+    public string PictureMimeType { get; set; }
+
+    [InverseProperty("Category")]
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+}
+
+--------------------------------------------------------------------------------
+FILE: Customer.cs
+PATH: WestWindSystem/Entities/Customer.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("CompanyName", Name = "CompanyName")]
+[Index("AddressID", Name = "UX_Customers_AddressID", IsUnique = true)]
+public partial class Customer
+{
+    [Key]
+    [StringLength(5)]
+    public string CustomerID { get; set; }
+
+    [Required]
+    [StringLength(40)]
+    public string CompanyName { get; set; }
+
+    [Required]
+    [StringLength(30)]
+    public string ContactName { get; set; }
+
+    [StringLength(30)]
+    public string ContactTitle { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string ContactEmail { get; set; }
+
+    public int AddressID { get; set; }
+
+    [Required]
+    [StringLength(24)]
+    public string Phone { get; set; }
+
+    [StringLength(24)]
+    public string Fax { get; set; }
+
+    [ForeignKey("AddressID")]
+    [InverseProperty("Customer")]
+    public virtual Address Address { get; set; }
+
+    [InverseProperty("Customer")]
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+}
+
+--------------------------------------------------------------------------------
+FILE: Employee.cs
+PATH: WestWindSystem/Entities/Employee.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("LastName", Name = "LastName")]
+[Index("AddressID", Name = "UX_Employees_AddressID", IsUnique = true)]
+public partial class Employee
+{
+    [Key]
+    public int EmployeeID { get; set; }
+
+    [Required]
+    [StringLength(20)]
+    public string LastName { get; set; }
+
+    [Required]
+    [StringLength(10)]
+    public string FirstName { get; set; }
+
+    [StringLength(25)]
+    public string TitleOfCourtesy { get; set; }
+
+    [StringLength(30)]
+    public string JobTitle { get; set; }
+
+    public int? ReportsTo { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime HireDate { get; set; }
+
+    [StringLength(24)]
+    public string OfficePhone { get; set; }
+
+    [StringLength(4)]
+    public string Extension { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime BirthDate { get; set; }
+
+    public int AddressID { get; set; }
+
+    [Required]
+    [StringLength(24)]
+    public string HomePhone { get; set; }
+
+    public byte[] Photo { get; set; }
+
+    [StringLength(40)]
+    public string PhotoMimeType { get; set; }
+
+    [Column(TypeName = "ntext")]
+    public string Notes { get; set; }
+
+    public bool? Active { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? TerminationDate { get; set; }
+
+    public bool OnLeave { get; set; }
+
+    [StringLength(80)]
+    public string LeaveReason { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? ReturnDate { get; set; }
+
+    [ForeignKey("AddressID")]
+    [InverseProperty("Employee")]
+    public virtual Address Address { get; set; }
+
+    [InverseProperty("ReportsToNavigation")]
+    public virtual ICollection<Employee> InverseReportsToNavigation { get; set; } = new List<Employee>();
+
+    [InverseProperty("SalesRep")]
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    [ForeignKey("ReportsTo")]
+    [InverseProperty("InverseReportsToNavigation")]
+    public virtual Employee ReportsToNavigation { get; set; }
+
+    [ForeignKey("EmployeeID")]
+    [InverseProperty("Employees")]
+    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
+}
+
+--------------------------------------------------------------------------------
+FILE: ManifestItem.cs
+PATH: WestWindSystem/Entities/ManifestItem.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class ManifestItem
+{
+    [Key]
+    public int ManifestItemID { get; set; }
+
+    public int ShipmentID { get; set; }
+
+    public int ProductID { get; set; }
+
+    public short ShipQuantity { get; set; }
+
+    [ForeignKey("ProductID")]
+    [InverseProperty("ManifestItems")]
+    public virtual Product Product { get; set; }
+
+    [ForeignKey("ShipmentID")]
+    [InverseProperty("ManifestItems")]
+    public virtual Shipment Shipment { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: Order.cs
+PATH: WestWindSystem/Entities/Order.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("CustomerID", Name = "CustomerID")]
+[Index("CustomerID", Name = "CustomersOrders")]
+[Index("SalesRepID", Name = "EmployeeID")]
+[Index("SalesRepID", Name = "EmployeesOrders")]
+[Index("OrderDate", Name = "OrderDate")]
+public partial class Order
+{
+    [Key]
+    public int OrderID { get; set; }
+
+    public int? SalesRepID { get; set; }
+
+    [Required]
+    [StringLength(5)]
+    public string CustomerID { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? OrderDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? RequiredDate { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? PaymentDueDate { get; set; }
+
+    [Column(TypeName = "money")]
+    public decimal? Freight { get; set; }
+
+    public bool Shipped { get; set; }
+
+    [StringLength(40)]
+    public string ShipName { get; set; }
+
+    public int? ShipAddressID { get; set; }
+
+    [StringLength(250)]
+    public string Comments { get; set; }
+
+    [ForeignKey("CustomerID")]
+    [InverseProperty("Orders")]
+    public virtual Customer Customer { get; set; }
+
+    [InverseProperty("Order")]
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+    [InverseProperty("Order")]
+    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+
+    [ForeignKey("SalesRepID")]
+    [InverseProperty("Orders")]
+    public virtual Employee SalesRep { get; set; }
+
+    [ForeignKey("ShipAddressID")]
+    [InverseProperty("Orders")]
+    public virtual Address ShipAddress { get; set; }
+
+    [InverseProperty("Order")]
+    public virtual ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
+}
+
+--------------------------------------------------------------------------------
+FILE: OrderDetail.cs
+PATH: WestWindSystem/Entities/OrderDetail.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("OrderID", Name = "OrderID")]
+[Index("OrderID", Name = "OrdersOrder_Details")]
+[Index("ProductID", Name = "ProductID")]
+[Index("ProductID", Name = "ProductsOrder_Details")]
+public partial class OrderDetail
+{
+    [Key]
+    public int OrderDetailID { get; set; }
+
+    public int OrderID { get; set; }
+
+    public int ProductID { get; set; }
+
+    [Column(TypeName = "money")]
+    public decimal UnitPrice { get; set; }
+
+    public short Quantity { get; set; }
+
+    public float Discount { get; set; }
+
+    [ForeignKey("OrderID")]
+    [InverseProperty("OrderDetails")]
+    public virtual Order Order { get; set; }
+
+    [ForeignKey("ProductID")]
+    [InverseProperty("OrderDetails")]
+    public virtual Product Product { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: Payment.cs
+PATH: WestWindSystem/Entities/Payment.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class Payment
+{
+    [Key]
+    public int PaymentID { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime PaymentDate { get; set; }
+
+    [Column(TypeName = "smallmoney")]
+    public decimal Amount { get; set; }
+
+    public byte PaymentTypeID { get; set; }
+
+    public int OrderID { get; set; }
+
+    public Guid TransactionID { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? ClearedDate { get; set; }
+
+    [ForeignKey("OrderID")]
+    [InverseProperty("Payments")]
+    public virtual Order Order { get; set; }
+
+    [ForeignKey("PaymentTypeID")]
+    [InverseProperty("Payments")]
+    public virtual PaymentType PaymentType { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: PaymentType.cs
+PATH: WestWindSystem/Entities/PaymentType.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class PaymentType
+{
+    [Key]
+    public byte PaymentTypeID { get; set; }
+
+    [Required]
+    [StringLength(40)]
+    [Unicode(false)]
+    public string PaymentTypeDescription { get; set; }
+
+    [InverseProperty("PaymentType")]
+    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+}
+
+--------------------------------------------------------------------------------
+FILE: Product.cs
+PATH: WestWindSystem/Entities/Product.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("CategoryID", Name = "CategoriesProducts")]
+[Index("CategoryID", Name = "CategoryID")]
+[Index("ProductName", Name = "ProductName")]
+[Index("SupplierID", Name = "SupplierID")]
+[Index("SupplierID", Name = "SuppliersProducts")]
+public partial class Product
+{
+    [Key]
+    public int ProductID { get; set; }
+
+    [Required]
+    [StringLength(40)]
+    public string ProductName { get; set; }
+
+    public int SupplierID { get; set; }
+
+    public int CategoryID { get; set; }
+
+    [Required]
+    [StringLength(20)]
+    public string QuantityPerUnit { get; set; }
+
+    public short? MinimumOrderQuantity { get; set; }
+
+    [Column(TypeName = "money")]
+    public decimal UnitPrice { get; set; }
+
+    public int UnitsOnOrder { get; set; }
+
+    public bool Discontinued { get; set; }
+
+    [ForeignKey("CategoryID")]
+    [InverseProperty("Products")]
+    public virtual Category Category { get; set; }
+
+    [InverseProperty("Product")]
+    public virtual ICollection<ManifestItem> ManifestItems { get; set; } = new List<ManifestItem>();
+
+    [InverseProperty("Product")]
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+    [ForeignKey("SupplierID")]
+    [InverseProperty("Products")]
+    public virtual Supplier Supplier { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: Region.cs
+PATH: WestWindSystem/Entities/Region.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class Region
+{
+    [Key]
+    public int RegionID { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string RegionDescription { get; set; }
+
+    [InverseProperty("Region")]
+    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
+}
+
+--------------------------------------------------------------------------------
+FILE: Shipment.cs
+PATH: WestWindSystem/Entities/Shipment.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class Shipment
+{
+    [Key]
+    public int ShipmentID { get; set; }
+
+    public int OrderID { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime ShippedDate { get; set; }
+
+    public int ShipVia { get; set; }
+
+    [Column(TypeName = "money")]
+    public decimal FreightCharge { get; set; }
+
+    [StringLength(128)]
+    [Unicode(false)]
+    public string TrackingCode { get; set; }
+
+    [InverseProperty("Shipment")]
+    public virtual ICollection<ManifestItem> ManifestItems { get; set; } = new List<ManifestItem>();
+
+    [ForeignKey("OrderID")]
+    [InverseProperty("Shipments")]
+    public virtual Order Order { get; set; }
+
+    [ForeignKey("ShipVia")]
+    [InverseProperty("Shipments")]
+    public virtual Shipper ShipViaNavigation { get; set; }
+}
+
+--------------------------------------------------------------------------------
+FILE: Shipper.cs
+PATH: WestWindSystem/Entities/Shipper.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class Shipper
+{
+    [Key]
+    public int ShipperID { get; set; }
+
+    [Required]
+    [StringLength(40)]
+    public string CompanyName { get; set; }
+
+    [Required]
+    [StringLength(24)]
+    public string Phone { get; set; }
+
+    [InverseProperty("ShipViaNavigation")]
+    public virtual ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
+}
+
+--------------------------------------------------------------------------------
+FILE: Supplier.cs
+PATH: WestWindSystem/Entities/Supplier.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+[Index("CompanyName", Name = "CompanyName")]
+[Index("AddressID", Name = "UX_Suppliers_AddressID", IsUnique = true)]
+public partial class Supplier
+{
+    [Key]
+    public int SupplierID { get; set; }
+
+    [Required]
+    [StringLength(40)]
+    public string CompanyName { get; set; }
+
+    [Required]
+    [StringLength(30)]
+    public string ContactName { get; set; }
+
+    [StringLength(30)]
+    public string ContactTitle { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string Email { get; set; }
+
+    public int AddressID { get; set; }
+
+    [Required]
+    [StringLength(24)]
+    public string Phone { get; set; }
+
+    [StringLength(24)]
+    public string Fax { get; set; }
+
+    [ForeignKey("AddressID")]
+    [InverseProperty("Supplier")]
+    public virtual Address Address { get; set; }
+
+    [InverseProperty("Supplier")]
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+}
+
+--------------------------------------------------------------------------------
+FILE: Territory.cs
+PATH: WestWindSystem/Entities/Territory.cs
+--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WestWindSystem.Entities;
+
+public partial class Territory
+{
+    [Key]
+    [StringLength(20)]
+    public string TerritoryID { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string TerritoryDescription { get; set; }
+
+    public int RegionID { get; set; }
+
+    [ForeignKey("RegionID")]
+    [InverseProperty("Territories")]
+    public virtual Region Region { get; set; }
+
+    [ForeignKey("TerritoryID")]
+    [InverseProperty("Territories")]
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
+}
+
+================================================================================
+                              END OF DOCUMENTATION
+================================================================================
+
+This file contains the complete code structure for the WestWindSolution,
+including all folder hierarchies, project names, and the full source code
+for every C# file in the solution.
+
+Generated on: 2025-11-24
+Total Projects: 2 (WestWindApp, WestWindSystem)
+Total Entities: 16
+Total Services: 4
+
+================================================================================
