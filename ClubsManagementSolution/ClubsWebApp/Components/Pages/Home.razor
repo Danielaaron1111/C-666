@@ -1,0 +1,160 @@
+@page "/"
+@* Home Page - Landing page for the Clubs Management application *@
+
+<PageTitle>Home - Clubs Management</PageTitle>
+
+<div class="home-container">
+    <h1>Clubs Management System</h1>
+    <h3>A02: Clubs Assignment</h3>
+
+    <div class="info-section">
+        <h4>📋 Assignment Information</h4>
+        <ul>
+            <li><strong>Student Name:</strong> [Your Name Here]</li>
+            <li><strong>Assignment:</strong> A02 - Clubs (Query and CRUD Components)</li>
+            <li><strong>Last Modified:</strong> @DateTime.Now.ToString("MMMM dd, yyyy")</li>
+        </ul>
+    </div>
+
+    <div class="features-section">
+        <h4>✨ Features Implemented</h4>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h5>🔍 Query Component</h5>
+                <p>Search and display clubs by active status with pagination support</p>
+                <ul>
+                    <li>Filter by Active/Inactive status</li>
+                    <li>Display club ID, name, staff, and fee</li>
+                    <li>Tabular results with pagination</li>
+                    <li>Shows "No staff member" when applicable</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h5>✏️ CRUD Component</h5>
+                <p>Complete Create, Read, Update, and Deactivate operations for clubs</p>
+                <ul>
+                    <li>Create new clubs with validation</li>
+                    <li>Update existing club information</li>
+                    <li>Deactivate/Reactivate clubs (soft delete)</li>
+                    <li>Employee dropdown with filtered staff</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="business-rules-section">
+        <h4>📝 Business Rules Implemented</h4>
+        <ul>
+            <li>✅ Club entries are deactivated, not deleted</li>
+            <li>✅ Reactivation button available for inactive clubs</li>
+            <li>✅ Employee dropdown shows only: Instructors, Office Administrators, Technical Support</li>
+            <li>✅ ClubID must be unique (Primary Key)</li>
+            <li>✅ Club names must be unique</li>
+            <li>✅ Club fees cannot be negative</li>
+        </ul>
+    </div>
+
+    <div class="queries-section">
+        <h4>🔎 Required Queries Implemented</h4>
+        <ol>
+            <li><strong>Employee Club List:</strong> Ordered list of employees associated with clubs (by last name)</li>
+            <li><strong>Club by Status:</strong> Ordered list of clubs by active status (by club name)</li>
+            <li><strong>Club by ID:</strong> Retrieve a specific club by its ID</li>
+            <li><strong>Available Staff:</strong> Employees in eligible positions (by last name)</li>
+        </ol>
+    </div>
+
+    <div class="tech-stack-section">
+        <h4>🛠️ Technology Stack</h4>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <strong>.NET 9.0</strong>
+                <p>Blazor Server</p>
+            </div>
+            <div class="tech-item">
+                <strong>Entity Framework Core</strong>
+                <p>ORM & Data Access</p>
+            </div>
+            <div class="tech-item">
+                <strong>SQL Server</strong>
+                <p>Database</p>
+            </div>
+            <div class="tech-item">
+                <strong>Bootstrap 5</strong>
+                <p>UI Framework</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="known-bugs-section">
+        <h4>🐛 Known Issues</h4>
+        <p>None currently identified. All features tested and working as expected.</p>
+    </div>
+
+    <div class="credits-section">
+        <h4>🙏 Credits & Attributions</h4>
+        <ul>
+            <li>Assignment provided by NAIT - DMIT1517 Course</li>
+            <li>Based on WestWind solution architecture patterns</li>
+            <li>Bootstrap framework for styling</li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    .home-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .info-section, .features-section, .business-rules-section,
+    .queries-section, .tech-stack-section, .known-bugs-section,
+    .credits-section {
+        background: #f8f9fa;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        border-left: 4px solid #0d6efd;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .tech-item {
+        background: white;
+        padding: 15px;
+        text-align: center;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .tech-item strong {
+        display: block;
+        color: #0d6efd;
+        margin-bottom: 5px;
+    }
+</style>
+
+@code {
+    // Home page code
+}

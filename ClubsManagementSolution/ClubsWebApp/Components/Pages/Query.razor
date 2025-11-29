@@ -1,0 +1,312 @@
+@page "/query"
+@rendermode InteractiveServer
+
+@* QUERY Component - Clubs by Active Status with Tabular Results
+   Assignment Requirement: "Clubs by Active Status - Search with Tabular Results" *@
+
+@inject ClubServices ClubServices
+
+<PageTitle>Query - Clubs by Status</PageTitle>
+
+<div class="query-container">
+    <h1>Clubs by Status</h1>
+    <p>Display the results of looking up Clubs by their active status (active/non-active).</p>
+    <p>Display the employee full name or "No Staff member" for the employee.</p>
+
+    @* Search Controls *@
+    <div class="search-section">
+        <h4>Select Club status</h4>
+
+        <div class="radio-group">
+            <label class="radio-option">
+                <input type="radio"
+                       name="clubStatus"
+                       value="true"
+                       checked="@(selectedStatus == true)"
+                       @onchange="@(() => selectedStatus = true)" />
+                Active
+            </label>
+
+            <label class="radio-option">
+                <input type="radio"
+                       name="clubStatus"
+                       value="false"
+                       checked="@(selectedStatus == false)"
+                       @onchange="@(() => selectedStatus = false)" />
+                In-Active
+            </label>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" @onclick="SearchClubs">Search</button>
+            <button class="btn btn-secondary" @onclick="ClearSearch">Clear</button>
+        </div>
+    </div>
+
+    @* Error/Info Messages *@
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @errorMessage
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(infoMessage))
+    {
+        <div class="alert alert-info" role="alert">
+            @infoMessage
+        </div>
+    }
+
+    @* Results Table *@
+    @if (searchPerformed)
+    {
+        @if (currentPageClubs != null && currentPageClubs.Any())
+        {
+            <div class="results-section">
+                <h4>Results (@totalClubs clubs found)</h4>
+
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Edit</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Staff</th>
+                            <th>Fee</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var club in currentPageClubs)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="/crud?clubId=@club.ClubID" class="btn btn-sm btn-link">Edit</a>
+                                </td>
+                                <td>@club.ClubID</td>
+                                <td>@club.ClubName</td>
+                                <td>@GetStaffDisplay(club)</td>
+                                <td>@club.Fee.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @* Pagination Controls *@
+                @if (totalPages > 1)
+                {
+                    <div class="pagination-section">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" @onclick="() => GoToPage(1)" href="javascript:void(0)">&lt;First&gt;</a>
+                                </li>
+                                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" @onclick="() => GoToPage(currentPage - 1)" href="javascript:void(0)">&lt;Prev&gt;</a>
+                                </li>
+
+                                @for (int i = 1; i <= totalPages; i++)
+                                {
+                                    int pageNum = i; // Capture variable for lambda
+                                    <li class="page-item @(currentPage == pageNum ? "active" : "")">
+                                        <a class="page-link" @onclick="() => GoToPage(pageNum)" href="javascript:void(0)">@pageNum</a>
+                                    </li>
+                                }
+
+                                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" @onclick="() => GoToPage(currentPage + 1)" href="javascript:void(0)">&lt;Next&gt;</a>
+                                </li>
+                                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" @onclick="() => GoToPage(totalPages)" href="javascript:void(0)">&lt;Last&gt;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <p class="text-center">Page @currentPage of @totalPages</p>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">
+                No clubs found with the selected status.
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .query-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .search-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .radio-group {
+        margin: 15px 0;
+    }
+
+    .radio-option {
+        margin-right: 20px;
+        font-size: 1.1em;
+        cursor: pointer;
+    }
+
+    .radio-option input {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    .button-group {
+        margin-top: 15px;
+    }
+
+    .button-group button {
+        margin-right: 10px;
+    }
+
+    .results-section {
+        margin-top: 20px;
+    }
+
+    .table {
+        margin-top: 15px;
+    }
+
+    .pagination-section {
+        margin-top: 20px;
+    }
+</style>
+
+@code {
+    // ============================================================================
+    // ASSIGNMENT IMPLEMENTATION: Query Component for Clubs by Status
+    // ============================================================================
+
+    // Properties for search and filtering
+    private bool selectedStatus = true; // Default to Active
+    private bool searchPerformed = false;
+
+    // Data properties
+    private List<Club> allFilteredClubs = new List<Club>();
+    private List<Club> currentPageClubs = new List<Club>();
+
+    // Pagination properties
+    private int currentPage = 1;
+    private int pageSize = 10; // Show 10 clubs per page as per mockup
+    private int totalClubs = 0;
+    private int totalPages = 0;
+
+    // Message properties
+    private string errorMessage = "";
+    private string infoMessage = "";
+
+    /// <summary>
+    /// Search button handler - Retrieves clubs based on selected status
+    /// Assignment Requirement: "Search button will execute an event handler to
+    /// retrieve the Supply data using the search Job ID value."
+    /// </summary>
+    private void SearchClubs()
+    {
+        try
+        {
+            errorMessage = "";
+            infoMessage = "";
+
+            // Call the BLL service to get clubs by status
+            // Assignment Requirement: "Club by Status - Create a query that will return
+            // an ordered list of Clubs depending on the Active status. Order the list by clubname."
+            allFilteredClubs = ClubServices.GetClubsByStatus(selectedStatus);
+            totalClubs = allFilteredClubs.Count;
+
+            if (totalClubs > 0)
+            {
+                // Calculate total pages
+                totalPages = (int)Math.Ceiling((double)totalClubs / pageSize);
+
+                // Reset to page 1
+                currentPage = 1;
+
+                // Get clubs for first page
+                UpdateCurrentPage();
+
+                searchPerformed = true;
+            }
+            else
+            {
+                searchPerformed = true;
+                infoMessage = $"No {(selectedStatus ? "active" : "inactive")} clubs found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error searching for clubs: {ex.Message}";
+            searchPerformed = false;
+        }
+    }
+
+    /// <summary>
+    /// Clear button handler - Resets the page to its opening state
+    /// Assignment Requirement: "Clear button will execute an event handler to
+    /// reset the page to its opening state."
+    /// </summary>
+    private void ClearSearch()
+    {
+        selectedStatus = true; // Reset to Active
+        searchPerformed = false;
+        allFilteredClubs = new List<Club>();
+        currentPageClubs = new List<Club>();
+        currentPage = 1;
+        totalClubs = 0;
+        totalPages = 0;
+        errorMessage = "";
+        infoMessage = "";
+    }
+
+    /// <summary>
+    /// Navigate to a specific page
+    /// Assignment Requirement: "Demonstrate paging by limiting your display to 10 lines at a time."
+    /// </summary>
+    private void GoToPage(int pageNumber)
+    {
+        if (pageNumber < 1 || pageNumber > totalPages)
+            return;
+
+        currentPage = pageNumber;
+        UpdateCurrentPage();
+    }
+
+    /// <summary>
+    /// Update the current page's clubs based on pagination
+    /// </summary>
+    private void UpdateCurrentPage()
+    {
+        currentPageClubs = allFilteredClubs
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Get staff display for a club
+    /// Assignment Requirement: "Display the employee full name or 'No Staff member'
+    /// for the employee."
+    /// </summary>
+    private string GetStaffDisplay(Club club)
+    {
+        if (club.Employee != null)
+        {
+            // Using the FullName property from Employee entity
+            // Assignment Requirement: "public string FullName { get {return LastName + ", " + FirstName;}}"
+            return club.Employee.FullName;
+        }
+        return "No staff member";
+    }
+}
