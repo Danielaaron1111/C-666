@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindapp\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|solutionrelative:westwindapp\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindsystem\\bll\\shipmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|solutionrelative:westwindsystem\\bll\\shipmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "WestWindApp\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "WestWindApp\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T05:36:23.109Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ShipmentServices.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\ShipmentServices.cs",
+              "RelativeDocumentMoniker": "WestWindSystem\\BLL\\ShipmentServices.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\ShipmentServices.cs",
+              "RelativeToolTip": "WestWindSystem\\BLL\\ShipmentServices.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAA5wB4AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T18:53:55.04Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
