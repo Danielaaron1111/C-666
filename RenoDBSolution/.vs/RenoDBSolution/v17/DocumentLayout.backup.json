@@ -1,0 +1,182 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\components\\pages\\query.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\components\\pages\\query.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3D0B7A0-A342-4DD8-A396-E28222A55F1D}|RenoSystem\\RenoSystem.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renosystem\\bll\\jobservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3D0B7A0-A342-4DD8-A396-E28222A55F1D}|RenoSystem\\RenoSystem.csproj|solutionrelative:renosystem\\bll\\jobservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3D0B7A0-A342-4DD8-A396-E28222A55F1D}|RenoSystem\\RenoSystem.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renosystem\\bll\\supplyservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3D0B7A0-A342-4DD8-A396-E28222A55F1D}|RenoSystem\\RenoSystem.csproj|solutionrelative:renosystem\\bll\\supplyservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renotracker\\renotracker.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{6C5C9F6D-900A-4A0F-9EB4-D9C525C38463}|RenoTracker\\RenoTracker.csproj|solutionrelative:renotracker\\renotracker.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3D0B7A0-A342-4DD8-A396-E28222A55F1D}|RenoSystem\\RenoSystem.csproj|c:\\github\\1517-sep-2025-a02-exercise4-danielaaron1111\\renodbsolution\\renosystem\\renosystemextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3D0B7A0-A342-4DD8-A396-E28222A55F1D}|RenoSystem\\RenoSystem.csproj|solutionrelative:renosystem\\renosystemextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "RenoTracker\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "RenoTracker\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T05:49:43.006Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "RenoTracker\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "RenoTracker\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T05:28:59.815Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\appsettings.json",
+              "RelativeDocumentMoniker": "RenoTracker\\appsettings.json",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\appsettings.json",
+              "RelativeToolTip": "RenoTracker\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-20T05:27:52.415Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "RenoTracker\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "RenoTracker\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T05:26:31.754Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RenoTracker.csproj",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\RenoTracker.csproj",
+              "RelativeDocumentMoniker": "RenoTracker\\RenoTracker.csproj",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\RenoTracker.csproj",
+              "RelativeToolTip": "RenoTracker\\RenoTracker.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-19T05:21:24.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Query.razor",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Pages\\Query.razor",
+              "RelativeDocumentMoniker": "RenoTracker\\Components\\Pages\\Query.razor",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Components\\Pages\\Query.razor",
+              "RelativeToolTip": "RenoTracker\\Components\\Pages\\Query.razor",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAAAHIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-17T17:05:05.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Program.cs",
+              "RelativeDocumentMoniker": "RenoTracker\\Program.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoTracker\\Program.cs",
+              "RelativeToolTip": "RenoTracker\\Program.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T16:48:10.722Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "JobServices.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoSystem\\BLL\\JobServices.cs",
+              "RelativeDocumentMoniker": "RenoSystem\\BLL\\JobServices.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoSystem\\BLL\\JobServices.cs",
+              "RelativeToolTip": "RenoSystem\\BLL\\JobServices.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAowGUAAAC8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T16:30:18.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "RenoSystemExtensions.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoSystem\\RenoSystemExtensions.cs",
+              "RelativeDocumentMoniker": "RenoSystem\\RenoSystemExtensions.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoSystem\\RenoSystemExtensions.cs",
+              "RelativeToolTip": "RenoSystem\\RenoSystemExtensions.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAuwDIAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T16:18:22.158Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SupplyServices.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoSystem\\BLL\\SupplyServices.cs",
+              "RelativeDocumentMoniker": "RenoSystem\\BLL\\SupplyServices.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-A02-exercise4-Danielaaron1111\\RenoDBSolution\\RenoSystem\\BLL\\SupplyServices.cs",
+              "RelativeToolTip": "RenoSystem\\BLL\\SupplyServices.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAAAGMAAABqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T16:13:02.995Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

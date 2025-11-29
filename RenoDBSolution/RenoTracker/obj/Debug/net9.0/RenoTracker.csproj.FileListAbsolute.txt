@@ -1,0 +1,8 @@
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.csproj.AssemblyReference.cache
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.AssemblyInfoInputs.cache
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.AssemblyInfo.cs
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.csproj.CoreCompileInputs.cache
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.MvcApplicationPartsAssemblyInfo.cache
+C:\GitHub\1517-sep-2025-A02-exercise4-Danielaaron1111\RenoDBSolution\RenoTracker\obj\Debug\net9.0\RenoTracker.sourcelink.json

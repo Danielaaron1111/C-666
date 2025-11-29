@@ -1,0 +1,260 @@
+﻿@page "/query"
+<PageTitle>Supplies for Job</PageTitle>
+
+@rendermode InteractiveServer
+
+@using RenoSystem.BLL;
+@using RenoSystem.ENTITIES;
+@using BlazorBootstrap
+
+
+<h1>Supplies for Job</h1>
+@* <!-- BLUEboxing if i have message for the user --> *@
+@if (feedBackMsg.Length > 0)
+{
+    <div class="alert alert-info">
+
+        <p>@feedBackMsg</p>
+    </div>
+}
+<br />
+<br />
+@* <!-- reDboxing if i have errors for the user --> *@
+@if (errorMsgs.Count > 0)
+{
+    <div class="alert alert-danger">
+        <p>Please fix the following issues:</p>
+        <ul>
+            @foreach (var error in errorMsgs)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+<br />
+
+@* <!--Main boots two col side by side --> *@
+<div class="row">
+    @* <!--let side drop btms --> *@
+    <div class="col-md-6">
+        <label for="jobselect">Select your Job:</label>
+        @* <!--dropdown show all jobs from the DB--> *@
+        <select id="jobselect" class="form-select" @bind="selectedJobId">
+            <option value="0">select ...</option>
+            @if (jobList != null)
+            {
+                @foreach (var job in jobList)
+                {
+                    <option value="@job.JobId">
+                        @job.Description (@job.StartDate.ToString("MMM. dd,yyyy")) - @(job.Client?.Contact ?? "No Client")
+                    </option>
+                    @*this logic on the top show the client contact name and use the null safe operator, it was not on the demo is from outside *@
+                    @*SOURCE: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-*@
+                    @* <!--double CHECKKKKKKKK THE FORMATINGGGGGGGGGGGG AND NEVER NEVER FORGET PUT THE COMMENT IN @@@@@@@ --> *@
+                }
+            }
+        </select>
+        <br />
+        @* <!-- BLUE button gets the supplies --> *@
+        <button type="button" class="btn btn-primary" @onclick="FetchSupplies">
+            Fetch Supplies
+        </button>
+        &nbsp; &nbsp;
+        @* <!--Gray button reset everything (I Could change this for another button  don say put effor in looks nice ) --> *@
+        <button type="button" class="btn btn-secondary" @onclick="Clear">
+            Clear
+        </button>
+        &nbsp;&nbsp;
+    </div>
+    @* <!--right side derecho --> *@
+    <div class="col-md-6">
+        @* <!-- default nothing selected yet --> *@
+        @if (supplyList == null)
+        {
+            <p>Select your Job.</p>
+        }
+        @* <!-- default 2 selected job but no supplies found just in case --> *@
+        else if (supplyList.Count == 0)
+        {
+        <p>No supplies found for the selected job.</p>
+        }
+        else
+        {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Material</th>
+                    <th>Quantity</th>
+                    <th>Material Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @* <!--looping through each supply and make a row--> *@
+                @*i could modify the table but i like the current design is minimalistic so im gonna keep it -*@
+                @foreach (var item in supplyList)
+                {
+                    <tr>
+                        <td>@item.Material</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.MaterialCost.ToString("C")</td>
+                        @* <!-- copy from the demo dollar --> *@
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @* <!--PAGINAAAATIONN--> *@
+        <Pagination ActivePageNumber="currentPageNumber"
+                    TotalPages="GetTotalPages()"
+                    PageChanged="OnPageChanged">
+        </Pagination>
+        }
+    </div>
+</div>
+
+@code {
+    // Feedback messages // INFO ERROR variables
+    private string feedBackMsg = "";
+    private List<string> errorMsgs = new();
+
+    // Data variables:
+
+    //all jobs for the droppdown list and supply list
+    private int selectedJobId = 0;
+    private List<Job> jobList = null;
+    private List<Supply> supplyList = new();
+
+    // Paging variables where am i in the page
+    private int currentPageNumber = 1;
+    //how many items i have total
+    private int totalItems = 0;
+    //how many supplie per page
+    private int pageSize = 10;
+
+    // Service injection, dependency INECTION!
+    [Inject]
+    public JobServices _jobServices { get; set; }
+
+    [Inject]
+    public SupplyServices _supplyServices { get; set; }
+
+    // OnInitialized - runs when page loads
+    //charge all jobs in the drop
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        try
+        {
+            //fill the dropdown with jobs from the DB
+            jobList = _jobServices.Job_GetList();
+        }
+        catch (Exception ex)
+        {
+            errorMsgs.Add($"Error loading jobs: {ex.Message}");
+        }
+    }
+
+    // Fetch Supplies button click
+    private void FetchSupplies()
+    {
+        // Clear old messages and data
+        feedBackMsg = "";
+        errorMsgs.Clear();
+        supplyList = null;
+        currentPageNumber = 1;
+
+        // Validation
+        //did my user pick a job? yes no maybe be my lady
+        if (selectedJobId == 0)
+        {
+            errorMsgs.Add("Select a job before fetching the supply list.");
+        }
+
+        // Can I proceed? but i only call MY DB when no errors pls
+        if (errorMsgs.Count == 0)
+        {
+            try
+            {
+                // Get total count for paging
+                totalItems = _supplyServices.GetJobSupplyCount(selectedJobId);
+
+                // Get first page of data
+                supplyList = _supplyServices.GetByJobId(selectedJobId, currentPageNumber, pageSize);
+
+                feedBackMsg = "View query results";
+                //stoled messaged from github repo examples 
+            }
+            catch (Exception ex)
+            {
+                errorMsgs.Add($"System Error: {ex.Message}");
+            }
+        }
+    }
+
+    // Clear button click
+    //reset everything pretty much
+    private void Clear()
+    {
+        selectedJobId = 0;
+        supplyList = new();
+        feedBackMsg = "";
+        errorMsgs.Clear();
+        currentPageNumber = 1;
+        totalItems = 0;
+    }
+
+    // Calculate total pages for pagination
+    // show how many supplie per page
+    private int GetTotalPages()
+    {
+        return (totalItems + pageSize - 1) / pageSize;
+    }
+
+    // Page changed event
+    //user looping to my pages
+    private void OnPageChanged(int newPageNumber)
+    {
+        currentPageNumber = newPageNumber;
+
+        try
+        {
+            //get supplies fot the new page
+            supplyList = _supplyServices.GetByJobId(selectedJobId, currentPageNumber, pageSize);
+        }
+        catch (Exception ex)
+        {
+            errorMsgs.Add($"Error loading page: {ex.Message}");
+        }
+    }
+}
+
+
+
+@* try
+            {
+
+            }        errorMsgs.Add("Select a job before fetching the supply list.");
+
+            catch (Exception ex)
+            {
+                errorMsgs.Add($"System Error: {ex.Message}");
+            } *@
+
+
+@*               <div class="row">
+    <div class="col-md-3">
+        <label for="yearid">Enter a shipment year:</label>&nbsp;&nbsp;
+        <input id="yearid" type="number" @bind="yeararg"
+               style="width: 100px;" />
+        <br /><br />
+        <label for="monthid">Enter a shipment month:</label>&nbsp;&nbsp;
+        <input id="monthid" type="number" @bind="montharg"
+               style="width: 100px;" />
+        <br /><br />
+        <button type="submit" @onclick="GetShipments"
+                class="btn btn-outline-primary rounded-pill"
+                style="width: 170px;">
+            Fetch Shipments
+        </button>
+    </div> *@
