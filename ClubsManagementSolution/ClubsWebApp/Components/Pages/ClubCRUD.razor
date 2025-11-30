@@ -1,0 +1,456 @@
+@page "/crud"
+@rendermode InteractiveServer
+
+@* CRUD Component - Create/Read/Update/Deactivate (Delete) for Clubs
+   Assignment Requirement: "Clubs - Single Item Create/Read/Update/Deactivate (Delete)" *@
+
+@inject ClubServices ClubServices
+@inject EmployeeServices EmployeeServices
+@inject NavigationManager NavigationManager
+
+<PageTitle>CRUD - Club Management</PageTitle>
+
+<div class="crud-container">
+    <h1>Club Management</h1>
+    <p>Create, update, and manage club records</p>
+
+    @* Success/Error Messages *@
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> @successMessage
+            <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> @errorMessage
+            <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+        </div>
+    }
+
+    @* Club Form *@
+    <div class="form-section">
+        <EditForm Model="@currentClub" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="row">
+                <div class="col-md-6">
+                    @* Club ID Field *@
+                    <div class="mb-3">
+                        <label for="clubId" class="form-label">Club ID</label>
+                        <InputText id="clubId"
+                                   class="form-control"
+                                   @bind-Value="currentClub.ClubID"
+                                   disabled="@isEditMode"
+                                   placeholder="Enter Club ID (e.g., BTC)" />
+                        <ValidationMessage For="@(() => currentClub.ClubID)" />
+                        @if (!isEditMode)
+                        {
+                            <div class="form-text">ClubID must be unique (max 10 characters)</div>
+                        }
+                    </div>
+
+                    @* Club Name Field *@
+                    <div class="mb-3">
+                        <label for="clubName" class="form-label">Club Name</label>
+                        <InputText id="clubName"
+                                   class="form-control"
+                                   @bind-Value="currentClub.ClubName"
+                                   placeholder="Enter Club Name" />
+                        <ValidationMessage For="@(() => currentClub.ClubName)" />
+                        <div class="form-text">Club names must be unique</div>
+                    </div>
+
+                    @* Fee Field *@
+                    <div class="mb-3">
+                        <label for="fee" class="form-label">Fee</label>
+                        <InputNumber id="fee"
+                                     class="form-control"
+                                     @bind-Value="currentClub.Fee"
+                                     step="0.01" />
+                        <ValidationMessage For="@(() => currentClub.Fee)" />
+                        <div class="form-text">Fee cannot be negative</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    @* Employee Dropdown *@
+                    @* Assignment Requirement: "For entering the employee id of available staff,
+                       use an <select>. The select list is based on the results of a query
+                       returning only employees who are instructors, office administrator or
+                       technical support." *@
+                    <div class="mb-3">
+                        <label for="employeeId" class="form-label">Staff Member</label>
+                        <InputSelect id="employeeId"
+                                     class="form-select"
+                                     @bind-Value="currentClub.EmployeeID">
+                            <option value="">-- No staff member assigned --</option>
+                            @foreach (var employee in availableStaff)
+                            {
+                                <option value="@employee.EmployeeID">
+                                    @employee.FullName - @employee.Position.PositionName
+                                </option>
+                            }
+                        </InputSelect>
+                        <div class="form-text">
+                            Only Instructors, Office Administrators, and Technical Support are shown
+                        </div>
+                    </div>
+
+                    @* Active Status Field *@
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <InputCheckbox id="active"
+                                           class="form-check-input"
+                                           @bind-Value="currentClub.Active" />
+                            <label class="form-check-label" for="active">
+                                Active
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            Active clubs are visible to students
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Action Buttons *@
+            <div class="button-group mt-4">
+                @if (isEditMode)
+                {
+                    @* Edit Mode Buttons *@
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Update Club
+                    </button>
+
+                    @if (currentClub.Active)
+                    {
+                        @* Assignment Requirement: "Rather than providing a 'delete' button,
+                           include a 'Deactivate' button" *@
+                        <button type="button" class="btn btn-warning" @onclick="DeactivateClub">
+                            <i class="bi bi-x-circle"></i> Deactivate
+                        </button>
+                    }
+                    else
+                    {
+                        @* Assignment Requirement: "Provide a second button to reactivate a
+                           deactivated club. Reactivation will change the Active flag to true" *@
+                        <button type="button" class="btn btn-success" @onclick="ReactivateClub">
+                            <i class="bi bi-check-circle"></i> Reactivate
+                        </button>
+                    }
+
+                    <button type="button" class="btn btn-secondary" @onclick="NewClub">
+                        <i class="bi bi-plus-circle"></i> New Club
+                    </button>
+                }
+                else
+                {
+                    @* Create Mode Button *@
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Create Club
+                    </button>
+                }
+
+                <button type="button" class="btn btn-outline-secondary" @onclick="ClearForm">
+                    <i class="bi bi-eraser"></i> Clear
+                </button>
+
+                <button type="button" class="btn btn-outline-primary" @onclick="BackToQuery">
+                    <i class="bi bi-arrow-left"></i> Back to Query
+                </button>
+            </div>
+        </EditForm>
+    </div>
+
+    @* Existing Clubs List (for quick selection) *@
+    <div class="clubs-list-section mt-5">
+        <h4>Existing Clubs</h4>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Action</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Fee</th>
+                        <th>Active</th>
+                        <th>Staff</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var club in allClubs)
+                    {
+                        <tr class="@(club.Active ? "" : "table-secondary")">
+                            <td>
+                                <button class="btn btn-sm btn-link" @onclick="() => LoadClub(club.ClubID)">
+                                    Edit
+                                </button>
+                            </td>
+                            <td>@club.ClubID</td>
+                            <td>@club.ClubName</td>
+                            <td>@club.Fee.ToString("C")</td>
+                            <td>
+                                @if (club.Active)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </td>
+                            <td>@GetStaffDisplay(club)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .crud-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .form-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .clubs-list-section {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+    .table-secondary {
+        background-color: #e9ecef !important;
+        opacity: 0.7;
+    }
+</style>
+
+@code {
+    // ============================================================================
+    // ASSIGNMENT IMPLEMENTATION: CRUD Component for Clubs
+    // ============================================================================
+
+    [SupplyParameterFromQuery]
+    public string? clubId { get; set; }
+
+    // Current club being edited/created
+    private Club currentClub = new Club { Active = true, Fee = 0 };
+
+    // Lists for dropdowns and display
+    private List<Employee> availableStaff = new List<Employee>();
+    private List<Club> allClubs = new List<Club>();
+
+    // State properties
+    private bool isEditMode = false;
+    private string successMessage = "";
+    private string errorMessage = "";
+
+    /// <summary>
+    /// OnInitialized - Load initial data and check for clubId parameter
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        LoadAvailableStaff();
+        LoadAllClubs();
+
+        // If clubId is provided in query string, load that club
+        if (!string.IsNullOrEmpty(clubId))
+        {
+            LoadClub(clubId);
+        }
+    }
+
+    /// <summary>
+    /// Load available staff for the dropdown
+    /// Assignment Requirement: Query for "Available Staff for Clubs"
+    /// </summary>
+    private void LoadAvailableStaff()
+    {
+        try
+        {
+            availableStaff = EmployeeServices.GetAvailableStaffForClubs();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading staff: {ex.Message}";
+        }
+    }
+
+    /// <summary>
+    /// Load all clubs for the list display
+    /// </summary>
+    private void LoadAllClubs()
+    {
+        try
+        {
+            allClubs = ClubServices.GetAllClubs();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading clubs: {ex.Message}";
+        }
+    }
+
+    /// <summary>
+    /// Load a specific club for editing
+    /// Assignment Requirement: Query for "Club by ID"
+    /// </summary>
+    private void LoadClub(string id)
+    {
+        try
+        {
+            var club = ClubServices.GetClubById(id);
+            if (club != null)
+            {
+                currentClub = club;
+                isEditMode = true;
+                errorMessage = "";
+                successMessage = "";
+            }
+            else
+            {
+                errorMessage = $"Club with ID '{id}' not found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading club: {ex.Message}";
+        }
+    }
+
+    /// <summary>
+    /// Handle form submission (Create or Update)
+    /// </summary>
+    private void HandleValidSubmit()
+    {
+        try
+        {
+            if (isEditMode)
+            {
+                // UPDATE operation
+                ClubServices.UpdateClub(currentClub);
+                successMessage = $"Club '{currentClub.ClubName}' updated successfully!";
+            }
+            else
+            {
+                // CREATE operation
+                ClubServices.AddClub(currentClub);
+                successMessage = $"Club '{currentClub.ClubName}' created successfully!";
+
+                // Switch to edit mode for the newly created club
+                isEditMode = true;
+            }
+
+            // Reload the clubs list
+            LoadAllClubs();
+            errorMessage = "";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            successMessage = "";
+        }
+    }
+
+    /// <summary>
+    /// Deactivate a club (soft delete)
+    /// Assignment Requirement: "change the Active flag to false and update the database"
+    /// </summary>
+    private void DeactivateClub()
+    {
+        try
+        {
+            ClubServices.DeactivateClub(currentClub.ClubID);
+            successMessage = $"Club '{currentClub.ClubName}' has been deactivated.";
+
+            // Reload the club to update the UI
+            LoadClub(currentClub.ClubID);
+            LoadAllClubs();
+            errorMessage = "";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error deactivating club: {ex.Message}";
+            successMessage = "";
+        }
+    }
+
+    /// <summary>
+    /// Reactivate a club
+    /// Assignment Requirement: "change the Active flag to true and update the database"
+    /// </summary>
+    private void ReactivateClub()
+    {
+        try
+        {
+            ClubServices.ReactivateClub(currentClub.ClubID);
+            successMessage = $"Club '{currentClub.ClubName}' has been reactivated.";
+
+            // Reload the club to update the UI
+            LoadClub(currentClub.ClubID);
+            LoadAllClubs();
+            errorMessage = "";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error reactivating club: {ex.Message}";
+            successMessage = "";
+        }
+    }
+
+    /// <summary>
+    /// Prepare form for creating a new club
+    /// </summary>
+    private void NewClub()
+    {
+        currentClub = new Club { Active = true, Fee = 0 };
+        isEditMode = false;
+        errorMessage = "";
+        successMessage = "";
+    }
+
+    /// <summary>
+    /// Clear the form
+    /// </summary>
+    private void ClearForm()
+    {
+        NewClub();
+    }
+
+    /// <summary>
+    /// Navigate back to query page
+    /// </summary>
+    private void BackToQuery()
+    {
+        NavigationManager.NavigateTo("/query");
+    }
+
+    /// <summary>
+    /// Get staff display string for a club
+    /// </summary>
+    private string GetStaffDisplay(Club club)
+    {
+        return club.Employee != null ? club.Employee.FullName : "No staff member";
+    }
+}
