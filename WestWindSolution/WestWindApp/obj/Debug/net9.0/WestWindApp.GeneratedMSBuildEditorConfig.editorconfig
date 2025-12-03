@@ -36,6 +36,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/GitHub/1517-sep-2025-dwelch-A02/WestWindSolution/WestWindApp/Components/Pages/SamplePages/CategoryProducts.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTYW1wbGVQYWdlc1xDYXRlZ29yeVByb2R1Y3RzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/GitHub/1517-sep-2025-dwelch-A02/WestWindSolution/WestWindApp/Components/Pages/SamplePages/ProductCRUD.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTYW1wbGVQYWdlc1xQcm9kdWN0Q1JVRC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/GitHub/1517-sep-2025-dwelch-A02/WestWindSolution/WestWindApp/Components/Pages/SamplePages/RegionSingleQuery.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTYW1wbGVQYWdlc1xSZWdpb25TaW5nbGVRdWVyeS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WestWindApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97616feda46a2a2532a87e40cef80b571639348f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59ad526dbfb2c8f6d11766ddf6eb8ee500e757b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("WestWindApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WestWindApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

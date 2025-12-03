@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "7pfX6NbDUm8=",
+  "success": false,
+  "projectFilePath": "C:\\GitHub\\C-666\\ClubsManagementSolution\\ClubsWebApp\\ClubsWebApp.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for 'C:\\GitHub\\C-666\\ClubsManagementSolution\\ClubsSystem\\ClubsSystem.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "projectPath": "C:\\GitHub\\C-666\\ClubsManagementSolution\\ClubsWebApp\\ClubsWebApp.csproj",
+      "filePath": "C:\\GitHub\\C-666\\ClubsManagementSolution\\ClubsWebApp\\ClubsWebApp.csproj",
+      "libraryId": "C:\\GitHub\\C-666\\ClubsManagementSolution\\ClubsSystem\\ClubsSystem.csproj",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
+}
