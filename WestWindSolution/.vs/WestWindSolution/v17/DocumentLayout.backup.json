@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindsystem\\westwindextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|solutionrelative:westwindsystem\\westwindextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|solutionrelative:westwindapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|solutionrelative:westwindapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindsystem\\dal\\westwindcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|solutionrelative:westwindsystem\\dal\\westwindcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindsystem\\bll\\buildversionservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|solutionrelative:westwindsystem\\bll\\buildversionservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindsystem\\bll\\shipmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|solutionrelative:westwindsystem\\bll\\shipmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindsystem\\bll\\regionservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AF7ED25-8472-4D93-BD74-6140659D2986}|WestWindSystem\\WestWindSystem.csproj|solutionrelative:westwindsystem\\bll\\regionservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|c:\\github\\1517-sep-2025-dwelch-a02\\westwindsolution\\westwindapp\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{730877C1-D41B-43FB-A874-33B987B70F62}|WestWindApp\\WestWindApp.csproj|solutionrelative:westwindapp\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,17 +42,107 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\appsettings.json",
+              "RelativeDocumentMoniker": "WestWindApp\\appsettings.json",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\appsettings.json",
+              "RelativeToolTip": "WestWindApp\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-01T06:09:52.613Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\Program.cs",
+              "RelativeDocumentMoniker": "WestWindApp\\Program.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\Program.cs",
+              "RelativeToolTip": "WestWindApp\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB4AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T06:08:15.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "WestWindExtensions.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\WestWindExtensions.cs",
+              "RelativeDocumentMoniker": "WestWindSystem\\WestWindExtensions.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\WestWindExtensions.cs",
+              "RelativeToolTip": "WestWindSystem\\WestWindExtensions.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwBAAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T05:52:49.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BuildVersionServices.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\BuildVersionServices.cs",
+              "RelativeDocumentMoniker": "WestWindSystem\\BLL\\BuildVersionServices.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\BuildVersionServices.cs",
+              "RelativeToolTip": "WestWindSystem\\BLL\\BuildVersionServices.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T03:57:21.187Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RegionServices.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\RegionServices.cs",
+              "RelativeDocumentMoniker": "WestWindSystem\\BLL\\RegionServices.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\RegionServices.cs",
+              "RelativeToolTip": "WestWindSystem\\BLL\\RegionServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEwAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T04:42:19.334Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WestWindContext.cs",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\DAL\\WestWindContext.cs",
+              "RelativeDocumentMoniker": "WestWindSystem\\DAL\\WestWindContext.cs",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\DAL\\WestWindContext.cs",
+              "RelativeToolTip": "WestWindSystem\\DAL\\WestWindContext.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-30T04:39:19.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "WestWindApp\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindApp\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "WestWindApp\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB8AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T05:36:23.109Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "ShipmentServices.cs",
               "DocumentMoniker": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\ShipmentServices.cs",
               "RelativeDocumentMoniker": "WestWindSystem\\BLL\\ShipmentServices.cs",
               "ToolTip": "C:\\GitHub\\1517-sep-2025-dwelch-A02\\WestWindSolution\\WestWindSystem\\BLL\\ShipmentServices.cs",
               "RelativeToolTip": "WestWindSystem\\BLL\\ShipmentServices.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAgwB4AAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T18:53:55.04Z",
               "EditorCaption": ""
