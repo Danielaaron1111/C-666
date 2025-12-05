@@ -1,0 +1,2898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Customer Contact Management System</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --header-blue: #4A90E2;
+            --light-blue: #E3F2FD;
+            --border-gray: #ddd;
+            --text-dark: #333;
+            --sidebar-width: 260px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        /* ========== HEADER ========== */
+        .app-header {
+            background: var(--header-blue);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 50px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .app-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .window-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            transition: background 0.2s;
+        }
+        
+        .window-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* ========== LOGIN PAGE ========== */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 50px;
+            width: var(--sidebar-width);
+            height: calc(100vh - 50px);
+            background: white;
+            border-right: 2px solid var(--border-gray);
+            padding: 20px 15px;
+            overflow-y: auto;
+            z-index: 999;
+        }
+        
+        .filter-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+        
+        .filter-section-title:first-child {
+            margin-top: 0;
+        }
+        
+        .filter-option {
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+        
+        .filter-option:hover {
+            background: #f8f9fa;
+            border-color: #e0e0e0;
+        }
+        
+        .filter-option.active {
+            background: var(--header-blue);
+            color: white;
+            font-weight: 600;
+            border-color: var(--header-blue);
+        }
+        
+        .filter-option.email-filter {
+            background: #E0F7FA;
+            border-color: #00BCD4;
+        }
+        
+        .filter-option.email-filter:hover {
+            background: #B2EBF2;
+        }
+        
+        .filter-option.email-filter.active {
+            background: #00BCD4;
+            color: white;
+        }
+        
+        .customer-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: 50px;
+            padding: 20px;
+            min-height: calc(100vh - 50px);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 20px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1400px) {
+            .content-grid {
+                grid-template-columns: 1fr 380px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr 320px;
+            }
+            
+            .brief-panel {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brief-panel {
+                position: relative !important;
+                top: 0 !important;
+                width: 100%;
+            }
+        }
+        
+        /* ========== CUSTOMER LIST ========== */
+        .customer-list-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .customer-list-header {
+            background: var(--light-blue);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+        
+        .customer-list-header i {
+            color: var(--header-blue);
+            font-size: 20px;
+        }
+        
+        .customer-list-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .customer-list {
+            padding: 15px;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+        }
+        
+        .customer-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .customer-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .customer-card.flag-red::before { background: #dc3545; }
+        .customer-card.flag-yellow::before { background: #ffc107; }
+        .customer-card.flag-purple::before { background: #9c27b0; }
+        .customer-card.flag-green::before { background: #28a745; }
+        .customer-card.flag-white::before { background: #6c757d; }
+        
+        .customer-card:hover {
+            border-color: var(--header-blue);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+            transform: translateX(3px);
+        }
+        
+        .customer-card.selected {
+            border-color: var(--header-blue);
+            border-width: 3px;
+            background: #f0f8ff;
+        }
+        
+        .customer-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .customer-flag-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .customer-name h6 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .customer-id-badge {
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-left: auto;
+        }
+        
+        .customer-info {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .customer-info i {
+            width: 16px;
+            color: var(--header-blue);
+        }
+        
+        .missed-badge {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        /* ========== BRIEF PANEL ========== */
+        .brief-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: sticky;
+            top: 70px;
+        }
+        
+        .brief-panel-header {
+            background: var(--light-blue);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+        
+        .brief-panel-header i {
+            color: var(--header-blue);
+            font-size: 20px;
+        }
+        
+        .brief-panel-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .brief-panel-body {
+            padding: 20px;
+        }
+        
+        .brief-panel.empty .brief-panel-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            color: #999;
+        }
+        
+        .brief-panel.empty i {
+            font-size: 64px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        .brief-info-row {
+            margin-bottom: 15px;
+        }
+        
+        .brief-info-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .brief-info-value {
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .badge-emergency { background: #dc3545; color: white; }
+        .badge-warning { background: #ffc107; color: #333; }
+        .badge-daily { background: #9c27b0; color: white; }
+        .badge-weekly { background: #28a745; color: white; }
+        .badge-normal { background: #6c757d; color: white; }
+        
+        /* ========== CUSTOMER FILE PAGE ========== */
+        .customer-file-page {
+            margin-left: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: var(--light-blue);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+        
+        .section-header i {
+            color: var(--header-blue);
+            font-size: 20px;
+        }
+        
+        .section-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .section-body {
+            padding: 25px;
+        }
+        
+        .info-row {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+        
+        .prescription-card {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .prescription-card h5 {
+            color: var(--header-blue);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .med-alert {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .med-alert.info {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .med-alert.warning {
+            background: #FFF3E0;
+            border-left: 4px solid #FF9800;
+        }
+        
+        .med-alert.danger {
+            background: #FFEBEE;
+            border-left: 4px solid #F44336;
+        }
+        
+        .history-item {
+            background: #f8f9fa;
+            border-left: 4px solid var(--header-blue);
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+        
+        .blood-test-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .test-parameter {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            font-size: 14px;
+        }
+        
+        /* ========== BUTTONS ========== */
+        .btn {
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--header-blue);
+            border-color: var(--header-blue);
+        }
+        
+        .btn-primary:hover {
+            background: #3A7BC8;
+            border-color: #3A7BC8;
+        }
+        
+        /* ========== MODAL ========== */
+        .modal-header {
+            background: var(--light-blue);
+            border-bottom: 2px solid var(--border-gray);
+        }
+        
+        .modal-title {
+            color: var(--header-blue);
+            font-weight: 600;
+        }
+        
+        /* ========== UTILITIES ========== */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Inventory Styles */
+        .inventory-item {
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid;
+            font-size: 13px;
+        }
+        
+        .inventory-item.high { border-left-color: #28a745; }
+        .inventory-item.medium { border-left-color: #ffc107; }
+        .inventory-item.low { border-left-color: #dc3545; }
+        
+        .inventory-med-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .inventory-stock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .stock-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .stock-badge.high { background: #28a745; color: white; }
+        .stock-badge.medium { background: #ffc107; color: #333; }
+        .stock-badge.low { background: #dc3545; color: white; }
+        
+        /* Doctor List Styles */
+        .doctor-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .doctor-item:hover {
+            border-color: var(--header-blue);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+        }
+        
+        .doctor-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+        
+        .doctor-specialty {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        
+        .doctor-phone {
+            font-size: 11px;
+            color: var(--header-blue);
+        }
+        
+        .patient-reported-alert {
+            background: #FFF3E0;
+            border-left: 4px solid #FF9800;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .patient-reported-alert strong {
+            color: #E65100;
+        }
+        
+        .inventory-update-row {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid;
+        }
+        
+        .inventory-update-row.high { border-left-color: #28a745; }
+        .inventory-update-row.medium { border-left-color: #ffc107; }
+        .inventory-update-row.low { border-left-color: #dc3545; }
+        
+        .form-label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--header-blue);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================
+         PAGE 1: LOGIN
+    ======================================== -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="text-center mb-4">
+                <i class="bi bi-capsule-pill" style="font-size: 48px; color: #4A90E2;"></i>
+                <h2 class="mt-3">Pharmacy System</h2>
+                <p class="text-muted">Customer Contact Management</p>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" value="admin">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" value="password">
+            </div>
+            
+            <button class="btn btn-primary w-100 btn-lg" onclick="login()">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         PAGE 2: HOME PAGE
+    ======================================== -->
+    <div id="homePage" class="hidden">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="app-title">
+                <i class="bi bi-capsule-pill"></i>
+                PHARMACY CUSTOMER CONTACT MANAGEMENT
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group" style="width: 350px;">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search by Customer ID or Name..." onkeyup="searchCustomers()">
+                </div>
+                <button class="window-btn" title="Export JSON" onclick="exportToJSON()">
+                    <i class="bi bi-download"></i>
+                </button>
+                <button class="window-btn" title="Import JSON" onclick="document.getElementById('importJSON').click()">
+                    <i class="bi bi-upload"></i>
+                </button>
+                <input type="file" id="importJSON" accept=".json" style="display:none" onchange="importFromJSON(event)">
+                <button class="window-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="filter-section-title">FILTER BY STATUS</div>
+            
+            <div class="filter-option active" onclick="filterCustomers('all', event)">
+                <i class="bi bi-list-ul"></i>
+                <span>All Customers</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('red', event)">
+                <span style="font-size: 18px;">🔴</span>
+                <span>Emergency Calls</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('yellow', event)">
+                <span style="font-size: 18px;">🟡</span>
+                <span>Warning / Missing</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('purple', event)">
+                <span style="font-size: 18px;">🟣</span>
+                <span>Daily Reminders</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('green', event)">
+                <span style="font-size: 18px;">🟢</span>
+                <span>Weekly Check-ins</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('white', event)">
+                <span style="font-size: 18px;">⚪</span>
+                <span>Normal Status</span>
+            </div>
+            
+            <div class="filter-option email-filter" onclick="filterCustomers('email', event)">
+                <i class="bi bi-envelope-fill"></i>
+                <span>Email List</span>
+            </div>
+            
+            <div class="customer-count">
+                <span id="customerCount">0 customers</span>
+                <button class="btn btn-sm btn-primary" onclick="showAddCustomerModal()">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+            </div>
+            
+            <div class="filter-section-title">👨‍⚕️ FREQUENT DOCTORS</div>
+            
+            <div id="doctorsList" style="max-height: 200px; overflow-y: auto;">
+                <!-- Populated by JavaScript -->
+            </div>
+            
+            <button class="btn btn-outline-success btn-sm w-100 mt-2" onclick="showAddDoctorModal()">
+                <i class="bi bi-person-plus"></i> Add Doctor
+            </button>
+            
+            <div class="filter-section-title">MEDICATION INVENTORY</div>
+            
+            <div id="inventoryList" style="max-height: 200px; overflow-y: auto;">
+                <!-- Populated by JavaScript -->
+            </div>
+            
+            <button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="showInventoryModal()">
+                <i class="bi bi-box-seam"></i> Manage Inventory
+            </button>
+            
+            <div class="filter-section-title">DATA MANAGEMENT</div>
+            
+            <button class="btn btn-outline-secondary btn-sm w-100 mb-2" onclick="exportToJSON()">
+                <i class="bi bi-download"></i> Export JSON
+            </button>
+            
+            <button class="btn btn-outline-secondary btn-sm w-100 mb-2" onclick="document.getElementById('importJSON').click()">
+                <i class="bi bi-upload"></i> Import JSON
+            </button>
+            
+            <button class="btn btn-outline-danger btn-sm w-100" onclick="resetToDefault()">
+                <i class="bi bi-arrow-clockwise"></i> Reset Data
+            </button>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-grid">
+                
+                <!-- Customer List -->
+                <div class="customer-list-container">
+                    <div class="customer-list-header">
+                        <i class="bi bi-people-fill"></i>
+                        <h5>Customer Queue</h5>
+                    </div>
+                    <div class="customer-list" id="customerList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Brief Info Panel -->
+                <div class="brief-panel empty" id="briefPanel">
+                    <div class="brief-panel-header">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <h5>Customer Details</h5>
+                    </div>
+                    <div class="brief-panel-body">
+                        <i class="bi bi-hand-index"></i>
+                        <p>Click a customer to view details</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         PAGE 3: CUSTOMER FILE
+    ======================================== -->
+    <div id="customerFilePage" class="hidden">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="app-title">
+                <i class="bi bi-file-person-fill"></i>
+                <span id="fileCustomerName">Customer File</span>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="window-btn" onclick="backToHome()">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <button class="window-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Customer File Content -->
+        <div class="customer-file-page" style="margin-top: 70px;">
+            
+            <div class="alert" id="statusBanner" role="alert"></div>
+            
+            <div class="mb-3">
+                <button class="btn btn-outline-secondary" onclick="backToHome()">
+                    <i class="bi bi-arrow-left-circle"></i> Back to Home
+                </button>
+                <button class="btn btn-outline-primary ms-2" onclick="showEditCustomerModal()">
+                    <i class="bi bi-pencil-square"></i> Edit Customer
+                </button>
+            </div>
+            
+            <!-- SECTION 1: Customer Information -->
+            <div class="section-card">
+                <div class="section-header">
+                    <i class="bi bi-person-circle"></i>
+                    <h5>CUSTOMER INFORMATION</h5>
+                </div>
+                <div class="section-body">
+                    <div id="customerInfoSection"></div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-sm btn-outline-primary" onclick="showMedicalHistoryModal()">
+                            <i class="bi bi-plus-circle"></i> Add Medical History Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 2: Current Prescriptions -->
+            <div class="section-card">
+                <div class="section-header">
+                    <i class="bi bi-prescription2"></i>
+                    <h5>CURRENT PRESCRIPTIONS & MEDICATIONS</h5>
+                </div>
+                <div class="section-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">Active Prescriptions</h6>
+                        <button class="btn btn-sm btn-primary" onclick="showAddPrescriptionModal()">
+                            <i class="bi bi-plus-circle"></i> Add New Prescription
+                        </button>
+                    </div>
+                    <div id="prescriptionSection"></div>
+                </div>
+            </div>
+            
+            <!-- SECTION 3: Prescription History & Communication -->
+            <div class="section-card">
+                <div class="section-header">
+                    <i class="bi bi-clock-history"></i>
+                    <h5>PRESCRIPTION HISTORY & COMMUNICATION HISTORY</h5>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0"><i class="bi bi-prescription"></i> Prescription History</h6>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showOldPrescriptionModal()">
+                                    <i class="bi bi-plus-circle"></i> Add
+                                </button>
+                            </div>
+                            <div id="prescriptionHistorySection"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-3"><i class="bi bi-chat-dots"></i> Communication History</h6>
+                            <div class="alert alert-info mb-3">
+                                <strong>Total: <span id="totalComms">0</span></strong> | 
+                                Missed: <span id="missedReminders">0</span>
+                            </div>
+                            <div id="communicationHistorySection"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 4: Follow-Up Contact Details -->
+            <div class="section-card">
+                <div class="section-header">
+                    <i class="bi bi-telephone-fill"></i>
+                    <h5>FOLLOW-UP CONTACT DETAILS</h5>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">Blood Analysis</h6>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showBloodTestModal()">
+                                    <i class="bi bi-plus-circle"></i> Add Test
+                                </button>
+                            </div>
+                            <div id="bloodAnalysisSection"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Add New Contact</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Contact Type</label>
+                                <select class="form-select" id="contactType">
+                                    <option>Phone Call</option>
+                                    <option>Email</option>
+                                    <option>Emergency Call</option>
+                                    <option>Weekly Check-in</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Outcome</label>
+                                <select class="form-select" id="contactOutcome">
+                                    <option>Contacted - Successful</option>
+                                    <option>No Answer</option>
+                                    <option>Left Message</option>
+                                    <option>Email Sent</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Notes/Comments <span class="text-danger">*Required</span></label>
+                                <textarea class="form-control" id="contactNotes" rows="4" placeholder="Enter detailed notes..." maxlength="500"></textarea>
+                                <small class="text-muted">Max 500 characters</small>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="saveContact()">
+                                <i class="bi bi-save"></i> Save Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 5: Flag Management & Subscription -->
+            <div class="section-card">
+                <div class="section-header">
+                    <i class="bi bi-flag-fill"></i>
+                    <h5>FLAG MANAGEMENT & SUBSCRIPTION</h5>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Current Flag Status</h6>
+                            <div id="flagStatusSection"></div>
+                            
+                            <h6 class="mb-3 mt-4">Change Flag</h6>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <button class="btn btn-danger" onclick="updateFlag('red')">🔴 Emergency</button>
+                                <button class="btn btn-warning" onclick="updateFlag('yellow')">🟡 Warning</button>
+                                <button class="btn" style="background:#9c27b0;color:white;" onclick="updateFlag('purple')">🟣 Daily</button>
+                                <button class="btn btn-success" onclick="updateFlag('green')">🟢 Weekly</button>
+                                <button class="btn btn-secondary" onclick="updateFlag('white')">⚪ Normal</button>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Flag Reason</label>
+                                <textarea class="form-control" id="flagReason" rows="2" placeholder="Enter reason for flag change..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Subscription Status</h6>
+                            <div id="subscriptionStatusSection"></div>
+                            
+                            <h6 class="mb-3 mt-4">Contact Preferences</h6>
+                            <div id="contactPreferencesSection"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mb-4">
+                <button class="btn btn-secondary btn-lg" onclick="backToHome()">
+                    <i class="bi bi-arrow-left-circle"></i> Back to Home
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal fade" id="customerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Add New Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editCustomerId">
+                    
+                    <div class="alert alert-info mb-3" id="customerIdDisplay">
+                        <strong>Customer ID:</strong> <span id="newCustomerId">Will be auto-generated</span>
+                        <br><small>Auto-assigned - Cannot be changed</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-control" id="modalFirstName">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-control" id="modalLastName">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth *</label>
+                            <input type="date" class="form-control" id="modalDOB">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone *</label>
+                            <input type="tel" class="form-control" id="modalPhone">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="modalEmail">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" id="modalAddress">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Insurance</label>
+                            <input type="text" class="form-control" id="modalInsurance">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Physician</label>
+                            <input type="text" class="form-control" id="modalPhysician">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Medical History</label>
+                            <textarea class="form-control" id="modalMedicalHistory" rows="2"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Initial Flag</label>
+                            <select class="form-select" id="modalFlag">
+                                <option value="white">⚪ Normal</option>
+                                <option value="red">🔴 Emergency</option>
+                                <option value="yellow">🟡 Warning</option>
+                                <option value="purple">🟣 Daily</option>
+                                <option value="green">🟢 Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCustomer()">
+                        <i class="bi bi-save"></i> Save Customer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Management Modal -->
+    <div class="modal fade" id="inventoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-box-seam"></i> Medication Inventory Management</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="mb-3">Current Inventory</h6>
+                    <div id="inventoryUpdateList"></div>
+                    
+                    <hr class="my-4">
+                    
+                    <h6 class="mb-3">➕ Add New Medication to Inventory</h6>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Medication Name</label>
+                            <input type="text" class="form-control" id="newInvMedication" placeholder="e.g., Metformin 500mg">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Stock Level (units)</label>
+                            <input type="number" class="form-control" id="newInvStock" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="addToInventory()">
+                        <i class="bi bi-plus-circle"></i> Add to Inventory
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Prescription Modal -->
+    <div class="modal fade" id="prescriptionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="prescriptionModalTitle">➕ Add Prescription</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Prescription ID</label>
+                            <input type="text" class="form-control" id="rxId" placeholder="e.g., P001">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Medication Name *</label>
+                            <input type="text" class="form-control" id="rxMedication" placeholder="e.g., Metformin 500mg">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Dosage Instructions *</label>
+                            <textarea class="form-control" id="rxDosage" rows="2" placeholder="e.g., Take 2 tablets daily with meals"></textarea>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Date Filled</label>
+                            <input type="date" class="form-control" id="rxDateFilled">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Refills Remaining</label>
+                            <input type="number" class="form-control" id="rxRefills" value="0" min="0">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="rxStatus">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Hold">On Hold</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-3">
+                    <h6 class="mb-3">✅ Doctor Verification</h6>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="rxVerified" onchange="toggleVerificationFields()">
+                        <label class="form-check-label" for="rxVerified">
+                            <strong>Verified by Doctor</strong>
+                        </label>
+                    </div>
+                    <div id="verificationFields" class="hidden">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Doctor Name</label>
+                                <input type="text" class="form-control" id="rxDoctor" placeholder="e.g., Dr. Sarah Johnson">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Verification Date</label>
+                                <input type="date" class="form-control" id="rxVerifiedDate">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-3">
+                    <h6 class="mb-3">📝 Medical Information</h6>
+                    <div class="mb-3">
+                        <label class="form-label">Side Effects (Common)</label>
+                        <textarea class="form-control" id="rxSideEffects" rows="2" placeholder="e.g., May cause nausea, diarrhea..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">⚠️ Critical Warnings</label>
+                        <textarea class="form-control" id="rxWarnings" rows="2" placeholder="e.g., Monitor blood glucose levels..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">💊 Drug/Food Interactions</label>
+                        <textarea class="form-control" id="rxInteractions" rows="2" placeholder="e.g., Avoid alcohol..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="savePrescription()">
+                        <i class="bi bi-save"></i> Save Prescription
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Blood Test Modal -->
+    <div class="modal fade" id="bloodTestModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">🩸 Add Blood Test Result</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Test Type *</label>
+                        <select class="form-select" id="btType">
+                            <option value="">Select test type...</option>
+                            <option value="Glucose (Fasting)">Glucose (Fasting)</option>
+                            <option value="HbA1c">HbA1c</option>
+                            <option value="Blood Pressure">Blood Pressure</option>
+                            <option value="Total Cholesterol">Total Cholesterol</option>
+                            <option value="LDL Cholesterol">LDL Cholesterol</option>
+                            <option value="HDL Cholesterol">HDL Cholesterol</option>
+                            <option value="Triglycerides">Triglycerides</option>
+                            <option value="INR">INR (Warfarin)</option>
+                            <option value="TSH">TSH (Thyroid)</option>
+                            <option value="Creatinine">Creatinine</option>
+                            <option value="eGFR">eGFR (Kidney)</option>
+                            <option value="Vitamin D">Vitamin D</option>
+                            <option value="Hemoglobin">Hemoglobin</option>
+                            <option value="Other">Other (specify in notes)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Test Date *</label>
+                        <input type="date" class="form-control" id="btDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Result *</label>
+                        <input type="text" class="form-control" id="btResult" placeholder="e.g., 145 mg/dL">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Normal Range *</label>
+                        <input type="text" class="form-control" id="btNormal" placeholder="e.g., 70-100 mg/dL">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status *</label>
+                        <select class="form-select" id="btStatus">
+                            <option value="Normal">Normal</option>
+                            <option value="High">High</option>
+                            <option value="Low">Low</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Device ID (optional)</label>
+                        <input type="text" class="form-control" id="btDevice" placeholder="e.g., GLU-2024">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveBloodTest()">
+                        <i class="bi bi-save"></i> Save Blood Test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Medical History Modal -->
+    <div class="modal fade" id="medicalHistoryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">📋 Add Medical History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Condition/Event *</label>
+                        <input type="text" class="form-control" id="mhCondition" placeholder="e.g., Type 2 Diabetes">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Diagnosis Date</label>
+                        <input type="date" class="form-control" id="mhDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="mhStatus">
+                            <option value="Active">Active</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Managed">Managed</option>
+                            <option value="Monitoring">Monitoring</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-control" id="mhNotes" rows="3" placeholder="Additional information..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMedicalHistory()">
+                        <i class="bi bi-save"></i> Save Medical History
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Old Prescription Modal -->
+    <div class="modal fade" id="oldPrescriptionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">📜 Add Prescription History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Medication *</label>
+                        <input type="text" class="form-control" id="opMedication" placeholder="e.g., Aspirin 81mg">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosage</label>
+                        <input type="text" class="form-control" id="opDosage" placeholder="e.g., Take 1 tablet daily">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="opStartDate">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">End Date *</label>
+                            <input type="date" class="form-control" id="opEndDate">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="opStatus">
+                            <option value="Discontinued">Discontinued</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Switched">Switched</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Reason for Discontinuation *</label>
+                        <textarea class="form-control" id="opReason" rows="2" placeholder="e.g., Side effects, switched to better alternative..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveOldPrescription()">
+                        <i class="bi bi-save"></i> Save to History
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div class="modal fade" id="doctorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">👨‍⚕️ Add Doctor to Frequent List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Doctor Name *</label>
+                        <input type="text" class="form-control" id="docName" placeholder="e.g., Dr. Sarah Johnson">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Specialty *</label>
+                        <input type="text" class="form-control" id="docSpecialty" placeholder="e.g., Endocrinology">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number *</label>
+                        <input type="tel" class="form-control" id="docPhone" placeholder="e.g., (780) 555-1001">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="saveDoctor()">
+                        <i class="bi bi-save"></i> Add Doctor
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Prescription Verification Modal -->
+    <div class="modal fade" id="editVerificationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">✏️ Edit Prescription Verification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info mb-3">
+                        <strong>Prescription:</strong> <span id="editRxName"></span><br>
+                        <strong>Prescription ID:</strong> <span id="editRxId"></span>
+                    </div>
+                    
+                    <h6 class="mb-3">✅ Verification Status</h6>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="editRxVerified" onchange="toggleEditVerificationFields()">
+                        <label class="form-check-label" for="editRxVerified">
+                            <strong>Verified by Doctor</strong>
+                        </label>
+                    </div>
+                    
+                    <div id="editVerificationFields" class="hidden">
+                        <div class="mb-3">
+                            <label class="form-label">Doctor Name</label>
+                            <select class="form-select" id="editRxDoctor">
+                                <option value="">Select doctor...</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Verification Date</label>
+                            <input type="date" class="form-control" id="editRxVerifiedDate">
+                        </div>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <h6 class="mb-3">📝 Patient-Reported Side Effects/Incidents</h6>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="editRxPatientReport" rows="4" placeholder="Document any side effects or incidents reported by the patient..."></textarea>
+                        <small class="text-muted">Leave blank if patient has not reported any issues</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveVerificationEdit()">
+                        <i class="bi bi-save"></i> Update Verification
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ========================================
+        // DEFAULT CUSTOMER DATA
+        // ========================================
+        
+        const DEFAULT_CUSTOMERS = [
+            {
+                id: 'C00001', firstName: 'John', lastName: 'Smith', dob: '1965-03-15',
+                phone: '(780) 123-4567', email: 'john.smith@email.com',
+                address: '123 Main St, Edmonton AB T5K 2B1',
+                insurance: 'Blue Cross #ABC123', coverage: 85,
+                physician: 'Dr. Sarah Johnson', physicianPhone: '(780) 555-1001',
+                medicalHistory: 'Type 2 Diabetes (2015), Hypertension (2018)',
+                flag: 'red', flaggedBy: 'Clerk_JD', flaggedDate: '2025-11-30', 
+                flagReason: 'Missed 3+ reminders', missed: 3, lastContact: '2025-11-25',
+                prescriptions: [
+                    { id: 'P001', medication: 'Metformin 500mg', dosage: 'Take 2 tablets daily with meals',
+                      sideEffects: 'May cause nausea, diarrhea. Take with food.',
+                      warnings: '⚠️ Monitor blood glucose. Can cause lactic acidosis.',
+                      interactions: 'Avoid alcohol. Space from contrast dyes (48hrs).' },
+                    { id: 'P002', medication: 'Lisinopril 10mg', dosage: 'Take 1 tablet daily',
+                      sideEffects: 'May cause dizziness, dry cough.',
+                      warnings: '⚠️ Do not take if pregnant. Monitor BP and potassium.',
+                      interactions: 'Avoid potassium supplements and NSAIDs.' }
+                ],
+                prescriptionHistory: [
+                    { medication: 'Aspirin 81mg', endDate: '2025-01-10', reason: 'Stomach irritation' }
+                ],
+                contactHistory: [
+                    { date: '2025-11-25', type: 'Emergency Call', outcome: 'No Answer', notes: 'Left voicemail', staff: 'Clerk_JD' },
+                    { date: '2025-11-20', type: 'Phone Call', outcome: 'Contacted', notes: 'Confirmed medication', staff: 'Clerk_SM' }
+                ],
+                bloodTests: [
+                    { date: '2025-11-28', test: 'Glucose', result: '145 mg/dL', normal: '70-100', status: 'High' }
+                ],
+                optDailyEmail: true, optWeeklyCalls: true, bestTimeToCall: 'Morning (9am-12pm)'
+            },
+            {
+                id: 'C00002', firstName: 'David', lastName: 'Lee', dob: '1972-07-22',
+                phone: '(780) 234-5678', email: 'david.lee@email.com',
+                address: '456 Oak Ave, Edmonton AB',
+                insurance: 'Alberta Health', coverage: 100,
+                physician: 'Dr. Michael Chen', physicianPhone: '(780) 555-1002',
+                medicalHistory: 'High Cholesterol (2020)',
+                flag: 'yellow', flaggedBy: 'Clerk_SM', flaggedDate: '2025-11-27',
+                flagReason: 'Missed 2 reminders', missed: 2, lastContact: '2025-11-28',
+                prescriptions: [
+                    { id: 'P003', medication: 'Atorvastatin 20mg', dosage: 'Take 1 tablet at bedtime',
+                      sideEffects: 'May cause muscle pain, dizziness.',
+                      warnings: '⚠️ Monitor liver enzymes. Report muscle weakness.',
+                      interactions: 'Avoid grapefruit juice and excessive alcohol.' }
+                ],
+                prescriptionHistory: [],
+                contactHistory: [
+                    { date: '2025-11-28', type: 'Phone Call', outcome: 'Contacted', notes: 'Experiencing dizziness', staff: 'Clerk_JD' }
+                ],
+                bloodTests: [
+                    { date: '2025-11-20', test: 'Cholesterol', result: '220 mg/dL', normal: '<200', status: 'High' }
+                ],
+                optDailyEmail: true, optWeeklyCalls: false, bestTimeToCall: 'Afternoon (12pm-5pm)'
+            },
+            {
+                id: 'C00003', firstName: 'Mary', lastName: 'Gates', dob: '1980-12-05',
+                phone: '(780) 345-6789', email: 'mary.gates@email.com',
+                address: '789 Pine Rd, Edmonton AB',
+                insurance: 'Manulife', coverage: 80,
+                physician: 'Dr. Sarah Johnson', physicianPhone: '(780) 555-1001',
+                medicalHistory: 'Hypothyroidism (2018)',
+                flag: 'purple', flaggedBy: 'System', flaggedDate: '2025-11-15',
+                flagReason: 'Daily reminder subscription', missed: 0, lastContact: '2025-12-01',
+                prescriptions: [
+                    { id: 'P004', medication: 'Levothyroxine 50mcg', dosage: 'Take 1 tablet on empty stomach',
+                      sideEffects: 'Rare: palpitations, nervousness.',
+                      warnings: '⚠️ Take 30min before breakfast. Do NOT take with calcium.',
+                      interactions: 'Space from coffee and other medications (60min).' }
+                ],
+                prescriptionHistory: [],
+                contactHistory: [
+                    { date: '2025-12-01', type: 'Email', outcome: 'Sent', notes: 'Daily reminder', staff: 'System' }
+                ],
+                bloodTests: [
+                    { date: '2025-11-25', test: 'TSH', result: '2.5 mIU/L', normal: '0.4-4.0', status: 'Normal' }
+                ],
+                optDailyEmail: true, optWeeklyCalls: true, bestTimeToCall: 'Morning (9am-12pm)'
+            },
+            {
+                id: 'C00004', firstName: 'Sarah', lastName: 'Johnson', dob: '1988-04-18',
+                phone: '(780) 456-7890', email: 'sarah.j@email.com',
+                address: '321 Elm St, Edmonton AB',
+                insurance: 'Sunlife', coverage: 75,
+                physician: 'Dr. Robert Martinez', physicianPhone: '(780) 555-1003',
+                medicalHistory: 'Anxiety Disorder (2023)',
+                flag: 'green', flaggedBy: 'Clerk_SM', flaggedDate: '2025-11-20',
+                flagReason: 'Weekly check-in subscription', missed: 0, lastContact: '2025-11-29',
+                prescriptions: [
+                    { id: 'P005', medication: 'Sertraline 50mg', dosage: 'Take 1 tablet daily',
+                      sideEffects: 'May cause nausea, drowsiness. Improves after 1-2 weeks.',
+                      warnings: '⚠️ Do NOT stop suddenly. Takes 2-4 weeks for full effect.',
+                      interactions: 'Avoid alcohol. Do not combine with MAOIs.' }
+                ],
+                prescriptionHistory: [],
+                contactHistory: [
+                    { date: '2025-11-29', type: 'Weekly Check-in', outcome: 'Contacted', notes: 'Doing well', staff: 'Pharmacist_DC' }
+                ],
+                bloodTests: [],
+                optDailyEmail: false, optWeeklyCalls: true, bestTimeToCall: 'Evening (5pm-8pm)'
+            },
+            {
+                id: 'C00005', firstName: 'Tom', lastName: 'Williams', dob: '1955-09-30',
+                phone: '(780) 567-8901', email: 'tom.w@email.com',
+                address: '654 Maple Dr, Edmonton AB',
+                insurance: 'Blue Cross', coverage: 90,
+                physician: 'Dr. Lisa Anderson', physicianPhone: '(780) 555-1004',
+                medicalHistory: 'Atrial Fibrillation (2019), Hypertension (2017)',
+                flag: 'white', flaggedBy: null, flaggedDate: null,
+                flagReason: null, missed: 0, lastContact: '2025-11-30',
+                prescriptions: [
+                    { id: 'P006', medication: 'Warfarin 5mg', dosage: 'Take as directed by INR',
+                      sideEffects: 'Increased bleeding risk. Watch for unusual bruising.',
+                      warnings: '⚠️ Regular INR monitoring required. Avoid vitamin K foods.',
+                      interactions: 'MANY interactions. Consult before ANY new medication.' }
+                ],
+                prescriptionHistory: [],
+                contactHistory: [
+                    { date: '2025-11-30', type: 'Phone Call', outcome: 'Contacted', notes: 'INR test scheduled', staff: 'Clerk_JD' }
+                ],
+                bloodTests: [
+                    { date: '2025-11-28', test: 'INR', result: '2.8', normal: '2.0-3.0', status: 'Normal' }
+                ],
+                optDailyEmail: false, optWeeklyCalls: true, bestTimeToCall: 'Morning (9am-12pm)'
+            }
+        ];
+        
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
+        
+        let customers = [];
+        let filteredCustomers = [];
+        let selectedCustomerId = null;
+        let currentFilter = 'all';
+        let customerModal, editingCustomerId = null;
+        let inventory = [];
+        let doctors = [];
+        let inventoryModal, prescriptionModal, bloodTestModal, medicalHistoryModal, oldPrescriptionModal, doctorModal, editVerificationModal;
+        let editingPrescriptionIndex = null;
+        
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            customerModal = new bootstrap.Modal(document.getElementById('customerModal'));
+            inventoryModal = new bootstrap.Modal(document.getElementById('inventoryModal'));
+            prescriptionModal = new bootstrap.Modal(document.getElementById('prescriptionModal'));
+            bloodTestModal = new bootstrap.Modal(document.getElementById('bloodTestModal'));
+            medicalHistoryModal = new bootstrap.Modal(document.getElementById('medicalHistoryModal'));
+            oldPrescriptionModal = new bootstrap.Modal(document.getElementById('oldPrescriptionModal'));
+            doctorModal = new bootstrap.Modal(document.getElementById('doctorModal'));
+            editVerificationModal = new bootstrap.Modal(document.getElementById('editVerificationModal'));
+            loadFromLocalStorage();
+            loadInventory();
+            loadDoctors();
+        });
+        
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('pharmacyCustomers');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    customers = data.customers || DEFAULT_CUSTOMERS;
+                    console.log('✅ Loaded', customers.length, 'customers from localStorage');
+                } catch (e) {
+                    console.error('Error loading localStorage:', e);
+                    customers = [...DEFAULT_CUSTOMERS];
+                }
+            } else {
+                customers = [...DEFAULT_CUSTOMERS];
+                saveToLocalStorage();
+            }
+        }
+        
+        function saveToLocalStorage() {
+            const data = {
+                customers: customers,
+                lastUpdated: new Date().toISOString(),
+                version: '1.0'
+            };
+            localStorage.setItem('pharmacyCustomers', JSON.stringify(data));
+            console.log('✅ Saved to localStorage');
+        }
+        
+        // ========================================
+        // PAGE NAVIGATION
+        // ========================================
+        
+        function login() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+            renderCustomerList();
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                document.getElementById('homePage').classList.add('hidden');
+                document.getElementById('customerFilePage').classList.add('hidden');
+                document.getElementById('loginPage').classList.remove('hidden');
+                selectedCustomerId = null;
+            }
+        }
+        
+        function backToHome() {
+            document.getElementById('customerFilePage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('briefPanel').classList.add('empty');
+            document.getElementById('briefPanel').querySelector('.brief-panel-body').innerHTML = `
+                <i class="bi bi-hand-index"></i>
+                <p>Click a customer to view details</p>
+            `;
+            selectedCustomerId = null;
+        }
+        
+        // ========================================
+        // CUSTOMER LIST & FILTERING
+        // ========================================
+        
+        function renderCustomerList() {
+            const container = document.getElementById('customerList');
+            
+            let html = '';
+            filteredCustomers.forEach(customer => {
+                const selected = customer.id === selectedCustomerId ? 'selected' : '';
+                const flagEmoji = {
+                    'red': '🔴', 'yellow': '🟡', 'purple': '🟣',
+                    'green': '🟢', 'white': '⚪'
+                }[customer.flag] || '⚪';
+                
+                const daysSince = Math.floor((new Date() - new Date(customer.lastContact)) / (1000 * 60 * 60 * 24));
+                
+                html += `
+                    <div class="customer-card flag-${customer.flag} ${selected}" onclick="selectCustomer('${customer.id}')">
+                        <div class="customer-name">
+                            <span class="customer-flag-dot" style="background: ${getFlagColor(customer.flag)}"></span>
+                            <h6>${customer.lastName}, ${customer.firstName}</h6>
+                            <span class="customer-id-badge">${customer.id}</span>
+                        </div>
+                        <div class="customer-info">
+                            <div><i class="bi bi-telephone"></i> ${customer.phone}</div>
+                            <div><i class="bi bi-calendar"></i> ${daysSince} days ago</div>
+                            ${customer.missed > 0 ? `<span class="missed-badge">Missed: ${customer.missed}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<p class="text-center text-muted p-4">No customers found</p>';
+            document.getElementById('customerCount').textContent = `${filteredCustomers.length} customers`;
+        }
+        
+        function getFlagColor(flag) {
+            const colors = {
+                'red': '#dc3545', 'yellow': '#ffc107', 'purple': '#9c27b0',
+                'green': '#28a745', 'white': '#6c757d'
+            };
+            return colors[flag] || '#6c757d';
+        }
+        
+        function filterCustomers(filter, event) {
+            // Update active state
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+            if (event) event.currentTarget.classList.add('active');
+            
+            currentFilter = filter;
+            
+            if (filter === 'all') {
+                filteredCustomers = [...customers];
+            } else if (filter === 'email') {
+                filteredCustomers = customers.filter(c => c.optDailyEmail);
+            } else {
+                filteredCustomers = customers.filter(c => c.flag === filter);
+            }
+            
+            renderCustomerList();
+        }
+        
+        function searchCustomers() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (query === '') {
+                filterCustomers(currentFilter);
+                return;
+            }
+            
+            let baseList = currentFilter === 'all' ? customers :
+                          currentFilter === 'email' ? customers.filter(c => c.optDailyEmail) :
+                          customers.filter(c => c.flag === currentFilter);
+            
+            filteredCustomers = baseList.filter(c =>
+                c.id.toLowerCase().includes(query) ||
+                c.firstName.toLowerCase().includes(query) ||
+                c.lastName.toLowerCase().includes(query) ||
+                `${c.firstName} ${c.lastName}`.toLowerCase().includes(query)
+            );
+            
+            renderCustomerList();
+        }
+        
+        // ========================================
+        // SELECT CUSTOMER - BRIEF INFO
+        // ========================================
+        
+        function selectCustomer(customerId) {
+            selectedCustomerId = customerId;
+            const customer = customers.find(c => c.id === customerId);
+            
+            renderCustomerList();
+            
+            const flagEmoji = {
+                'red': '🔴', 'yellow': '🟡', 'purple': '🟣',
+                'green': '🟢', 'white': '⚪'
+            }[customer.flag] || '⚪';
+            
+            const flagLabel = {
+                'red': 'Emergency', 'yellow': 'Warning', 'purple': 'Daily',
+                'green': 'Weekly', 'white': 'Normal'
+            }[customer.flag] || 'Normal';
+            
+            const statusClass = {
+                'red': 'badge-emergency', 'yellow': 'badge-warning',
+                'purple': 'badge-daily', 'green': 'badge-weekly', 'white': 'badge-normal'
+            }[customer.flag] || 'badge-normal';
+            
+            const html = `
+                <div class="brief-info-row">
+                    <div class="brief-info-label">Customer Name</div>
+                    <div class="brief-info-value">${customer.firstName} ${customer.lastName}</div>
+                </div>
+                <div class="brief-info-row">
+                    <div class="brief-info-label">Customer ID</div>
+                    <div class="brief-info-value">${customer.id}</div>
+                </div>
+                <div class="brief-info-row">
+                    <div class="brief-info-label">Phone</div>
+                    <div class="brief-info-value">${customer.phone}</div>
+                </div>
+                <div class="brief-info-row">
+                    <div class="brief-info-label">Status</div>
+                    <div class="brief-info-value">
+                        <span class="status-badge ${statusClass}">${flagEmoji} ${flagLabel}</span>
+                    </div>
+                </div>
+                <div class="brief-info-row">
+                    <div class="brief-info-label">Current Medications</div>
+                    <div class="brief-info-value">
+                        ${customer.prescriptions.map(p => `<div>• ${p.medication}</div>`).join('')}
+                    </div>
+                </div>
+                <div class="brief-info-row">
+                    <div class="brief-info-label">Last Contact</div>
+                    <div class="brief-info-value">${customer.lastContact}</div>
+                </div>
+                ${customer.missed > 0 ? `
+                    <div class="alert alert-danger mt-3">
+                        <strong>⚠️ Missed Reminders: ${customer.missed}</strong>
+                    </div>
+                ` : ''}
+                <button class="btn btn-primary w-100 mt-3" onclick="openCustomerFile('${customer.id}')">
+                    <i class="bi bi-file-person"></i> View Full Customer File
+                </button>
+            `;
+            
+            document.getElementById('briefPanel').classList.remove('empty');
+            document.getElementById('briefPanel').querySelector('.brief-panel-body').innerHTML = html;
+        }
+        
+        // ========================================
+        // CUSTOMER FILE PAGE
+        // ========================================
+        
+        function openCustomerFile(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) return;
+            
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('customerFilePage').classList.remove('hidden');
+            document.getElementById('fileCustomerName').textContent = `${customer.firstName} ${customer.lastName}`;
+            
+            // Status Banner
+            const banners = {
+                'red': { class: 'alert-danger', text: `🔴 EMERGENCY - Missed ${customer.missed} reminders. Immediate contact required!` },
+                'yellow': { class: 'alert-warning', text: `🟡 WARNING - Missed ${customer.missed} reminders. Follow-up needed.` },
+                'purple': { class: 'alert-info', text: '🟣 DAILY REMINDER - Subscribed to daily medication reminders.' },
+                'green': { class: 'alert-success', text: '🟢 WEEKLY CHECK-IN - Subscribed to weekly wellness calls.' },
+                'white': { class: 'alert-secondary', text: '⚪ NORMAL STATUS - Standard follow-up schedule.' }
+            };
+            
+            const banner = banners[customer.flag] || banners.white;
+            document.getElementById('statusBanner').className = `alert ${banner.class}`;
+            document.getElementById('statusBanner').innerHTML = `<strong>${banner.text}</strong>`;
+            
+            // Section 1: Customer Info
+            let infoHtml = '<div class="row"><div class="col-md-6">';
+            [
+                ['Customer ID', customer.id],
+                ['First Name', customer.firstName],
+                ['Last Name', customer.lastName],
+                ['Date of Birth', customer.dob],
+                ['Phone', customer.phone],
+                ['Email', customer.email]
+            ].forEach(([label, value]) => {
+                infoHtml += `<div class="info-row"><div class="info-label">${label}:</div><div class="info-value">${value}</div></div>`;
+            });
+            infoHtml += '</div><div class="col-md-6">';
+            [
+                ['Address', customer.address],
+                ['Insurance', customer.insurance],
+                ['Coverage', customer.coverage + '%'],
+                ['Physician', customer.physician],
+                ['Physician Phone', customer.physicianPhone],
+                ['Medical History', customer.medicalHistory]
+            ].forEach(([label, value]) => {
+                infoHtml += `<div class="info-row"><div class="info-label">${label}:</div><div class="info-value">${value}</div></div>`;
+            });
+            infoHtml += '</div></div>';
+            document.getElementById('customerInfoSection').innerHTML = infoHtml;
+            
+            // Section 2: Prescriptions
+            let rxHtml = '';
+            customer.prescriptions.forEach((rx, index) => {
+                const verificationBadge = rx.verified ? 
+                    `<div class="alert alert-success mb-2">
+                        <strong>✅ VERIFIED BY ${rx.verifiedBy || 'DOCTOR'}</strong><br>
+                        <small>Verification Date: ${rx.verifiedDate || 'N/A'}</small>
+                    </div>` :
+                    `<div class="alert alert-warning mb-2">
+                        <strong>⚠️ NOT VERIFIED - NEEDS DOCTOR REVIEW</strong>
+                    </div>`;
+                
+                const patientReport = rx.patientReport ? 
+                    `<div class="patient-reported-alert">
+                        <strong>⚠️ PATIENT REPORTED:</strong><br>
+                        ${rx.patientReport}
+                    </div>` : '';
+                
+                rxHtml += `
+                    <div class="prescription-card">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="mb-0">${rx.medication}</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="showEditVerificationModal(${index})">
+                                <i class="bi bi-pencil-square"></i> Edit Verification
+                            </button>
+                        </div>
+                        <p class="mb-1"><strong>Prescription ID:</strong> ${rx.id || 'N/A'}</p>
+                        <p><strong>Dosage:</strong> ${rx.dosage}</p>
+                        ${verificationBadge}
+                        ${patientReport}
+                        ${rx.sideEffects ? `<div class="med-alert info"><strong>Side Effects:</strong> ${rx.sideEffects}</div>` : ''}
+                        ${rx.warnings ? `<div class="med-alert warning"><strong>⚠️ Warnings:</strong> ${rx.warnings}</div>` : ''}
+                        ${rx.interactions ? `<div class="med-alert danger"><strong>Drug Interactions:</strong> ${rx.interactions}</div>` : ''}
+                    </div>
+                `;
+            });
+            document.getElementById('prescriptionSection').innerHTML = rxHtml;
+            
+            // Section 3: History
+            let histHtml = customer.prescriptionHistory.length > 0 ?
+                customer.prescriptionHistory.map(h => `
+                    <div class="history-item">
+                        <strong>${h.medication}</strong><br>
+                        Ended: ${h.endDate}<br>
+                        Reason: ${h.reason}
+                    </div>
+                `).join('') : '<p class="text-muted">No prescription history</p>';
+            document.getElementById('prescriptionHistorySection').innerHTML = histHtml;
+            
+            document.getElementById('totalComms').textContent = customer.contactHistory.length;
+            document.getElementById('missedReminders').textContent = customer.missed;
+            
+            let commHtml = customer.contactHistory.map(c => `
+                <div class="history-item">
+                    <div class="d-flex justify-content-between mb-2">
+                        <strong>${c.date}</strong>
+                        <span class="badge bg-${c.outcome.includes('No Answer') ? 'danger' : 'success'}">${c.outcome}</span>
+                    </div>
+                    <div><strong>Type:</strong> ${c.type}</div>
+                    <div><strong>Staff:</strong> ${c.staff}</div>
+                    <div><strong>Notes:</strong> ${c.notes}</div>
+                </div>
+            `).join('');
+            document.getElementById('communicationHistorySection').innerHTML = commHtml;
+            
+            // Section 4: Blood Analysis
+            let bloodHtml = customer.bloodTests && customer.bloodTests.length > 0 ?
+                customer.bloodTests.map(t => `
+                    <div class="blood-test-card">
+                        <h6>${t.test}</h6>
+                        <div class="test-parameter"><span>Date:</span><span>${t.date}</span></div>
+                        <div class="test-parameter"><span>Result:</span><span>${t.result}</span></div>
+                        <div class="test-parameter"><span>Normal:</span><span>${t.normal}</span></div>
+                        <div class="test-parameter">
+                            <span>Status:</span>
+                            <span class="badge bg-${t.status === 'Normal' ? 'success' : 'danger'}">${t.status}</span>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-muted">No blood tests on record</p>';
+            document.getElementById('bloodAnalysisSection').innerHTML = bloodHtml;
+            
+            // Section 5: Flag Status
+            const flagInfo = customer.flag === 'white' ?
+                '<p class="text-muted">No flag assigned</p>' :
+                `<div class="alert alert-info">
+                    <strong>Current Flag:</strong> ${customer.flag.toUpperCase()}<br>
+                    <strong>Flagged By:</strong> ${customer.flaggedBy || 'N/A'}<br>
+                    <strong>Date:</strong> ${customer.flaggedDate || 'N/A'}<br>
+                    <strong>Reason:</strong> ${customer.flagReason || 'N/A'}
+                </div>`;
+            document.getElementById('flagStatusSection').innerHTML = flagInfo;
+            
+            // Subscription
+            const subHtml = customer.optDailyEmail ?
+                `<div class="alert alert-success">
+                    <h6>✅ Subscribed to Daily Reminders</h6>
+                    <button class="btn btn-danger btn-sm" onclick="toggleSubscription(false)">
+                        <i class="bi bi-x-circle"></i> Unsubscribe
+                    </button>
+                </div>` :
+                `<div class="alert alert-secondary">
+                    <h6>❌ Not Subscribed</h6>
+                    <button class="btn btn-success btn-sm" onclick="toggleSubscription(true)">
+                        <i class="bi bi-check-circle"></i> Subscribe
+                    </button>
+                </div>`;
+            document.getElementById('subscriptionStatusSection').innerHTML = subHtml;
+            
+            // Contact Preferences
+            const prefHtml = `
+                <div class="card">
+                    <div class="card-body">
+                        <p><i class="bi bi-envelope${customer.optDailyEmail ? '-check text-success' : ' text-muted'}"></i> Daily Emails: ${customer.optDailyEmail ? 'Yes' : 'No'}</p>
+                        <p><i class="bi bi-telephone${customer.optWeeklyCalls ? '-fill text-success' : ' text-muted'}"></i> Weekly Calls: ${customer.optWeeklyCalls ? 'Yes' : 'No'}</p>
+                        <p class="mb-0"><i class="bi bi-clock"></i> Best Time: ${customer.bestTimeToCall}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('contactPreferencesSection').innerHTML = prefHtml;
+        }
+        
+        // ========================================
+        // CUSTOMER MANAGEMENT
+        // ========================================
+        
+        function showAddCustomerModal() {
+            editingCustomerId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Customer';
+            
+            // Generate next customer ID
+            const nextId = generateNextCustomerId();
+            document.getElementById('newCustomerId').textContent = nextId;
+            document.getElementById('customerIdDisplay').style.display = 'block';
+            
+            // Clear form
+            ['modalFirstName', 'modalLastName', 'modalDOB', 'modalPhone', 'modalEmail',
+             'modalAddress', 'modalInsurance', 'modalPhysician', 'modalMedicalHistory'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('modalFlag').value = 'white';
+            customerModal.show();
+        }
+        
+        function generateNextCustomerId() {
+            if (customers.length === 0) return 'C00001';
+            
+            // Find highest existing ID number
+            let maxNum = 0;
+            customers.forEach(c => {
+                const num = parseInt(c.id.substring(1)); // Remove 'C' prefix
+                if (!isNaN(num) && num > maxNum) maxNum = num;
+            });
+            
+            // Generate next ID
+            const nextNum = maxNum + 1;
+            return 'C' + String(nextNum).padStart(5, '0');
+        }
+        
+        function showEditCustomerModal() {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            editingCustomerId = customer.id;
+            document.getElementById('modalTitle').textContent = 'Edit Customer';
+            document.getElementById('customerIdDisplay').style.display = 'none'; // Hide ID display when editing
+            document.getElementById('editCustomerId').value = customer.id;
+            document.getElementById('modalFirstName').value = customer.firstName;
+            document.getElementById('modalLastName').value = customer.lastName;
+            document.getElementById('modalDOB').value = customer.dob;
+            document.getElementById('modalPhone').value = customer.phone;
+            document.getElementById('modalEmail').value = customer.email;
+            document.getElementById('modalAddress').value = customer.address;
+            document.getElementById('modalInsurance').value = customer.insurance;
+            document.getElementById('modalPhysician').value = customer.physician;
+            document.getElementById('modalMedicalHistory').value = customer.medicalHistory;
+            document.getElementById('modalFlag').value = customer.flag;
+            customerModal.show();
+        }
+        
+        function saveCustomer() {
+            const firstName = document.getElementById('modalFirstName').value.trim();
+            const lastName = document.getElementById('modalLastName').value.trim();
+            
+            if (!firstName || !lastName) {
+                alert('Please enter first and last name');
+                return;
+            }
+            
+            const customerData = {
+                firstName,
+                lastName,
+                dob: document.getElementById('modalDOB').value,
+                phone: document.getElementById('modalPhone').value,
+                email: document.getElementById('modalEmail').value,
+                address: document.getElementById('modalAddress').value,
+                insurance: document.getElementById('modalInsurance').value,
+                physician: document.getElementById('modalPhysician').value,
+                medicalHistory: document.getElementById('modalMedicalHistory').value,
+                flag: document.getElementById('modalFlag').value
+            };
+            
+            if (editingCustomerId) {
+                // Edit existing
+                const customer = customers.find(c => c.id === editingCustomerId);
+                Object.assign(customer, customerData);
+                alert('✅ Customer updated successfully!');
+            } else {
+                // Add new - use generated ID
+                const newId = generateNextCustomerId();
+                const newCustomer = {
+                    id: newId,
+                    ...customerData,
+                    coverage: 80,
+                    physicianPhone: '(780) 555-0000',
+                    flaggedBy: 'Clerk_Admin',
+                    flaggedDate: new Date().toISOString().split('T')[0],
+                    flagReason: 'Initial assignment',
+                    missed: 0,
+                    lastContact: new Date().toISOString().split('T')[0],
+                    prescriptions: [],
+                    prescriptionHistory: [],
+                    contactHistory: [],
+                    bloodTests: [],
+                    optDailyEmail: false,
+                    optWeeklyCalls: false,
+                    bestTimeToCall: 'Any time'
+                };
+                customers.push(newCustomer);
+                alert(`✅ Customer added successfully! ID: ${newId}`);
+            }
+            
+            saveToLocalStorage();
+            filterCustomers(currentFilter);
+            customerModal.hide();
+        }
+        
+        // ========================================
+        // FLAG MANAGEMENT
+        // ========================================
+        
+        function updateFlag(newFlag) {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            const reason = document.getElementById('flagReason').value.trim();
+            if (!reason) {
+                alert('Please enter a reason for the flag change');
+                return;
+            }
+            
+            customer.flag = newFlag;
+            customer.flaggedBy = 'Clerk_Admin';
+            customer.flaggedDate = new Date().toISOString().split('T')[0];
+            customer.flagReason = reason;
+            
+            saveToLocalStorage();
+            alert(`✅ Flag updated to ${newFlag.toUpperCase()}`);
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        function toggleSubscription(subscribe) {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            customer.optDailyEmail = subscribe;
+            if (subscribe && customer.flag === 'white') {
+                customer.flag = 'purple';
+            }
+            
+            saveToLocalStorage();
+            alert(subscribe ? '✅ Subscribed to daily reminders' : '❌ Unsubscribed from daily reminders');
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        function saveContact() {
+            const notes = document.getElementById('contactNotes').value.trim();
+            if (!notes) {
+                alert('Please enter contact notes');
+                return;
+            }
+            
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            const newContact = {
+                date: new Date().toISOString().split('T')[0],
+                type: document.getElementById('contactType').value,
+                outcome: document.getElementById('contactOutcome').value,
+                notes: notes,
+                staff: 'Clerk_Admin'
+            };
+            
+            customer.contactHistory.unshift(newContact);
+            customer.lastContact = newContact.date;
+            
+            saveToLocalStorage();
+            alert('✅ Contact saved successfully');
+            document.getElementById('contactNotes').value = '';
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        // ========================================
+        // JSON IMPORT/EXPORT
+        // ========================================
+        
+        function exportToJSON() {
+            const data = {
+                customers: customers,
+                lastUpdated: new Date().toISOString(),
+                version: '1.0'
+            };
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pharmacy-customers-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Data exported to JSON file');
+        }
+        
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.customers && Array.isArray(data.customers)) {
+                        if (confirm(`Import ${data.customers.length} customers? This will replace current data.`)) {
+                            customers = data.customers;
+                            saveToLocalStorage();
+                            filterCustomers('all');
+                            alert('✅ Data imported successfully');
+                        }
+                    } else {
+                        alert('❌ Invalid JSON format');
+                    }
+                } catch (err) {
+                    alert('❌ Error reading JSON file');
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function resetToDefault() {
+            if (confirm('Reset to default customers? This will delete all changes!')) {
+                customers = [...DEFAULT_CUSTOMERS];
+                saveToLocalStorage();
+                filterCustomers('all');
+                alert('✅ Data reset to default');
+            }
+        }
+        // ========================================
+        // DOCTORS MANAGEMENT
+        // ========================================
+        
+        const DEFAULT_DOCTORS = [
+            { name: 'Dr. Sarah Johnson', specialty: 'Endocrinology', phone: '(780) 555-1001' },
+            { name: 'Dr. Michael Chen', specialty: 'Cardiology', phone: '(780) 555-1002' },
+            { name: 'Dr. Robert Martinez', specialty: 'Psychiatry', phone: '(780) 555-1003' },
+            { name: 'Dr. Lisa Anderson', specialty: 'Cardiology', phone: '(780) 555-1004' }
+        ];
+        
+        function loadDoctors() {
+            const saved = localStorage.getItem('pharmacyDoctors');
+            if (saved) {
+                doctors = JSON.parse(saved);
+            } else {
+                doctors = [...DEFAULT_DOCTORS];
+                saveDoctors();
+            }
+            renderDoctors();
+        }
+        
+        function saveDoctors() {
+            localStorage.setItem('pharmacyDoctors', JSON.stringify(doctors));
+        }
+        
+        function renderDoctors() {
+            const container = document.getElementById('doctorsList');
+            if (!doctors || doctors.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center p-2" style="font-size:12px;">No doctors added</p>';
+                return;
+            }
+            
+            let html = '';
+            doctors.forEach(doc => {
+                html += `
+                    <div class="doctor-item">
+                        <div class="doctor-name">${doc.name}</div>
+                        <div class="doctor-specialty">${doc.specialty}</div>
+                        <div class="doctor-phone"><i class="bi bi-telephone"></i> ${doc.phone}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        function showAddDoctorModal() {
+            document.getElementById('docName').value = '';
+            document.getElementById('docSpecialty').value = '';
+            document.getElementById('docPhone').value = '';
+            doctorModal.show();
+        }
+        
+        function saveDoctor() {
+            const name = document.getElementById('docName').value.trim();
+            const specialty = document.getElementById('docSpecialty').value.trim();
+            const phone = document.getElementById('docPhone').value.trim();
+            
+            if (!name || !specialty || !phone) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Check if already exists
+            const exists = doctors.find(d => d.name.toLowerCase() === name.toLowerCase());
+            if (exists) {
+                alert('This doctor is already in the list');
+                return;
+            }
+            
+            doctors.push({ name, specialty, phone });
+            saveDoctors();
+            renderDoctors();
+            doctorModal.hide();
+            alert('✅ Doctor added to frequent list!');
+        }
+        
+        function populateDoctorDropdown(selectId) {
+            const select = document.getElementById(selectId);
+            let html = '<option value="">Select doctor...</option>';
+            doctors.forEach(doc => {
+                html += `<option value="${doc.name}">${doc.name} - ${doc.specialty}</option>`;
+            });
+            select.innerHTML = html;
+        }
+        
+        // ========================================
+        // INVENTORY MANAGEMENT
+        // ========================================
+        
+        const DEFAULT_INVENTORY = [
+            { medicationName: 'Metformin 500mg', stockLevel: 250 },
+            { medicationName: 'Lisinopril 10mg', stockLevel: 85 },
+            { medicationName: 'Atorvastatin 20mg', stockLevel: 120 },
+            { medicationName: 'Levothyroxine 50mcg', stockLevel: 45 },
+            { medicationName: 'Aspirin 81mg', stockLevel: 15 }
+        ];
+        
+        function loadInventory() {
+            const saved = localStorage.getItem('pharmacyInventory');
+            if (saved) {
+                inventory = JSON.parse(saved);
+            } else {
+                inventory = [...DEFAULT_INVENTORY];
+                saveInventory();
+            }
+            renderInventory();
+        }
+        
+        function saveInventory() {
+            localStorage.setItem('pharmacyInventory', JSON.stringify(inventory));
+        }
+        
+        function getInventoryStatus(units) {
+            if (units >= 100) return { label: 'HIGH', class: 'high', badge: '🟢' };
+            if (units >= 25) return { label: 'MEDIUM', class: 'medium', badge: '🟡' };
+            return { label: 'LOW', class: 'low', badge: '🔴' };
+        }
+        
+        function renderInventory() {
+            const container = document.getElementById('inventoryList');
+            if (!inventory || inventory.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center p-2" style="font-size:12px;">No medications in inventory</p>';
+                return;
+            }
+            
+            let html = '';
+            inventory.forEach(item => {
+                const status = getInventoryStatus(item.stockLevel);
+                html += `
+                    <div class="inventory-item ${status.class}">
+                        <div class="inventory-med-name">${item.medicationName}</div>
+                        <div class="inventory-stock">
+                            <span class="stock-badge ${status.class}">${status.badge} ${status.label}</span>
+                            <span>${item.stockLevel} units</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        function showInventoryModal() {
+            renderInventoryUpdateList();
+            inventoryModal.show();
+        }
+        
+        function renderInventoryUpdateList() {
+            const container = document.getElementById('inventoryUpdateList');
+            if (!inventory || inventory.length === 0) {
+                container.innerHTML = '<p class="text-muted">No medications in inventory</p>';
+                return;
+            }
+            
+            let html = '';
+            inventory.forEach((item, index) => {
+                const status = getInventoryStatus(item.stockLevel);
+                html += `
+                    <div class="inventory-update-row ${status.class}">
+                        <div class="row align-items-center">
+                            <div class="col-md-5">
+                                <strong>${item.medicationName}</strong><br>
+                                <span class="stock-badge ${status.class}">${status.badge} ${status.label}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control form-control-sm" id="invStock${index}" value="${item.stockLevel}" min="0">
+                                <small class="text-muted">units</small>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-sm btn-primary w-100" onclick="updateInventoryStock(${index})">
+                                    <i class="bi bi-arrow-repeat"></i> Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        function updateInventoryStock(index) {
+            const newStock = parseInt(document.getElementById('invStock' + index).value);
+            if (isNaN(newStock) || newStock < 0) {
+                alert('Please enter a valid stock level');
+                return;
+            }
+            
+            inventory[index].stockLevel = newStock;
+            inventory[index].lastUpdated = new Date().toISOString().split('T')[0];
+            saveInventory();
+            renderInventory();
+            renderInventoryUpdateList();
+            alert('✅ Stock level updated successfully!');
+        }
+        
+        function addToInventory() {
+            const medication = document.getElementById('newInvMedication').value.trim();
+            const stock = parseInt(document.getElementById('newInvStock').value);
+            
+            if (!medication) {
+                alert('Please enter medication name');
+                return;
+            }
+            
+            if (isNaN(stock) || stock < 0) {
+                alert('Please enter a valid stock level');
+                return;
+            }
+            
+            // Check if already exists
+            const exists = inventory.find(i => i.medicationName.toLowerCase() === medication.toLowerCase());
+            if (exists) {
+                alert('This medication already exists in inventory. Use Update instead.');
+                return;
+            }
+            
+            inventory.push({
+                medicationName: medication,
+                stockLevel: stock,
+                lastUpdated: new Date().toISOString().split('T')[0]
+            });
+            
+            saveInventory();
+            renderInventory();
+            renderInventoryUpdateList();
+            
+            document.getElementById('newInvMedication').value = '';
+            document.getElementById('newInvStock').value = '';
+            
+            alert('✅ Medication added to inventory!');
+        }
+        
+        // ========================================
+        // EDIT PRESCRIPTION VERIFICATION
+        // ========================================
+        
+        function showEditVerificationModal(rxIndex) {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer || !customer.prescriptions[rxIndex]) return;
+            
+            editingPrescriptionIndex = rxIndex;
+            const rx = customer.prescriptions[rxIndex];
+            
+            // Populate modal
+            document.getElementById('editRxName').textContent = rx.medication;
+            document.getElementById('editRxId').textContent = rx.id || 'N/A';
+            document.getElementById('editRxVerified').checked = rx.verified || false;
+            document.getElementById('editRxVerifiedDate').value = rx.verifiedDate || new Date().toISOString().split('T')[0];
+            document.getElementById('editRxPatientReport').value = rx.patientReport || '';
+            
+            // Populate doctor dropdown
+            populateDoctorDropdown('editRxDoctor');
+            document.getElementById('editRxDoctor').value = rx.verifiedBy || '';
+            
+            // Show/hide verification fields
+            toggleEditVerificationFields();
+            
+            editVerificationModal.show();
+        }
+        
+        function toggleEditVerificationFields() {
+            const checked = document.getElementById('editRxVerified').checked;
+            const fields = document.getElementById('editVerificationFields');
+            if (checked) {
+                fields.classList.remove('hidden');
+            } else {
+                fields.classList.add('hidden');
+            }
+        }
+        
+        function saveVerificationEdit() {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer || editingPrescriptionIndex === null) return;
+            
+            const rx = customer.prescriptions[editingPrescriptionIndex];
+            
+            // Update verification
+            rx.verified = document.getElementById('editRxVerified').checked;
+            if (rx.verified) {
+                rx.verifiedBy = document.getElementById('editRxDoctor').value;
+                rx.verifiedDate = document.getElementById('editRxVerifiedDate').value;
+            } else {
+                rx.verifiedBy = null;
+                rx.verifiedDate = null;
+            }
+            
+            // Update patient report
+            const patientReport = document.getElementById('editRxPatientReport').value.trim();
+            if (patientReport) {
+                rx.patientReport = patientReport;
+            } else {
+                delete rx.patientReport;
+            }
+            
+            saveToLocalStorage();
+            editVerificationModal.hide();
+            alert('✅ Prescription verification updated!');
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        // ========================================
+        // PRESCRIPTION MANAGEMENT
+        // ========================================
+        
+        function showAddPrescriptionModal() {
+            if (!selectedCustomerId) {
+                alert('No customer selected');
+                return;
+            }
+            document.getElementById('prescriptionModalTitle').textContent = '➕ Add Prescription';
+            clearPrescriptionForm();
+            prescriptionModal.show();
+        }
+        
+        function clearPrescriptionForm() {
+            ['rxId', 'rxMedication', 'rxDosage', 'rxDoctor', 'rxSideEffects', 'rxWarnings', 'rxInteractions'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('rxDateFilled').value = new Date().toISOString().split('T')[0];
+            document.getElementById('rxVerifiedDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('rxRefills').value = '0';
+            document.getElementById('rxStatus').value = 'Active';
+            document.getElementById('rxVerified').checked = false;
+            document.getElementById('verificationFields').classList.add('hidden');
+        }
+        
+        function toggleVerificationFields() {
+            const checked = document.getElementById('rxVerified').checked;
+            const fields = document.getElementById('verificationFields');
+            if (checked) {
+                fields.classList.remove('hidden');
+            } else {
+                fields.classList.add('hidden');
+            }
+        }
+        
+        function savePrescription() {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            const medication = document.getElementById('rxMedication').value.trim();
+            const dosage = document.getElementById('rxDosage').value.trim();
+            
+            if (!medication || !dosage) {
+                alert('Please enter medication name and dosage');
+                return;
+            }
+            
+            const newRx = {
+                id: document.getElementById('rxId').value.trim() || 'P' + String(customer.prescriptions.length + 1).padStart(3, '0'),
+                medication: medication,
+                dosage: dosage,
+                dateFilled: document.getElementById('rxDateFilled').value,
+                refills: parseInt(document.getElementById('rxRefills').value) || 0,
+                status: document.getElementById('rxStatus').value,
+                verified: document.getElementById('rxVerified').checked,
+                verifiedBy: document.getElementById('rxVerified').checked ? document.getElementById('rxDoctor').value.trim() : null,
+                verifiedDate: document.getElementById('rxVerified').checked ? document.getElementById('rxVerifiedDate').value : null,
+                sideEffects: document.getElementById('rxSideEffects').value.trim(),
+                warnings: document.getElementById('rxWarnings').value.trim(),
+                interactions: document.getElementById('rxInteractions').value.trim()
+            };
+            
+            if (!customer.prescriptions) customer.prescriptions = [];
+            customer.prescriptions.push(newRx);
+            
+            saveToLocalStorage();
+            prescriptionModal.hide();
+            alert('✅ Prescription added successfully!');
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        // ========================================
+        // BLOOD TEST MANAGEMENT
+        // ========================================
+        
+        function showBloodTestModal() {
+            if (!selectedCustomerId) {
+                alert('No customer selected');
+                return;
+            }
+            clearBloodTestForm();
+            bloodTestModal.show();
+        }
+        
+        function clearBloodTestForm() {
+            ['btType', 'btResult', 'btNormal', 'btDevice'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('btDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('btStatus').value = 'Normal';
+        }
+        
+        function saveBloodTest() {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            const testType = document.getElementById('btType').value;
+            const result = document.getElementById('btResult').value.trim();
+            const normal = document.getElementById('btNormal').value.trim();
+            
+            if (!testType || !result || !normal) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const newTest = {
+                date: document.getElementById('btDate').value,
+                test: testType,
+                result: result,
+                normal: normal,
+                status: document.getElementById('btStatus').value,
+                deviceId: document.getElementById('btDevice').value.trim()
+            };
+            
+            if (!customer.bloodTests) customer.bloodTests = [];
+            customer.bloodTests.push(newTest);
+            
+            saveToLocalStorage();
+            bloodTestModal.hide();
+            alert('✅ Blood test added successfully!');
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        // ========================================
+        // MEDICAL HISTORY MANAGEMENT
+        // ========================================
+        
+        function showMedicalHistoryModal() {
+            if (!selectedCustomerId) {
+                alert('No customer selected');
+                return;
+            }
+            clearMedicalHistoryForm();
+            medicalHistoryModal.show();
+        }
+        
+        function clearMedicalHistoryForm() {
+            ['mhCondition', 'mhNotes'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('mhDate').value = '';
+            document.getElementById('mhStatus').value = 'Active';
+        }
+        
+        function saveMedicalHistory() {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            const condition = document.getElementById('mhCondition').value.trim();
+            if (!condition) {
+                alert('Please enter a condition');
+                return;
+            }
+            
+            const date = document.getElementById('mhDate').value;
+            const status = document.getElementById('mhStatus').value;
+            const notes = document.getElementById('mhNotes').value.trim();
+            
+            // Append to medical history
+            const newEntry = `${condition}${date ? ' (' + date.split('-')[0] + ')' : ''}${status !== 'Active' ? ' - ' + status : ''}`;
+            
+            if (customer.medicalHistory) {
+                customer.medicalHistory += ', ' + newEntry;
+            } else {
+                customer.medicalHistory = newEntry;
+            }
+            
+            // Store detailed history if doesn't exist
+            if (!customer.medicalHistoryDetails) customer.medicalHistoryDetails = [];
+            customer.medicalHistoryDetails.push({
+                condition: condition,
+                diagnosisDate: date,
+                status: status,
+                notes: notes,
+                addedDate: new Date().toISOString().split('T')[0]
+            });
+            
+            saveToLocalStorage();
+            medicalHistoryModal.hide();
+            alert('✅ Medical history added successfully!');
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        // ========================================
+        // OLD PRESCRIPTION MANAGEMENT
+        // ========================================
+        
+        function showOldPrescriptionModal() {
+            if (!selectedCustomerId) {
+                alert('No customer selected');
+                return;
+            }
+            clearOldPrescriptionForm();
+            oldPrescriptionModal.show();
+        }
+        
+        function clearOldPrescriptionForm() {
+            ['opMedication', 'opDosage', 'opReason'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            ['opStartDate', 'opEndDate'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('opStatus').value = 'Discontinued';
+        }
+        
+        function saveOldPrescription() {
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            if (!customer) return;
+            
+            const medication = document.getElementById('opMedication').value.trim();
+            const endDate = document.getElementById('opEndDate').value;
+            const reason = document.getElementById('opReason').value.trim();
+            
+            if (!medication || !endDate || !reason) {
+                alert('Please fill in medication, end date, and reason');
+                return;
+            }
+            
+            const oldRx = {
+                medication: medication,
+                dosage: document.getElementById('opDosage').value.trim(),
+                startDate: document.getElementById('opStartDate').value,
+                endDate: endDate,
+                status: document.getElementById('opStatus').value,
+                reason: reason
+            };
+            
+            if (!customer.prescriptionHistory) customer.prescriptionHistory = [];
+            customer.prescriptionHistory.push(oldRx);
+            
+            saveToLocalStorage();
+            oldPrescriptionModal.hide();
+            alert('✅ Prescription history added successfully!');
+            openCustomerFile(selectedCustomerId);
+        }
+        
+        // ========================================
+        // UPDATE EXPORT/IMPORT TO INCLUDE INVENTORY
+        // ========================================
+        
+        function exportToJSON() {
+            const data = {
+                customers: customers,
+                inventory: inventory,
+                doctors: doctors,
+                lastUpdated: new Date().toISOString(),
+                version: '1.0'
+            };
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pharmacy-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Data exported (customers + inventory + doctors)');
+        }
+        
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.customers && Array.isArray(data.customers)) {
+                        const msg = `Import ${data.customers.length} customers` + 
+                                   (data.inventory ? `, inventory` : '') + 
+                                   (data.doctors ? `, and ${data.doctors.length} doctors` : '') + 
+                                   `? This will replace current data.`;
+                        if (confirm(msg)) {
+                            customers = data.customers;
+                            if (data.inventory) inventory = data.inventory;
+                            if (data.doctors) doctors = data.doctors;
+                            saveToLocalStorage();
+                            saveInventory();
+                            saveDoctors();
+                            filterCustomers('all');
+                            renderInventory();
+                            renderDoctors();
+                            alert('✅ Data imported successfully');
+                        }
+                    } else {
+                        alert('❌ Invalid JSON format');
+                    }
+                } catch (err) {
+                    alert('❌ Error reading JSON file');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        
+        function resetToDefault() {
+            if (confirm('Reset to default data? This will delete all changes!')) {
+                customers = [...DEFAULT_CUSTOMERS];
+                inventory = [...DEFAULT_INVENTORY];
+                doctors = [...DEFAULT_DOCTORS];
+                saveToLocalStorage();
+                saveInventory();
+                saveDoctors();
+                filterCustomers('all');
+                renderInventory();
+                renderDoctors();
+                alert('✅ Data reset to default');
+            }
+        }
+    </script>
+
+</body>
+</html>

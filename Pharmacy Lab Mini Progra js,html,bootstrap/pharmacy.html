@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Customer Contact Management System</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --header-blue: #4A90E2;
+            --light-blue: #E3F2FD;
+            --border-gray: #ddd;
+            --text-dark: #333;
+            --sidebar-width: 260px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* ========== HEADER ========== */
+        .app-header {
+            background: var(--header-blue);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 50px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .app-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .window-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            transition: background 0.2s;
+        }
+        
+        .window-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* ========== LOGIN PAGE ========== */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 50px;
+            width: var(--sidebar-width);
+            height: calc(100vh - 50px);
+            background: white;
+            border-right: 2px solid var(--border-gray);
+            padding: 20px 15px;
+            overflow-y: auto;
+            z-index: 999;
+        }
+        
+        .filter-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+        
+        .filter-section-title:first-child {
+            margin-top: 0;
+        }
+        
+        .filter-option {
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+        
+        .filter-option:hover {
+            background: #f8f9fa;
+            border-color: #e0e0e0;
+        }
+        
+        .filter-option.active {
+            background: var(--header-blue);
+            color: white;
+            font-weight: 600;
+            border-color: var(--header-blue);
+        }
+        
+        .customer-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: 50px;
+            padding: 20px;
+            min-height: calc(100vh - 50px);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 20px;
+        }
+        
+        /* ========== CUSTOMER LIST ========== */
+        .customer-list-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .customer-list-header {
+            background: var(--light-blue);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+        
+        .customer-list-header i {
+            color: var(--header-blue);
+            font-size: 20px;
+        }
+        
+        .customer-list-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .customer-list {
+            padding: 15px;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+        }
+        
+        .customer-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .customer-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .customer-card.flag-emergency::before { background: #dc3545; }
+        .customer-card.flag-daily::before { background: #9c27b0; }
+        .customer-card.flag-email::before { background: #17a2b8; }
+        .customer-card.flag-null::before { background: #6c757d; }
+        
+        .customer-card:hover {
+            border-color: var(--header-blue);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+            transform: translateX(3px);
+        }
+        
+        .customer-card.selected {
+            border-color: var(--header-blue);
+            border-width: 3px;
+            background: #f0f8ff;
+        }
+        
+        .customer-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .customer-flag-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .customer-name h6 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .customer-id-badge {
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-left: auto;
+        }
+        
+        .customer-info {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .customer-info i {
+            width: 16px;
+            color: var(--header-blue);
+        }
+        
+        /* ========== BRIEF PANEL ========== */
+        .brief-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: sticky;
+            top: 70px;
+        }
+        
+        .brief-panel-header {
+            background: var(--light-blue);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+        
+        .brief-panel-header i {
+            color: var(--header-blue);
+            font-size: 20px;
+        }
+        
+        .brief-panel-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .brief-panel-body {
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .brief-panel.empty .brief-panel-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            color: #999;
+        }
+        
+        .brief-panel.empty i {
+            font-size: 64px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        .comm-item {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        
+        .comm-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .comm-type {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+        
+        .comm-date {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .comm-preview {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .flag-selector {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .flag-selector label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .flag-selector select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .brief-actions {
+            padding: 15px;
+            border-top: 1px solid var(--border-gray);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .brief-actions button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* ========== BUTTONS ========== */
+        .btn {
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--header-blue);
+            border-color: var(--header-blue);
+        }
+        
+        .btn-primary:hover {
+            background: #3A7BC8;
+            border-color: #3A7BC8;
+        }
+        
+        @media (max-width: 1400px) {
+            .content-grid { grid-template-columns: 1fr 380px; }
+        }
+        
+        @media (max-width: 1200px) {
+            .content-grid { grid-template-columns: 1fr 320px; }
+        }
+        
+        @media (max-width: 992px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .brief-panel { position: relative !important; top: 0 !important; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="text-center mb-4">
+                <i class="bi bi-capsule-pill" style="font-size: 48px; color: #4A90E2;"></i>
+                <h2 class="mt-3">Pharmacy System</h2>
+                <p class="text-muted">Customer Contact Management</p>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" value="admin">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" value="password">
+            </div>
+            
+            <button class="btn btn-primary w-100 btn-lg" onclick="login()">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="homePage" class="hidden">
+        <div class="app-header">
+            <div class="app-title">
+                <i class="bi bi-capsule-pill"></i>
+                PHARMACY CUSTOMER CONTACT MANAGEMENT
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group" style="width: 350px;">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search customers..." onkeyup="searchCustomers()">
+                </div>
+                <button class="window-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="filter-section-title">FILTER BY STATUS</div>
+            
+            <div class="filter-option active" onclick="filterCustomers('all', event)">
+                <i class="bi bi-list-ul"></i>
+                <span>All Customers</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('emergency', event)">
+                <span style="font-size: 18px;">🔴</span>
+                <span>Emergency Calls</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('email', event)">
+                <span style="font-size: 18px;">📧</span>
+                <span>Email</span>
+            </div>
+            
+            <div class="filter-option" onclick="filterCustomers('daily', event)">
+                <span style="font-size: 18px;">🟣</span>
+                <span>Daily Reminders</span>
+            </div>
+            
+            <div class="customer-count">
+                <span id="customerCount">0 customers</span>
+                <button class="btn btn-sm btn-primary" onclick="alert('Add customer feature')">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="content-grid">
+                <div class="customer-list-container">
+                    <div class="customer-list-header">
+                        <i class="bi bi-people-fill"></i>
+                        <h5>Customer Queue</h5>
+                    </div>
+                    <div class="customer-list" id="customerList"></div>
+                </div>
+                
+                <div class="brief-panel empty" id="briefPanel">
+                    <div class="brief-panel-header">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <h5>Customer Details</h5>
+                    </div>
+                    <div class="brief-panel-body">
+                        <i class="bi bi-hand-index"></i>
+                        <p>Click a customer to view last 3 communications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Generate 40 customers with realistic data
+        const FIRST_NAMES = ['John','Mary','David','Sarah','Michael','Jennifer','Robert','Linda','William','Patricia','James','Barbara','Richard','Elizabeth','Joseph','Susan','Thomas','Jessica','Christopher','Nancy','Daniel','Karen','Matthew','Lisa','Anthony','Betty','Mark','Margaret','Donald','Sandra','Steven','Ashley','Paul','Kimberly','Andrew','Emily','Joshua','Donna','Kenneth','Michelle'];
+        const LAST_NAMES = ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Rodriguez','Martinez','Hernandez','Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin','Lee','Perez','Thompson','White','Harris','Sanchez','Clark','Ramirez','Lewis','Robinson','Walker','Young','Allen','King','Wright','Scott','Torres','Nguyen','Hill','Flores'];
+        const MEDICATIONS = ['Metformin 500mg','Lisinopril 10mg','Atorvastatin 20mg','Levothyroxine 50mcg','Amlodipine 5mg','Omeprazole 20mg','Losartan 50mg','Gabapentin 300mg','Sertraline 50mg','Albuterol Inhaler','Warfarin 5mg','Furosemide 40mg','Aspirin 81mg','Clopidogrel 75mg','Insulin Glargine','Prednisone 10mg'];
+        
+        function generateCustomers() {
+            const customers = [];
+            const flags = [
+                ...Array(10).fill('emergency'),
+                ...Array(10).fill('email'),
+                ...Array(10).fill('daily'),
+                ...Array(10).fill(null)
+            ];
+            
+            for (let i = 0; i < 40; i++) {
+                const id = 'C' + String(i + 1).padStart(5, '0');
+                const firstName = FIRST_NAMES[i];
+                const lastName = LAST_NAMES[i];
+                const flag = flags[i];
+                
+                // Generate prescriptions (5-20 random)
+                const numRx = Math.floor(Math.random() * 16) + 5;
+                const prescriptions = [];
+                for (let j = 0; j < numRx; j++) {
+                    const med = MEDICATIONS[Math.floor(Math.random() * MEDICATIONS.length)];
+                    prescriptions.push({
+                        id: `RX${j + 1}`,
+                        medication: med,
+                        dosage: `Take ${Math.floor(Math.random() * 3) + 1} tablet(s) daily`,
+                        status: j < numRx * 0.7 ? 'current' : 'history'
+                    });
+                }
+                
+                // Generate communications (5-20 random)
+                const numComm = Math.floor(Math.random() * 16) + 5;
+                const communications = [];
+                for (let k = 0; k < numComm; k++) {
+                    const daysAgo = k + 1;
+                    const date = new Date();
+                    date.setDate(date.getDate() - daysAgo);
+                    const types = ['Emergency Call', 'Daily Reminder', 'Follow-up Call', 'Email'];
+                    
+                    communications.push({
+                        id: `COMM${k + 1}`,
+                        date: date.toISOString().split('T')[0],
+                        type: types[Math.floor(Math.random() * types.length)],
+                        notes: `Communication notes for ${firstName} ${lastName}`,
+                        staff: 'Clerk_' + ['JD', 'SM', 'AM'][Math.floor(Math.random() * 3)]
+                    });
+                }
+                
+                customers.push({
+                    id,
+                    firstName,
+                    lastName,
+                    phone: `(780) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+                    email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@email.com`,
+                    address: `${Math.floor(Math.random() * 9000) + 1000} ${['Main','Oak','Pine','Elm','Maple'][Math.floor(Math.random() * 5)]} St, Edmonton AB`,
+                    flag,
+                    prescriptions,
+                    communications
+                });
+            }
+            
+            return customers;
+        }
+        
+        let customers = [];
+        let filteredCustomers = [];
+        let selectedCustomerId = null;
+        let currentFilter = 'all';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromLocalStorage();
+        });
+        
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('pharmacyCustomers40');
+            if (saved) {
+                customers = JSON.parse(saved);
+            } else {
+                customers = generateCustomers();
+                saveToLocalStorage();
+            }
+        }
+        
+        function saveToLocalStorage() {
+            localStorage.setItem('pharmacyCustomers40', JSON.stringify(customers));
+        }
+        
+        function login() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+            filterCustomers('all');
+        }
+        
+        function logout() {
+            if (confirm('Logout?')) {
+                document.getElementById('homePage').classList.add('hidden');
+                document.getElementById('loginPage').classList.remove('hidden');
+                selectedCustomerId = null;
+            }
+        }
+        
+        function filterCustomers(filter, event) {
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+            if (event) event.currentTarget.classList.add('active');
+            
+            currentFilter = filter;
+            
+            if (filter === 'all') {
+                filteredCustomers = [...customers];
+            } else {
+                filteredCustomers = customers.filter(c => c.flag === filter);
+            }
+            
+            renderCustomerList();
+        }
+        
+        function searchCustomers() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (query === '') {
+                filterCustomers(currentFilter);
+                return;
+            }
+            
+            let baseList = currentFilter === 'all' ? customers : customers.filter(c => c.flag === currentFilter);
+            
+            filteredCustomers = baseList.filter(c =>
+                c.id.toLowerCase().includes(query) ||
+                c.firstName.toLowerCase().includes(query) ||
+                c.lastName.toLowerCase().includes(query) ||
+                `${c.firstName} ${c.lastName}`.toLowerCase().includes(query)
+            );
+            
+            renderCustomerList();
+        }
+        
+        function renderCustomerList() {
+            const container = document.getElementById('customerList');
+            let html = '';
+            
+            filteredCustomers.forEach(customer => {
+                const selected = customer.id === selectedCustomerId ? 'selected' : '';
+                const flagClass = customer.flag ? `flag-${customer.flag}` : 'flag-null';
+                const flagColor = getFlagColor(customer.flag);
+                
+                html += `
+                    <div class="customer-card ${flagClass} ${selected}" onclick="selectCustomer('${customer.id}')">
+                        <div class="customer-name">
+                            <span class="customer-flag-dot" style="background: ${flagColor}"></span>
+                            <h6>${customer.lastName}, ${customer.firstName}</h6>
+                            <span class="customer-id-badge">${customer.id}</span>
+                        </div>
+                        <div class="customer-info">
+                            <div><i class="bi bi-telephone"></i> ${customer.phone}</div>
+                            <div><i class="bi bi-envelope"></i> ${customer.email}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<p class="text-center text-muted p-4">No customers found</p>';
+            document.getElementById('customerCount').textContent = `${filteredCustomers.length} customers`;
+        }
+        
+        function getFlagColor(flag) {
+            const colors = {
+                'emergency': '#dc3545',
+                'daily': '#9c27b0',
+                'email': '#17a2b8',
+                'null': '#6c757d'
+            };
+            return colors[flag] || '#6c757d';
+        }
+        
+        function selectCustomer(customerId) {
+            selectedCustomerId = customerId;
+            const customer = customers.find(c => c.id === customerId);
+            
+            renderCustomerList();
+            
+            // Show last 3 communications
+            const last3 = customer.communications.slice(0, 3);
+            
+            let html = '<h6 class="mb-3">Last 3 Communications</h6>';
+            last3.forEach(comm => {
+                html += `
+                    <div class="comm-item">
+                        <div class="comm-item-header">
+                            <span class="comm-type">${getCommIcon(comm.type)} ${comm.type}</span>
+                            <span class="comm-date">${comm.date}</span>
+                        </div>
+                        <div class="comm-preview">${comm.notes}</div>
+                    </div>
+                `;
+            });
+            
+            // Flag selector
+            html += `
+                <div class="flag-selector">
+                    <label>Label Customer:</label>
+                    <select class="form-select" onchange="updateCustomerFlag(this.value)">
+                        <option value="emergency" ${customer.flag === 'emergency' ? 'selected' : ''}>🔴 Emergency Call</option>
+                        <option value="daily" ${customer.flag === 'daily' ? 'selected' : ''}>🟣 Daily Reminder</option>
+                        <option value="email" ${customer.flag === 'email' ? 'selected' : ''}>📧 Email</option>
+                    </select>
+                </div>
+            `;
+            
+            document.getElementById('briefPanel').classList.remove('empty');
+            document.getElementById('briefPanel').querySelector('.brief-panel-body').innerHTML = html;
+            
+            // Add buttons
+            const briefPanel = document.getElementById('briefPanel');
+            const existingActions = briefPanel.querySelector('.brief-actions');
+            if (existingActions) existingActions.remove();
+            
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'brief-actions';
+            actionsDiv.innerHTML = `
+                <button class="btn btn-primary" onclick="alert('Contact page - Coming soon')">
+                    <i class="bi bi-telephone"></i> Contact
+                </button>
+                <button class="btn btn-outline-primary" onclick="alert('Customer file page - Coming soon')">
+                    <i class="bi bi-person"></i> Customer File
+                </button>
+            `;
+            briefPanel.appendChild(actionsDiv);
+        }
+        
+        function getCommIcon(type) {
+            if (type.includes('Emergency')) return '🚨';
+            if (type.includes('Daily')) return '🟣';
+            if (type.includes('Email')) return '📧';
+            return '📞';
+        }
+        
+        function updateCustomerFlag(newFlag) {
+            if (!selectedCustomerId) return;
+            
+            const customer = customers.find(c => c.id === selectedCustomerId);
+            customer.flag = newFlag;
+            saveToLocalStorage();
+            
+            filterCustomers(currentFilter);
+            selectCustomer(selectedCustomerId);
+            
+            alert(`✅ Customer flagged as: ${newFlag.toUpperCase()}`);
+        }
+    </script>
+</body>
+</html>

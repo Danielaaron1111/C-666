@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Customer Contact Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root{--header-blue:#4A90E2;--light-blue:#E3F2FD;--border-gray:#ddd;--text-dark:#333;--sidebar-width:260px}*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}.hidden{display:none!important}.app-header{background:var(--header-blue);color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:1000;height:50px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.app-title{font-size:18px;font-weight:600;display:flex;align-items:center;gap:10px}.window-btn{width:30px;height:30px;border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(255,255,255,0.2);color:white;transition:background 0.2s}.window-btn:hover{background:rgba(255,255,255,0.3)}.login-container{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}.login-box{background:white;padding:40px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.3);width:100%;max-width:400px}.sidebar{position:fixed;left:0;top:50px;width:var(--sidebar-width);height:calc(100vh - 50px);background:white;border-right:2px solid var(--border-gray);padding:20px 15px;overflow-y:auto;z-index:999}.filter-section-title{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;margin-top:20px}.filter-section-title:first-child{margin-top:0}.filter-option{padding:10px 12px;margin-bottom:6px;border-radius:6px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;font-size:14px;border:1px solid transparent}.filter-option:hover{background:#f8f9fa;border-color:#e0e0e0}.filter-option.active{background:var(--header-blue);color:white;font-weight:600;border-color:var(--header-blue)}.customer-count{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8f9fa;border-radius:6px;margin-top:15px;font-size:13px;font-weight:600;color:#666}.main-content{margin-left:var(--sidebar-width);margin-top:50px;padding:20px;min-height:calc(100vh - 50px)}.content-grid{display:grid;grid-template-columns:1fr 420px;gap:20px}.customer-list-container{background:white;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden}.customer-list-header{background:var(--light-blue);padding:15px 20px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--border-gray)}.customer-list-header i{color:var(--header-blue);font-size:20px}.customer-list-header h5{margin:0;font-size:16px;font-weight:600;color:var(--text-dark)}.customer-list{padding:15px;max-height:calc(100vh - 220px);overflow-y:auto}.customer-card{background:white;border:2px solid #e0e0e0;border-radius:8px;padding:15px;margin-bottom:12px;cursor:pointer;transition:all 0.2s;position:relative;padding-left:20px}.customer-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:8px 0 0 8px}.customer-card.flag-emergency::before{background:#dc3545}.customer-card.flag-daily::before{background:#9c27b0}.customer-card.flag-email::before{background:#17a2b8}.customer-card.flag-null::before{background:#6c757d}.customer-card:hover{border-color:var(--header-blue);box-shadow:0 2px 8px rgba(74,144,226,0.15);transform:translateX(3px)}.customer-card.selected{border-color:var(--header-blue);border-width:3px;background:#f0f8ff}.customer-name{display:flex;align-items:center;gap:10px;margin-bottom:8px}.customer-flag-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}.customer-name h6{margin:0;font-size:15px;font-weight:600;color:var(--text-dark)}.customer-id-badge{background:#e0e0e0;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#666;margin-left:auto}.customer-info{font-size:13px;color:#666}.customer-info i{width:16px;color:var(--header-blue)}.brief-panel{background:white;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;position:sticky;top:70px}.brief-panel-header{background:var(--light-blue);padding:15px 20px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--border-gray)}.brief-panel-header i{color:var(--header-blue);font-size:20px}.brief-panel-header h5{margin:0;font-size:16px;font-weight:600;color:var(--text-dark)}.brief-panel-body{padding:20px;max-height:600px;overflow-y:auto}.brief-panel.empty .brief-panel-body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;color:#999}.brief-panel.empty i{font-size:64px;margin-bottom:15px;opacity:0.3}.comm-item{padding:12px;border:1px solid #e0e0e0;border-radius:6px;margin-bottom:10px;background:#fafafa}.comm-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.comm-type{font-weight:600;font-size:13px;color:var(--text-dark)}.comm-date{font-size:11px;color:#666}.comm-preview{font-size:12px;color:#666;margin-top:5px}.flag-selector{margin-top:15px;padding-top:15px;border-top:1px solid #e0e0e0}.flag-selector label{font-size:12px;font-weight:600;color:#666;margin-bottom:5px;display:block}.flag-selector select{width:100%;padding:8px;border:1px solid var(--border-gray);border-radius:6px;font-size:13px}.brief-actions{padding:15px;border-top:1px solid var(--border-gray);display:flex;gap:10px}.brief-actions button{flex:1;padding:10px;border-radius:6px;font-size:13px;font-weight:600}.btn{border-radius:6px;font-weight:600;padding:10px 20px;transition:all 0.2s}.btn-primary{background:var(--header-blue);border-color:var(--header-blue)}.btn-primary:hover{background:#3A7BC8;border-color:#3A7BC8}.contact-selection{max-width:600px;margin:100px auto;background:white;padding:40px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}.contact-selection h3{text-align:center;margin-bottom:30px;color:var(--header-blue)}.contact-option{padding:20px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:15px;cursor:pointer;transition:all 0.2s;text-align:center}.contact-option:hover{border-color:var(--header-blue);background:var(--light-blue)}.contact-option i{font-size:32px;color:var(--header-blue);margin-bottom:10px}.contact-option h5{margin:0;color:var(--text-dark)}.call-page,.email-page{padding:20px;max-width:1400px;margin:70px auto 20px}.page-header{background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:20px}.page-header h3{margin:0 0 15px 0;color:var(--header-blue)}.customer-basic-info{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;font-size:13px}.customer-basic-info div{padding:10px;background:#f8f9fa;border-radius:6px}.customer-basic-info strong{display:block;margin-bottom:3px;color:#666;font-size:11px}.section-box{background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:20px}.section-title{background:var(--light-blue);padding:10px 15px;border-radius:6px;margin:-20px -20px 15px -20px;font-size:14px;font-weight:600;color:var(--header-blue)}.two-column-layout{display:grid;grid-template-columns:350px 1fr;gap:20px}.list-box{border:2px solid #e0e0e0;border-radius:6px;padding:15px;max-height:400px;overflow-y:auto}.list-item{padding:10px;border:1px solid #e0e0e0;border-radius:4px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;font-size:13px}.list-item:hover{background:var(--light-blue);border-color:var(--header-blue)}.list-item.active{background:var(--header-blue);color:white;border-color:var(--header-blue)}.list-item.current-rx{border-left:4px solid #28a745}.list-item.history-rx{border-left:4px solid #6c757d}.detail-box{border:2px solid #e0e0e0;border-radius:6px;padding:20px;min-height:400px;background:#fafafa}.detail-box.empty{display:flex;align-items:center;justify-content:center;color:#999;font-style:italic}.detail-section{margin-bottom:20px}.detail-section h6{color:var(--header-blue);font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase}.detail-section p{margin:0;font-size:13px;line-height:1.6;color:var(--text-dark)}.add-communication-form textarea{width:100%;min-height:120px;padding:12px;border:1px solid var(--border-gray);border-radius:6px;font-size:13px;font-family:inherit}.add-communication-form select{width:100%;padding:10px;border:1px solid var(--border-gray);border-radius:6px;font-size:13px;margin-bottom:15px}@media(max-width:1400px){.content-grid{grid-template-columns:1fr 380px}}@media(max-width:1200px){.content-grid{grid-template-columns:1fr 320px}}@media(max-width:992px){.content-grid{grid-template-columns:1fr}.brief-panel{position:relative!important;top:0!important;width:100%}.two-column-layout{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="text-center mb-4">
+                <i class="bi bi-capsule-pill" style="font-size:48px;color:#4A90E2;"></i>
+                <h2 class="mt-3">Pharmacy System</h2>
+                <p class="text-muted">Customer Contact Management</p>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" value="admin">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" value="password">
+            </div>
+            <button class="btn btn-primary w-100 btn-lg" onclick="login()">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </div>
+    </div>
+
+    <div id="homePage" class="hidden">
+        <div class="app-header">
+            <div class="app-title">
+                <i class="bi bi-capsule-pill"></i>
+                PHARMACY CUSTOMER CONTACT MANAGEMENT
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group" style="width:350px;">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search customers..." onkeyup="searchCustomers()">
+                </div>
+                <button class="window-btn" title="Export JSON" onclick="exportToJSON()">
+                    <i class="bi bi-download"></i>
+                </button>
+                <button class="window-btn" title="Import JSON" onclick="document.getElementById('importJSON').click()">
+                    <i class="bi bi-upload"></i>
+                </button>
+                <input type="file" id="importJSON" accept=".json" style="display:none" onchange="importFromJSON(event)">
+                <button class="window-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="filter-section-title">FILTER BY STATUS</div>
+            <div class="filter-option active" onclick="filterCustomers('all',event)">
+                <i class="bi bi-list-ul"></i>
+                <span>All Customers</span>
+            </div>
+            <div class="filter-option" onclick="filterCustomers('emergency',event)">
+                <span style="font-size:18px;">🔴</span>
+                <span>Emergency Calls</span>
+            </div>
+            <div class="filter-option" onclick="filterCustomers('email',event)">
+                <span style="font-size:18px;">📧</span>
+                <span>Email</span>
+            </div>
+            <div class="filter-option" onclick="filterCustomers('daily',event)">
+                <span style="font-size:18px;">🟣</span>
+                <span>Daily Reminders</span>
+            </div>
+            
+            <div style="margin:20px 0;padding:15px 0;border-top:2px solid #e0e0e0;border-bottom:2px solid #e0e0e0;">
+                <button class="btn btn-primary w-100" onclick="filterCustomers('today',event)" style="padding:12px;font-weight:700;font-size:14px;background:#28a745;border-color:#28a745;">
+                    <i class="bi bi-calendar-check" style="font-size:18px;"></i> 📋 TODAY'S QUEUE
+                </button>
+            </div>
+            
+            <div class="customer-count">
+                <span id="customerCount">0 customers</span>
+                <button class="btn btn-sm btn-primary" onclick="alert('Add customer feature')">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="content-grid">
+                <div class="customer-list-container">
+                    <div class="customer-list-header">
+                        <i class="bi bi-people-fill"></i>
+                        <h5>Customer Queue</h5>
+                    </div>
+                    <div class="customer-list" id="customerList"></div>
+                </div>
+                <div class="brief-panel empty" id="briefPanel">
+                    <div class="brief-panel-header">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <h5>Last 3 Communications</h5>
+                    </div>
+                    <div class="brief-panel-body">
+                        <i class="bi bi-hand-index"></i>
+                        <p>Click a customer to view last 3 communications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contactSelectionPage" class="hidden">
+        <div class="contact-selection">
+            <h3>Select Contact Type</h3>
+            <div class="contact-option" onclick="goToCallPage()">
+                <i class="bi bi-telephone-fill"></i>
+                <h5>Call / Emergency Call</h5>
+            </div>
+            <div class="contact-option" onclick="goToEmailPage()">
+                <i class="bi bi-envelope-fill"></i>
+                <h5>Email</h5>
+            </div>
+        </div>
+    </div>
+
+    <div id="callPage" class="hidden call-page">
+        <div class="mb-3">
+            <button class="btn btn-outline-secondary" onclick="backToHome()">
+                <i class="bi bi-arrow-left"></i> Back to Home
+            </button>
+            <button class="btn btn-outline-primary ms-2" onclick="goToCustomerFile()">
+                <i class="bi bi-person-circle"></i> Customer File
+            </button>
+        </div>
+        <div class="page-header">
+            <h3>📞 <span id="callCustomerName">Customer Name</span></h3>
+            <div class="customer-basic-info">
+                <div><strong>Phone</strong><span id="callPhone"></span></div>
+                <div><strong>Email</strong><span id="callEmail"></span></div>
+                <div><strong>Address</strong><span id="callAddress"></span></div>
+            </div>
+            <div style="margin-top:15px;">
+                <label style="font-size:12px;font-weight:600;color:#666;display:block;margin-bottom:5px;">Label Customer:</label>
+                <select class="form-select" id="callFlagSelect" onchange="updateCustomerFlag()">
+                    <option value="emergency">🔴 Emergency Call</option>
+                    <option value="daily">🟣 Daily Reminder</option>
+                    <option value="email">📧 Email</option>
+                </select>
+            </div>
+        </div>
+        <div class="section-box">
+            <div class="section-title">💊 FOLLOW-UP CONTACT - Prescriptions</div>
+            <div class="two-column-layout">
+                <div class="list-box" id="callPrescriptionList"></div>
+                <div class="detail-box empty" id="callPrescriptionDetail">Click a prescription to view details</div>
+            </div>
+        </div>
+        <div class="section-box">
+            <div class="section-title">💬 COMMUNICATION HISTORY</div>
+            <div class="two-column-layout">
+                <div class="list-box" id="callCommList"></div>
+                <div class="detail-box empty" id="callCommDetail">Click a communication to view details</div>
+            </div>
+        </div>
+        <div class="section-box">
+            <div class="section-title">➕ ADD NEW COMMUNICATION</div>
+            <div class="add-communication-form">
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">Type:</label>
+                <select id="newCommType">
+                    <option value="Emergency Call">Emergency Call</option>
+                    <option value="Daily Reminder Call">Daily Reminder Call</option>
+                    <option value="Follow-up Call">Follow-up Call</option>
+                </select>
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">Purpose/Subject:</label>
+                <input type="text" class="form-control mb-3" id="newCommPurpose" placeholder="Brief description...">
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">Notes/Details:</label>
+                <textarea id="newCommNotes" placeholder="Detailed notes..."></textarea>
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;margin-top:15px;">Outcome:</label>
+                <input type="text" class="form-control mb-3" id="newCommOutcome" placeholder="Result...">
+                <button class="btn btn-primary w-100 mt-3" onclick="saveNewCommunication()">
+                    <i class="bi bi-save"></i> Save Communication
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="emailPage" class="hidden email-page">
+        <div class="mb-3">
+            <button class="btn btn-outline-secondary" onclick="backToHome()">
+                <i class="bi bi-arrow-left"></i> Back to Home
+            </button>
+            <button class="btn btn-outline-primary ms-2" onclick="goToCustomerFile()">
+                <i class="bi bi-person-circle"></i> Customer File
+            </button>
+        </div>
+        <div class="page-header">
+            <h3>📧 <span id="emailCustomerName">Customer Name</span></h3>
+        </div>
+        <div class="section-box">
+            <div class="section-title">✉️ SEND EMAIL</div>
+            <div>
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">To:</label>
+                <input type="text" class="form-control mb-3" id="emailTo" readonly>
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">Subject:</label>
+                <input type="text" class="form-control mb-3" id="emailSubject" placeholder="Email subject...">
+                <label style="font-size:12px;font-weight:600;margin-bottom:5px;display:block;">Message:</label>
+                <textarea class="form-control mb-3" id="emailMessage" rows="5" placeholder="Email message..."></textarea>
+                <button class="btn btn-primary w-100" onclick="sendEmail()">
+                    <i class="bi bi-send"></i> Send Email
+                </button>
+            </div>
+        </div>
+        <div class="section-box">
+            <div class="section-title">💬 COMMUNICATION HISTORY</div>
+            <div class="two-column-layout">
+                <div class="list-box" id="emailCommList"></div>
+                <div class="detail-box empty" id="emailCommDetail">Click a communication to view details</div>
+            </div>
+        </div>
+        <div class="section-box">
+            <div class="section-title">💊 PRESCRIPTION HISTORY</div>
+            <div class="two-column-layout">
+                <div class="list-box" id="emailPrescriptionList"></div>
+                <div class="detail-box empty" id="emailPrescriptionDetail">Click a prescription to view details</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="customerFilePage" class="hidden">
+        <div class="app-header">
+            <div class="app-title">
+                <i class="bi bi-file-person-fill"></i>
+                <span id="fileCustomerName">Customer File</span>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="window-btn" onclick="backToHome()">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <button class="window-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div style="margin-top:70px;max-width:1400px;margin-left:auto;margin-right:auto;padding:20px;">
+            
+            <div class="mb-3">
+                <button class="btn btn-outline-secondary" onclick="backToHome()">
+                    <i class="bi bi-arrow-left-circle"></i> Back to Home
+                </button>
+            </div>
+            
+            <div class="section-card" style="background:white;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);margin-bottom:20px;overflow:hidden;">
+                <div class="section-header" style="background:#E3F2FD;padding:15px 20px;display:flex;align-items:center;gap:10px;border-bottom:2px solid #ddd;">
+                    <i class="bi bi-person-circle" style="color:#4A90E2;font-size:20px;"></i>
+                    <h5 style="margin:0;font-size:16px;font-weight:600;color:#333;">👤 CUSTOMER INFORMATION</h5>
+                </div>
+                <div class="section-body" style="padding:25px;">
+                    <div id="fileCustomerInfo"></div>
+                </div>
+            </div>
+            
+            <div class="section-box">
+                <div class="section-title">💊 PRESCRIPTION HISTORY</div>
+                <div class="two-column-layout">
+                    <div class="list-box" id="filePrescriptionList"></div>
+                    <div class="detail-box empty" id="filePrescriptionDetail">Click a prescription to view details</div>
+                </div>
+            </div>
+            
+            <div class="section-box">
+                <div class="section-title">💬 COMMUNICATION HISTORY</div>
+                <div class="two-column-layout">
+                    <div class="list-box" id="fileCommList"></div>
+                    <div class="detail-box empty" id="fileCommDetail">Click a communication to view details</div>
+                </div>
+            </div>
+            
+            <div class="text-center mb-4">
+                <button class="btn btn-secondary btn-lg" onclick="backToHome()">
+                    <i class="bi bi-arrow-left-circle"></i> Back to Home
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+const FIRST_NAMES=['John','Mary','David','Sarah','Michael','Jennifer','Robert','Linda','William','Patricia','James','Barbara','Richard','Elizabeth','Joseph','Susan','Thomas','Jessica','Christopher','Nancy'];
+const LAST_NAMES=['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Rodriguez','Martinez','Hernandez','Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin'];
+const MEDICATIONS=['Metformin 500mg','Lisinopril 10mg','Atorvastatin 20mg','Levothyroxine 50mcg','Amlodipine 5mg','Omeprazole 20mg','Losartan 50mg','Gabapentin 300mg','Sertraline 50mg','Albuterol Inhaler','Warfarin 5mg','Furosemide 40mg','Aspirin 81mg','Clopidogrel 75mg','Insulin Glargine','Prednisone 10mg'];
+
+function generateCustomers(){
+    const customers=[];
+    const flags=[...Array(3).fill('emergency'),...Array(3).fill('email'),...Array(4).fill('daily'),...Array(10).fill(null)];
+    for(let i=0;i<20;i++){
+        const id='C'+String(i+1).padStart(5,'0');
+        const numRx=Math.floor(Math.random()*11)+5;
+        const numComm=Math.floor(Math.random()*11)+5;
+        const prescriptions=[];
+        for(let j=0;j<numRx;j++){
+            const isCurrent=j<numRx*0.7;
+            const daysAgo=Math.floor(Math.random()*365)+30;
+            const dateFilled=new Date();
+            dateFilled.setDate(dateFilled.getDate()-daysAgo);
+            const endDate=isCurrent?null:new Date(dateFilled.getTime()+Math.floor(Math.random()*180+30)*24*60*60*1000);
+            prescriptions.push({
+                id:`RX${j+1}`,
+                medication:MEDICATIONS[Math.floor(Math.random()*MEDICATIONS.length)],
+                dosage:`Take ${Math.floor(Math.random()*3)+1} tablet(s) daily`,
+                status:isCurrent?'current':'history',
+                dateFilled:dateFilled.toISOString().split('T')[0],
+                endDate:endDate?endDate.toISOString().split('T')[0]:null,
+                sideEffects:'May cause nausea, dizziness.',
+                contraindications:'Do not use if allergic.',
+                interactions:'Avoid alcohol.',
+                warnings:'Monitor regularly.'
+            });
+        }
+        const communications=[];
+        for(let k=0;k<numComm;k++){
+            const date=new Date();
+            date.setDate(date.getDate()-(k+1));
+            communications.push({
+                id:`COMM${k+1}`,
+                date:date.toISOString().split('T')[0],
+                time:`${Math.floor(Math.random()*12)+8}:00 AM`,
+                type:['Emergency Call','Daily Reminder','Follow-up Call','Email'][Math.floor(Math.random()*4)],
+                contactMethod:'Phone',
+                staff:'Clerk_'+['JD','SM','AM'][Math.floor(Math.random()*3)],
+                purpose:'Routine check',
+                notes:`Communication with ${FIRST_NAMES[i]} regarding medications and health status.`,
+                outcome:'Contacted',
+                duration:'10 minutes'
+            });
+        }
+        customers.push({
+            id,
+            firstName:FIRST_NAMES[i],
+            lastName:LAST_NAMES[i],
+            phone:`(780) ${String(Math.floor(Math.random()*900)+100)}-${String(Math.floor(Math.random()*9000)+1000)}`,
+            email:`${FIRST_NAMES[i].toLowerCase()}.${LAST_NAMES[i].toLowerCase()}@email.com`,
+            address:`${Math.floor(Math.random()*9000)+1000} Main St, Edmonton AB`,
+            flag:flags[i],
+            prescriptions,
+            communications
+        });
+    }
+    return customers;
+}
+
+let customers=[];
+let filteredCustomers=[];
+let selectedCustomerId=null;
+let currentFilter='all';
+
+document.addEventListener('DOMContentLoaded',function(){
+    loadFromLocalStorage();
+});
+
+function loadFromLocalStorage(){
+    const saved=localStorage.getItem('pharmacyCustomers20');
+    if(saved){
+        customers=JSON.parse(saved);
+    }else{
+        customers=generateCustomers();
+        saveToLocalStorage();
+    }
+}
+
+function saveToLocalStorage(){
+    localStorage.setItem('pharmacyCustomers20',JSON.stringify(customers));
+}
+
+function login(){
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('homePage').classList.remove('hidden');
+    filterCustomers('all');
+}
+
+function logout(){
+    if(confirm('Logout?')){
+        document.getElementById('homePage').classList.add('hidden');
+        document.getElementById('callPage').classList.add('hidden');
+        document.getElementById('emailPage').classList.add('hidden');
+        document.getElementById('customerFilePage').classList.add('hidden');
+        document.getElementById('contactSelectionPage').classList.add('hidden');
+        document.getElementById('loginPage').classList.remove('hidden');
+        selectedCustomerId=null;
+    }
+}
+
+function backToHome(){
+    document.getElementById('callPage').classList.add('hidden');
+    document.getElementById('emailPage').classList.add('hidden');
+    document.getElementById('customerFilePage').classList.add('hidden');
+    document.getElementById('contactSelectionPage').classList.add('hidden');
+    document.getElementById('homePage').classList.remove('hidden');
+}
+
+function filterCustomers(filter,event){
+    document.querySelectorAll('.filter-option').forEach(opt=>opt.classList.remove('active'));
+    if(event)event.currentTarget.classList.add('active');
+    currentFilter=filter;
+    if(filter==='all'){
+        filteredCustomers=[...customers];
+    }else if(filter==='today'){
+        filteredCustomers=customers.filter(c=>c.flag!==null);
+    }else{
+        filteredCustomers=customers.filter(c=>c.flag===filter);
+    }
+    filteredCustomers.sort(()=>Math.random()-0.5);
+    renderCustomerList();
+}
+
+function searchCustomers(){
+    const query=document.getElementById('searchInput').value.toLowerCase().trim();
+    if(query===''){
+        filterCustomers(currentFilter);
+        return;
+    }
+    let baseList=currentFilter==='all'?customers:customers.filter(c=>c.flag===currentFilter);
+    filteredCustomers=baseList.filter(c=>
+        c.id.toLowerCase().includes(query)||
+        c.firstName.toLowerCase().includes(query)||
+        c.lastName.toLowerCase().includes(query)||
+        `${c.firstName} ${c.lastName}`.toLowerCase().includes(query)
+    );
+    renderCustomerList();
+}
+
+function renderCustomerList(){
+    const container=document.getElementById('customerList');
+    let html='';
+    filteredCustomers.forEach(customer=>{
+        const selected=customer.id===selectedCustomerId?'selected':'';
+        const flagClass=customer.flag?`flag-${customer.flag}`:'flag-null';
+        const flagColor=getFlagColor(customer.flag);
+        html+=`
+            <div class="customer-card ${flagClass} ${selected}" onclick="selectCustomer('${customer.id}')">
+                <div class="customer-name">
+                    <span class="customer-flag-dot" style="background:${flagColor}"></span>
+                    <h6>${customer.lastName}, ${customer.firstName}</h6>
+                    <span class="customer-id-badge">${customer.id}</span>
+                </div>
+                <div class="customer-info">
+                    <div><i class="bi bi-telephone"></i> ${customer.phone}</div>
+                    <div><i class="bi bi-envelope"></i> ${customer.email}</div>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML=html||'<p class="text-center text-muted p-4">No customers found</p>';
+    document.getElementById('customerCount').textContent=`${filteredCustomers.length} customers`;
+}
+
+function getFlagColor(flag){
+    const colors={'emergency':'#dc3545','daily':'#9c27b0','email':'#17a2b8','null':'#6c757d'};
+    return colors[flag]||'#6c757d';
+}
+
+function selectCustomer(customerId){
+    selectedCustomerId=customerId;
+    const customer=customers.find(c=>c.id===customerId);
+    renderCustomerList();
+    const last3=customer.communications.slice(0,3);
+    let html='';
+    last3.forEach(comm=>{
+        html+=`
+            <div class="comm-item">
+                <div class="comm-item-header">
+                    <span class="comm-type">${getCommIcon(comm.type)} ${comm.type}</span>
+                    <span class="comm-date">${comm.date}</span>
+                </div>
+                <div class="comm-preview">${comm.notes.substring(0,60)}...</div>
+            </div>
+        `;
+    });
+    html+=`
+        <div class="flag-selector">
+            <label>Label Customer:</label>
+            <select class="form-select" onchange="updateCustomerFlagFromHome(this.value)">
+                <option value="emergency" ${customer.flag==='emergency'?'selected':''}>🔴 Emergency Call</option>
+                <option value="daily" ${customer.flag==='daily'?'selected':''}>🟣 Daily Reminder</option>
+                <option value="email" ${customer.flag==='email'?'selected':''}>📧 Email</option>
+            </select>
+        </div>
+    `;
+    document.getElementById('briefPanel').classList.remove('empty');
+    document.getElementById('briefPanel').querySelector('.brief-panel-body').innerHTML=html;
+    const briefPanel=document.getElementById('briefPanel');
+    const existingActions=briefPanel.querySelector('.brief-actions');
+    if(existingActions)existingActions.remove();
+    const actionsDiv=document.createElement('div');
+    actionsDiv.className='brief-actions';
+    actionsDiv.innerHTML=`
+        <button class="btn btn-primary" onclick="goToContactSelection()">
+            <i class="bi bi-telephone"></i> Contact
+        </button>
+        <button class="btn btn-outline-primary" onclick="goToCustomerFile()">
+            <i class="bi bi-person"></i> Customer File
+        </button>
+    `;
+    briefPanel.appendChild(actionsDiv);
+}
+
+function getCommIcon(type){
+    if(type.includes('Emergency'))return'🚨';
+    if(type.includes('Daily'))return'🟣';
+    if(type.includes('Email'))return'📧';
+    return'📞';
+}
+
+function updateCustomerFlagFromHome(newFlag){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    customer.flag=newFlag;
+    saveToLocalStorage();
+    filterCustomers(currentFilter);
+    selectCustomer(selectedCustomerId);
+    alert(`✅ Customer flagged as: ${newFlag.toUpperCase()}`);
+}
+
+function goToContactSelection(){
+    if(!selectedCustomerId)return;
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('contactSelectionPage').classList.remove('hidden');
+}
+
+function goToCallPage(){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    document.getElementById('contactSelectionPage').classList.add('hidden');
+    document.getElementById('callPage').classList.remove('hidden');
+    document.getElementById('callCustomerName').textContent=`${customer.firstName} ${customer.lastName}`;
+    document.getElementById('callPhone').textContent=customer.phone;
+    document.getElementById('callEmail').textContent=customer.email;
+    document.getElementById('callAddress').textContent=customer.address;
+    document.getElementById('callFlagSelect').value=customer.flag||'emergency';
+    renderCallPrescriptions(customer);
+    renderCallCommunications(customer);
+}
+
+function renderCallPrescriptions(customer){
+    const listContainer=document.getElementById('callPrescriptionList');
+    let html='';
+    customer.prescriptions.forEach((rx,index)=>{
+        const itemClass=rx.status==='current'?'current-rx':'history-rx';
+        const label=rx.status==='current'?'✅ CURRENT':'📋 HISTORY';
+        const dateInfo=rx.status==='current'?
+            `Filled: ${rx.dateFilled}`:
+            `Ended: ${rx.endDate||'N/A'}`;
+        html+=`
+            <div class="list-item ${itemClass}" onclick="showCallPrescriptionDetail(${index})">
+                <strong>${rx.medication}</strong><br>
+                <small style="color:#666;">${label}</small><br>
+                <small style="color:#999;font-size:11px;">${dateInfo}</small>
+            </div>
+        `;
+    });
+    listContainer.innerHTML=html;
+}
+
+function showCallPrescriptionDetail(index){
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const rx=customer.prescriptions[index];
+    document.querySelectorAll('#callPrescriptionList .list-item').forEach((item,i)=>{
+        item.classList.toggle('active',i===index);
+    });
+    const detailBox=document.getElementById('callPrescriptionDetail');
+    detailBox.classList.remove('empty');
+    detailBox.innerHTML=`
+        <div class="detail-section">
+            <h5 style="color:var(--header-blue);margin-bottom:15px;">${rx.medication}</h5>
+            <p style="background:#e3f2fd;padding:8px;border-radius:4px;font-weight:600;">
+                ${rx.status==='current'?'✅ CURRENT PRESCRIPTION':'📋 PRESCRIPTION HISTORY'}
+            </p>
+        </div>
+        <div class="detail-section">
+            <h6>📅 DATE FILLED</h6>
+            <p>${rx.dateFilled}</p>
+        </div>
+        ${rx.endDate?`<div class="detail-section">
+            <h6>📅 END DATE</h6>
+            <p>${rx.endDate}</p>
+        </div>`:''}
+        <div class="detail-section">
+            <h6>💊 DOSAGE</h6>
+            <p>${rx.dosage}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🤢 SIDE EFFECTS</h6>
+            <p>${rx.sideEffects}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⚠️ CONTRAINDICATIONS</h6>
+            <p>${rx.contraindications}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⚡ DRUG INTERACTIONS</h6>
+            <p>${rx.interactions}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🚨 WARNINGS</h6>
+            <p>${rx.warnings}</p>
+        </div>
+    `;
+}
+
+function renderCallCommunications(customer){
+    const listContainer=document.getElementById('callCommList');
+    let html='';
+    customer.communications.forEach((comm,index)=>{
+        html+=`
+            <div class="list-item" onclick="showCallCommDetail(${index})">
+                <strong>${getCommIcon(comm.type)} ${comm.date} - ${comm.type}</strong><br>
+                <small style="color:#666;">${comm.notes.substring(0,40)}...</small>
+            </div>
+        `;
+    });
+    listContainer.innerHTML=html;
+}
+
+function showCallCommDetail(index){
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const comm=customer.communications[index];
+    document.querySelectorAll('#callCommList .list-item').forEach((item,i)=>{
+        item.classList.toggle('active',i===index);
+    });
+    const detailBox=document.getElementById('callCommDetail');
+    detailBox.classList.remove('empty');
+    detailBox.innerHTML=`
+        <div class="detail-section">
+            <h6>📅 DATE</h6>
+            <p>${comm.date} at ${comm.time}</p>
+        </div>
+        <div class="detail-section">
+            <h6>📞 TYPE</h6>
+            <p>${comm.type}</p>
+        </div>
+        <div class="detail-section">
+            <h6>👤 CONTACT METHOD</h6>
+            <p>${comm.contactMethod}</p>
+        </div>
+        <div class="detail-section">
+            <h6>👔 STAFF</h6>
+            <p>${comm.staff}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🎯 PURPOSE</h6>
+            <p>${comm.purpose}</p>
+        </div>
+        <div class="detail-section">
+            <h6>📝 NOTES</h6>
+            <p>${comm.notes}</p>
+        </div>
+        <div class="detail-section">
+            <h6>✅ OUTCOME</h6>
+            <p>${comm.outcome}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⏱️ DURATION</h6>
+            <p>${comm.duration}</p>
+        </div>
+    `;
+}
+
+function updateCustomerFlag(){
+    if(!selectedCustomerId)return;
+    const newFlag=document.getElementById('callFlagSelect').value;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    customer.flag=newFlag;
+    saveToLocalStorage();
+    alert(`✅ Customer flag updated to: ${newFlag.toUpperCase()}`);
+}
+
+function saveNewCommunication(){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const type=document.getElementById('newCommType').value;
+    const purpose=document.getElementById('newCommPurpose').value.trim();
+    const notes=document.getElementById('newCommNotes').value.trim();
+    const outcome=document.getElementById('newCommOutcome').value.trim();
+    if(!purpose||!notes){
+        alert('❌ Please fill in Purpose and Notes fields');
+        return;
+    }
+    const newComm={
+        id:`COMM${customer.communications.length+1}`,
+        date:new Date().toISOString().split('T')[0],
+        time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+        type:type,
+        contactMethod:'Phone',
+        staff:'Clerk_Current',
+        purpose:purpose,
+        notes:notes,
+        outcome:outcome||'Pending',
+        duration:'5 minutes'
+    };
+    customer.communications.unshift(newComm);
+    saveToLocalStorage();
+    document.getElementById('newCommPurpose').value='';
+    document.getElementById('newCommNotes').value='';
+    document.getElementById('newCommOutcome').value='';
+    renderCallCommunications(customer);
+    alert('✅ Communication added to history!');
+}
+
+function goToEmailPage(){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    document.getElementById('contactSelectionPage').classList.add('hidden');
+    document.getElementById('emailPage').classList.remove('hidden');
+    document.getElementById('emailCustomerName').textContent=`${customer.firstName} ${customer.lastName}`;
+    document.getElementById('emailTo').value=customer.email;
+    document.getElementById('emailSubject').value='';
+    document.getElementById('emailMessage').value='';
+    renderEmailCommunications(customer);
+    renderEmailPrescriptions(customer);
+}
+
+function renderEmailCommunications(customer){
+    const listContainer=document.getElementById('emailCommList');
+    let html='';
+    customer.communications.forEach((comm,index)=>{
+        html+=`
+            <div class="list-item" onclick="showEmailCommDetail(${index})">
+                <strong>${getCommIcon(comm.type)} ${comm.date} - ${comm.type}</strong><br>
+                <small style="color:#666;">${comm.notes.substring(0,40)}...</small>
+            </div>
+        `;
+    });
+    listContainer.innerHTML=html;
+}
+
+function showEmailCommDetail(index){
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const comm=customer.communications[index];
+    document.querySelectorAll('#emailCommList .list-item').forEach((item,i)=>{
+        item.classList.toggle('active',i===index);
+    });
+    const detailBox=document.getElementById('emailCommDetail');
+    detailBox.classList.remove('empty');
+    detailBox.innerHTML=`
+        <div class="detail-section">
+            <h6>📅 DATE</h6>
+            <p>${comm.date} at ${comm.time}</p>
+        </div>
+        <div class="detail-section">
+            <h6>📞 TYPE</h6>
+            <p>${comm.type}</p>
+        </div>
+        <div class="detail-section">
+            <h6>👤 CONTACT METHOD</h6>
+            <p>${comm.contactMethod}</p>
+        </div>
+        <div class="detail-section">
+            <h6>👔 STAFF</h6>
+            <p>${comm.staff}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🎯 PURPOSE</h6>
+            <p>${comm.purpose}</p>
+        </div>
+        <div class="detail-section">
+            <h6>📝 NOTES</h6>
+            <p>${comm.notes}</p>
+        </div>
+        <div class="detail-section">
+            <h6>✅ OUTCOME</h6>
+            <p>${comm.outcome}</p>
+        </div>
+    `;
+}
+
+function renderEmailPrescriptions(customer){
+    const listContainer=document.getElementById('emailPrescriptionList');
+    let html='';
+    customer.prescriptions.forEach((rx,index)=>{
+        const itemClass=rx.status==='current'?'current-rx':'history-rx';
+        const label=rx.status==='current'?'✅ CURRENT':'📋 HISTORY';
+        const dateInfo=rx.status==='current'?
+            `Filled: ${rx.dateFilled}`:
+            `Ended: ${rx.endDate||'N/A'}`;
+        html+=`
+            <div class="list-item ${itemClass}" onclick="showEmailPrescriptionDetail(${index})">
+                <strong>${rx.medication}</strong><br>
+                <small style="color:#666;">${label}</small><br>
+                <small style="color:#999;font-size:11px;">${dateInfo}</small>
+            </div>
+        `;
+    });
+    listContainer.innerHTML=html;
+}
+
+function showEmailPrescriptionDetail(index){
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const rx=customer.prescriptions[index];
+    document.querySelectorAll('#emailPrescriptionList .list-item').forEach((item,i)=>{
+        item.classList.toggle('active',i===index);
+    });
+    const detailBox=document.getElementById('emailPrescriptionDetail');
+    detailBox.classList.remove('empty');
+    detailBox.innerHTML=`
+        <div class="detail-section">
+            <h5 style="color:var(--header-blue);margin-bottom:15px;">${rx.medication}</h5>
+            <p style="background:#e3f2fd;padding:8px;border-radius:4px;font-weight:600;">
+                ${rx.status==='current'?'✅ CURRENT PRESCRIPTION':'📋 PRESCRIPTION HISTORY'}
+            </p>
+        </div>
+        <div class="detail-section">
+            <h6>📅 DATE FILLED</h6>
+            <p>${rx.dateFilled}</p>
+        </div>
+        ${rx.endDate?`<div class="detail-section">
+            <h6>📅 END DATE</h6>
+            <p>${rx.endDate}</p>
+        </div>`:''}
+        <div class="detail-section">
+            <h6>💊 DOSAGE</h6>
+            <p>${rx.dosage}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🤢 SIDE EFFECTS</h6>
+            <p>${rx.sideEffects}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⚠️ CONTRAINDICATIONS</h6>
+            <p>${rx.contraindications}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⚡ DRUG INTERACTIONS</h6>
+            <p>${rx.interactions}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🚨 WARNINGS</h6>
+            <p>${rx.warnings}</p>
+        </div>
+    `;
+}
+
+function sendEmail(){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const subject=document.getElementById('emailSubject').value.trim();
+    const message=document.getElementById('emailMessage').value.trim();
+    if(!subject||!message){
+        alert('❌ Please fill in Subject and Message fields');
+        return;
+    }
+    const newComm={
+        id:`COMM${customer.communications.length+1}`,
+        date:new Date().toISOString().split('T')[0],
+        time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+        type:'Email',
+        contactMethod:'Email',
+        staff:'Clerk_Current',
+        purpose:subject,
+        notes:message,
+        outcome:'Email sent successfully',
+        duration:'N/A'
+    };
+    customer.communications.unshift(newComm);
+    saveToLocalStorage();
+    document.getElementById('emailSubject').value='';
+    document.getElementById('emailMessage').value='';
+    renderEmailCommunications(customer);
+    alert('✅ Email sent and added to communication history!');
+}
+
+function goToCustomerFile(){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('callPage').classList.add('hidden');
+    document.getElementById('emailPage').classList.add('hidden');
+    document.getElementById('contactSelectionPage').classList.add('hidden');
+    document.getElementById('customerFilePage').classList.remove('hidden');
+    document.getElementById('fileCustomerName').textContent=`${customer.firstName} ${customer.lastName}`;
+    
+    let infoHtml='<div class="row"><div class="col-md-6">';
+    [
+        ['Customer ID',customer.id],
+        ['First Name',customer.firstName],
+        ['Last Name',customer.lastName],
+        ['Phone',customer.phone],
+        ['Email',customer.email]
+    ].forEach(([label,value])=>{
+        infoHtml+=`<div class="info-row"><div class="info-label">${label}:</div><div class="info-value">${value}</div></div>`;
+    });
+    infoHtml+='</div><div class="col-md-6">';
+    [
+        ['Address',customer.address],
+        ['Current Flag',getFlagLabel(customer.flag)]
+    ].forEach(([label,value])=>{
+        infoHtml+=`<div class="info-row"><div class="info-label">${label}:</div><div class="info-value">${value}</div></div>`;
+    });
+    infoHtml+='</div></div>';
+    document.getElementById('fileCustomerInfo').innerHTML=infoHtml;
+    
+    renderFilePrescriptions(customer);
+    renderFileCommunications(customer);
+}
+
+function getFlagLabel(flag){
+    const labels={'emergency':'🔴 Emergency Call','email':'📧 Email','daily':'🟣 Daily Reminder','null':'⚪ No Flag'};
+    return labels[flag]||labels['null'];
+}
+
+function renderFilePrescriptions(customer){
+    const listContainer=document.getElementById('filePrescriptionList');
+    let html='';
+    customer.prescriptions.forEach((rx,index)=>{
+        const itemClass=rx.status==='current'?'current-rx':'history-rx';
+        const label=rx.status==='current'?'✅ CURRENT':'📋 HISTORY';
+        const dateInfo=rx.status==='current'?
+            `Filled: ${rx.dateFilled}`:
+            `Ended: ${rx.endDate||'N/A'}`;
+        html+=`
+            <div class="list-item ${itemClass}" onclick="showFilePrescriptionDetail(${index})">
+                <strong>${rx.medication}</strong><br>
+                <small style="color:#666;">${label}</small><br>
+                <small style="color:#999;font-size:11px;">${dateInfo}</small>
+            </div>
+        `;
+    });
+    listContainer.innerHTML=html;
+}
+
+function showFilePrescriptionDetail(index){
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const rx=customer.prescriptions[index];
+    document.querySelectorAll('#filePrescriptionList .list-item').forEach((item,i)=>{
+        item.classList.toggle('active',i===index);
+    });
+    const detailBox=document.getElementById('filePrescriptionDetail');
+    detailBox.classList.remove('empty');
+    detailBox.innerHTML=`
+        <div class="detail-section">
+            <h5 style="color:var(--header-blue);margin-bottom:15px;">${rx.medication}</h5>
+            <p style="background:#e3f2fd;padding:8px;border-radius:4px;font-weight:600;">
+                ${rx.status==='current'?'✅ CURRENT PRESCRIPTION':'📋 PRESCRIPTION HISTORY'}
+            </p>
+        </div>
+        <div class="detail-section">
+            <h6>📅 DATE FILLED</h6>
+            <p>${rx.dateFilled}</p>
+        </div>
+        ${rx.endDate?`<div class="detail-section">
+            <h6>📅 END DATE</h6>
+            <p>${rx.endDate}</p>
+        </div>`:''}
+        <div class="detail-section">
+            <h6>💊 DOSAGE</h6>
+            <p>${rx.dosage}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🤢 SIDE EFFECTS</h6>
+            <p>${rx.sideEffects}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⚠️ CONTRAINDICATIONS</h6>
+            <p>${rx.contraindications}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⚡ DRUG INTERACTIONS</h6>
+            <p>${rx.interactions}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🚨 WARNINGS</h6>
+            <p>${rx.warnings}</p>
+        </div>
+    `;
+}
+
+function renderFileCommunications(customer){
+    const listContainer=document.getElementById('fileCommList');
+    let html='';
+    customer.communications.forEach((comm,index)=>{
+        html+=`
+            <div class="list-item" onclick="showFileCommDetail(${index})">
+                <strong>${getCommIcon(comm.type)} ${comm.date} - ${comm.type}</strong><br>
+                <small style="color:#666;">${comm.notes.substring(0,40)}...</small>
+            </div>
+        `;
+    });
+    listContainer.innerHTML=html;
+}
+
+function showFileCommDetail(index){
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    const comm=customer.communications[index];
+    document.querySelectorAll('#fileCommList .list-item').forEach((item,i)=>{
+        item.classList.toggle('active',i===index);
+    });
+    const detailBox=document.getElementById('fileCommDetail');
+    detailBox.classList.remove('empty');
+    detailBox.innerHTML=`
+        <div class="detail-section">
+            <h6>📅 DATE</h6>
+            <p>${comm.date} at ${comm.time}</p>
+        </div>
+        <div class="detail-section">
+            <h6>📞 TYPE</h6>
+            <p>${comm.type}</p>
+        </div>
+        <div class="detail-section">
+            <h6>👤 CONTACT METHOD</h6>
+            <p>${comm.contactMethod}</p>
+        </div>
+        <div class="detail-section">
+            <h6>👔 STAFF</h6>
+            <p>${comm.staff}</p>
+        </div>
+        <div class="detail-section">
+            <h6>🎯 PURPOSE</h6>
+            <p>${comm.purpose}</p>
+        </div>
+        <div class="detail-section">
+            <h6>📝 NOTES</h6>
+            <p>${comm.notes}</p>
+        </div>
+        <div class="detail-section">
+            <h6>✅ OUTCOME</h6>
+            <p>${comm.outcome}</p>
+        </div>
+        <div class="detail-section">
+            <h6>⏱️ DURATION</h6>
+            <p>${comm.duration}</p>
+        </div>
+    `;
+}
+
+function updateFileFlag(newFlag){
+    if(!selectedCustomerId)return;
+    const customer=customers.find(c=>c.id===selectedCustomerId);
+    customer.flag=newFlag;
+    saveToLocalStorage();
+    alert(`✅ Customer flag updated to: ${newFlag.toUpperCase()}`);
+    goToCustomerFile();
+}
+
+function exportToJSON(){
+    const data={
+        customers:customers,
+        lastUpdated:new Date().toISOString(),
+        version:'1.0'
+    };
+    const json=JSON.stringify(data,null,2);
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`pharmacy-data-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('✅ Data exported to JSON file');
+}
+
+function importFromJSON(event){
+    const file=event.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(e){
+        try{
+            const data=JSON.parse(e.target.result);
+            if(data.customers&&Array.isArray(data.customers)){
+                if(confirm(`Import ${data.customers.length} customers? This will replace current data.`)){
+                    customers=data.customers;
+                    saveToLocalStorage();
+                    filterCustomers('all');
+                    alert('✅ Data imported successfully');
+                }
+            }else{
+                alert('❌ Invalid JSON format');
+            }
+        }catch(err){
+            alert('❌ Error reading JSON file');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value='';
+}
+    </script>
+</body>
+</html>

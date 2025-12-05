@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>League of Legends Cards</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+  <style>
+    :root {
+      /* Overriding Pico's primary color to a soft, ethereal purple */
+      --pico-primary: #a78bfa; 
+      --pico-primary-background: #5b21b6; 
+      --pico-primary-underline: rgba(167, 139, 250, 0.5);
+      --pico-background-color: #0f0b15; /* Very dark purple-black */
+      --pico-card-background-color: #1a1625; /* Slightly lighter for cards */
+      --pico-font-family: sans-serif;
+    }
+
+    /* Custom layout for the cards */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .champion-card img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2); /* Soft purple glow */
+    }
+
+    .lore-text {
+      font-size: 0.9rem;
+      color: #cdb4db; /* Soft whitish-purple text */
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <h1 style="text-align: center; color: var(--pico-primary);">❖ Champions of the Void ❖</h1>
+    
+    <div id="loading-status" style="text-align: center; margin: 20px 0;">
+      <progress></progress>
+      <p>Loading champion data...</p>
+    </div>
+    
+    <div class="grid">
+      
+      <article>
+        <header><strong>Random Champion</strong></header>
+        <p>Summon a random champion from the void.</p>
+        <button id="random-btn" onclick="getRandomChampion()" class="contrast" disabled aria-busy="true">Loading...</button>
+        
+        <div id="random-result" style="margin-top: 20px; display: none;">
+          <h3 id="rand-name"></h3>
+          <img id="rand-img" src="" alt="Champion Art">
+          <p id="rand-lore" class="lore-text"></p>
+        </div>
+      </article>
+
+      <article>
+        <header><strong>Search Archives</strong></header>
+        <p>Search for a champion by their name.</p>
+        <div role="group">
+          <input type="text" id="search-input" placeholder="e.g. Ahri, Yasuo..." disabled />
+          <button id="search-btn" onclick="searchChampion()" disabled aria-busy="true">Loading...</button>
+        </div>
+
+        <div id="search-result" style="margin-top: 20px; display: none;">
+          <h3 id="search-name"></h3>
+          <img id="search-img" src="" alt="Champion Art">
+          <p id="search-lore" class="lore-text"></p>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <script>
+    // We need a variable to store the full list of champions once we fetch it.
+    let championList = {};
+    let latestVersion = "14.23.1"; // Hardcoded version to avoid extra API call
+
+    // Step A: Initialize - Fetch the latest version and champion data immediately
+    async function init() {
+      const loadingStatus = document.getElementById('loading-status');
+      
+      try {
+        // Check if we have cached data in localStorage (for faster subsequent loads)
+        const cachedData = localStorage.getItem('lol-champions');
+        const cacheTime = localStorage.getItem('lol-champions-time');
+        const now = Date.now();
+        
+        // Use cache if it's less than 24 hours old
+        if (cachedData && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
+          console.log("Loading from cache...");
+          championList = JSON.parse(cachedData);
+          enableButtons();
+          loadingStatus.style.display = 'none';
+          return;
+        }
+
+        console.log("Fetching fresh data...");
+        
+        // Fetch with timeout to handle slow connections
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        
+        const dataResponse = await fetch(
+          `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/champion.json`,
+          { signal: controller.signal }
+        );
+        clearTimeout(timeoutId);
+        
+        const data = await dataResponse.json();
+        
+        // Store the list of champions (The data is inside data.data)
+        championList = data.data;
+        
+        // Cache the data for 24 hours
+        localStorage.setItem('lol-champions', JSON.stringify(championList));
+        localStorage.setItem('lol-champions-time', now.toString());
+        
+        console.log("Grimoire loaded. Champions ready.");
+        enableButtons();
+        loadingStatus.style.display = 'none';
+
+      } catch (error) {
+        console.error("Failed to load data:", error);
+        loadingStatus.innerHTML = '<p style="color: red;">⚠️ Failed to load data. <button onclick="location.reload()">Retry</button></p>';
+        
+        if (error.name === 'AbortError') {
+          alert("Connection timeout. The API is very slow right now. Please try again later.");
+        } else {
+          alert("Failed to load champion data. Please check your internet connection and try again.");
+        }
+      }
+    }
+
+    function enableButtons() {
+      const randomBtn = document.getElementById('random-btn');
+      const searchBtn = document.getElementById('search-btn');
+      const searchInput = document.getElementById('search-input');
+      
+      randomBtn.disabled = false;
+      randomBtn.removeAttribute('aria-busy');
+      randomBtn.innerText = 'Summon Random';
+      
+      searchBtn.disabled = false;
+      searchBtn.removeAttribute('aria-busy');
+      searchBtn.innerText = 'Search';
+      
+      searchInput.disabled = false;
+    }
+
+    // Step B: Logic for Random Card
+    function getRandomChampion() {
+      // Check if championList is loaded
+      if (!championList || Object.keys(championList).length === 0) {
+        alert("Champion data is still loading. Please wait a moment.");
+        return;
+      }
+      
+      // Get all champion names (keys) into an array
+      const keys = Object.keys(championList); 
+      // Pick a random index
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      const champion = championList[randomKey];
+
+      displayChampion(champion, 'random');
+    }
+
+    // Step C: Logic for Search Card
+    function searchChampion() {
+      // Check if championList is loaded
+      if (!championList || Object.keys(championList).length === 0) {
+        alert("Champion data is still loading. Please wait a moment.");
+        return;
+      }
+      
+      const query = document.getElementById('search-input').value.toLowerCase();
+      
+      if (!query) {
+        alert("Please enter a champion name.");
+        return;
+      }
+      
+      // We search through the values to find a match
+      // Note: We use Object.values() to get the actual champion objects
+      const champion = Object.values(championList).find(c => c.id.toLowerCase() === query || c.name.toLowerCase() === query);
+
+      if (champion) {
+        displayChampion(champion, 'search');
+      } else {
+        alert("Champion not found in the archives.");
+      }
+    }
+
+    // Helper: Updates the HTML with champion data
+    function displayChampion(champ, type) {
+      // type is either 'random' or 'search' to target the right card
+      
+      // 1. Construct the Image URL (Loading screen art)
+      // Format: https://ddragon.leagueoflegends.com/cdn/img/champion/loading/{ID}_0.jpg
+      const imgUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`;
+
+      // 2. Update the DOM elements
+      document.getElementById(`${type}-name`).innerText = champ.name + ", " + champ.title;
+      document.getElementById(`${type}-img`).src = imgUrl;
+      document.getElementById(`${type}-lore`).innerText = champ.blurb;
+      
+      // 3. Make sure the result container is visible
+      document.getElementById(`${type}-result`).style.display = 'block';
+    }
+
+    // Run the init function when the page loads
+    init();
+  </script>
+</body>
+</html>
